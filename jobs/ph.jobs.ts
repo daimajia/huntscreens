@@ -1,4 +1,4 @@
-import { invokeTrigger } from "@trigger.dev/sdk";
+import { intervalTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
 import { fetchPHPosts } from "@/libs/producthunt";
 import { producthunt } from "@/db/schema/ph";
@@ -11,7 +11,9 @@ client.defineJob({
   id: "fetch-ph-newest",
   name: "fetch ph newest",
   version: "0.0.1",
-  trigger: invokeTrigger(),
+  trigger: intervalTrigger({
+    seconds: 1800,
+  }),
   run: async (payload, io, ctx) => {
     await io.logger.info('start fetch ph newest');
     const edges = await fetchPHPosts();
