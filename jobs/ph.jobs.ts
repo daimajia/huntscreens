@@ -1,8 +1,7 @@
-import { eventTrigger } from "@trigger.dev/sdk";
-import { client } from "../trigger";
 import { invokeTrigger } from "@trigger.dev/sdk";
+import { client } from "../trigger";
 import { fetchPHPosts } from "@/libs/producthunt";
-import { Producthunt, producthunt } from "@/db/schema/ph";
+import { producthunt } from "@/db/schema/ph";
 import { db } from "@/db/db";
 import { takeScreenshot } from "@/libs/screenshotone";
 import { v4 as uuidv4 } from 'uuid';
