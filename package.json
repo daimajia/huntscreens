@@ -1,0 +1,57 @@
+{
+  "name": "huntscreens",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@trigger.dev/nextjs": "^2.3.19",
+    "@trigger.dev/react": "^2.3.19",
+    "@trigger.dev/sdk": "^2.3.19",
+    "@xata.io/client": "^0.0.0-next.v0b9131efdfa1340c28d4ce9bd73d6c4854e7c140",
+    "axios": "^1.7.2",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.10",
+    "graphql": "^16.8.1",
+    "mongoose": "^7.6.3",
+    "next": "13.5.6",
+    "node-producthunt-api": "^1.2.3",
+    "pg": "^8.12.0",
+    "postgres": "^3.4.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "screenshotone-api-sdk": "^1.1.10",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^15.0.7",
+    "@types/node": "^20",
+    "@types/pg": "^8.11.6",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.8",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10",
+    "drizzle-kit": "^0.21.4",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.6",
+    "jsdom": "^24.1.0",
+    "postcss": "^8",
+    "tailwindcss": "^3",
+    "tsx": "^4.11.2",
+    "typescript": "^5",
+    "vitest": "^1.6.0"
+  },
+  "trigger.dev": {
+    "endpointId": "huntscreen2-Nd8p"
+  }
+}
