@@ -49,5 +49,6 @@
   },
   "trigger.dev": {
     "endpointId": "huntscreen2-Nd8p"
-  }
+  },
+  "packageManager": "pnpm@8.10.2"
 }
