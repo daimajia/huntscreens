@@ -37,6 +37,7 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10",
+    "daisyui": "^4.12.2",
     "drizzle-kit": "^0.21.4",
     "eslint": "^8",
     "eslint-config-next": "13.5.6",
