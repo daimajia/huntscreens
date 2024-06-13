@@ -5,15 +5,14 @@ export default function MiniCard(props: {
 }) {
   return <>
     <div className="flex flex-col">
-        <div className="mockup-window border bg-base-300">
-          <div className=" h-[90vh] overflow-auto">
-            {/* <img src={props.producthunt. || undefined}></img> */}
-          </div>
+      <div className="mockup-window border bg-base-300">
+        <div className=" h-[90vh] overflow-auto">
+          <img src={`https://shot.huntscreens.com/${props.producthunt.uuid}.png` || ""}></img>
         </div>
+      </div>
 
-        <div className="">
-          b
-        </div>
+      <div className="">
+      </div>
     </div>
   </>
 }
