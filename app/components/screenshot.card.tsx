@@ -1,0 +1,24 @@
+import { Producthunt } from "@/db/schema/ph";
+
+export default function MiniScreenshotCard(props: {
+  producthunt: Producthunt
+}) {
+  return <>
+    <div className="flex flex-col gap-5 hover:bg-gray-400/10 p-3 rounded-lg transition hover:cursor-pointer">
+      <div>
+        {/* <img className=" h-[60vh] object-cover object-top w-full rounded-t-lg border-gray-200 border" src={props.producthunt.screenshot || ""}></img> */}
+      </div>
+      <div className="flex flex-row gap-5 items-center">
+        <img className="h-10 rounded-md" src={props.producthunt.thumbnail?.url || ""}></img>
+        <div className="flex flex-col">
+            <div className=" font-bold">
+              {props.producthunt.name}
+            </div>
+            <div>
+              {props.producthunt.tagline}
+            </div>
+        </div>
+      </div>
+    </div>
+  </>
+}
