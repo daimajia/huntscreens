@@ -5,9 +5,8 @@ import { producthunt } from "@/db/schema/ph";
 import { db } from "@/db/db";
 import { v4 as uuidv4 } from 'uuid';
 import { prettyURL } from "@/libs/utils/url";
-import { z } from "zod";
+import { z } from 'zod';
 import { eq } from "drizzle-orm";
-import { uuid } from "drizzle-orm/pg-core";
 
 type ScreenshotResponse = {
   store: {

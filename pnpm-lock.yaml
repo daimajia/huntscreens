@@ -48,8 +48,8 @@ dependencies:
     specifier: ^9.0.1
     version: 9.0.1
   zod:
-    specifier: ^3.23.8
-    version: 3.23.8
+    specifier: 3.22.3
+    version: 3.22.3
 
 devDependencies:
   '@testing-library/react':
