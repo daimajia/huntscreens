@@ -19,7 +19,7 @@ export async function fetchPHPosts() : Promise<PHPost[]> {
   const body = {
     query: `
     {
-      posts( first: 50, featured: true){
+      posts( first: 20, featured: true){
         edges{
           cursor
           node {

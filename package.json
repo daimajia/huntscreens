@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
+    "triggerdev": "pnpm dlx @trigger.dev/cli@latest dev",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push"
@@ -26,7 +27,8 @@
     "react": "^18",
     "react-dom": "^18",
     "screenshotone-api-sdk": "^1.1.10",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@testing-library/react": "^15.0.7",

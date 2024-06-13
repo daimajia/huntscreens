@@ -47,6 +47,9 @@ dependencies:
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
+  zod:
+    specifier: ^3.23.8
+    version: 3.23.8
 
 devDependencies:
   '@testing-library/react':
@@ -2333,7 +2336,7 @@ packages:
       glob: 8.1.0
       hanji: 0.0.5
       json-diff: 0.9.0
-      zod: 3.22.3
+      zod: 3.23.8
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5552,8 +5555,12 @@ packages:
   /zod-error@1.5.0:
     resolution: {integrity: sha512-zzopKZ/skI9iXpqCEPj+iLCKl9b88E43ehcU+sbRoHuwGd9F1IDVGQ70TyO6kmfiRL1g4IXkjsXK+g1gLYl4WQ==}
     dependencies:
-      zod: 3.22.3
+      zod: 3.23.8
     dev: false
 
   /zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
+    dev: false
+
+  /zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}

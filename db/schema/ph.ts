@@ -1,4 +1,4 @@
-import { integer, json, pgTable, serial, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { boolean, integer, json, pgTable, serial, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 type Thumbnail = {
   type: string,
@@ -33,8 +33,8 @@ export const producthunt = pgTable('producthunt', {
   topics: json('topics').$type<Topic>(),
   createdAt: timestamp("createdAt", { mode: "string" }),
   featuredAt: timestamp("featuredAt", { mode: "string" }),
-  screenshot: text("screenshot"),
-  uuid: uuid('uuid').defaultRandom()
+  uuid: uuid('uuid').defaultRandom(),
+  s3: boolean('s3').default(false)
 });
 
 export type Producthunt = typeof producthunt.$inferSelect;
