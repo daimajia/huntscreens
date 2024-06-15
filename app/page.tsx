@@ -5,8 +5,8 @@ import { desc } from 'drizzle-orm';
 
 async function getPHPost() {
   const data = await db.query.producthunt.findMany({
-    orderBy: [desc(producthunt.votesCount)],
-    limit: 20
+    orderBy: [desc(producthunt.featuredAt)],
+    limit: 30
   });
   return data as Producthunt[];
 }
