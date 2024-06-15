@@ -98,6 +98,8 @@ client.defineJob({
       if(!product) {
         console.log(element.node.website);
         element.node.uuid = uuidv4();
+        await db.insert(producthunt).values(element.node).onConflictDoNothing();
+        
         if(element.node.website){
           const resp = await fetch(element.node.website);
           element.node.website = prettyURL(resp.url);
@@ -105,7 +107,6 @@ client.defineJob({
             url: element.node.website,
             uuid: element.node.uuid
           })
-          await db.insert(producthunt).values(element.node).onConflictDoNothing();
         }
       }
     });
