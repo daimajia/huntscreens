@@ -1,12 +1,13 @@
 import { intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
-import { fetchPHPosts } from "@/libs/producthunt";
+import { fetchPHPosts, fetchVoteCount } from "@/libs/producthunt";
 import { producthunt } from "@/db/schema/ph";
 import { db } from "@/db/db";
 import { v4 as uuidv4 } from 'uuid';
 import { prettyURL } from "@/libs/utils/url";
 import { z } from 'zod';
-import { eq } from "drizzle-orm";
+import { eq, gte } from "drizzle-orm";
+import { subDays } from "date-fns";
 
 type ScreenshotResponse = {
   store: {
@@ -14,10 +15,56 @@ type ScreenshotResponse = {
   }
 }
 
-const concurrencyLimit = client.defineConcurrencyLimit({
+const screenshotConcurrencyLimit = client.defineConcurrencyLimit({
   id: `screenshotone-limit`,
   limit: 5, 
 });
+
+const producthuntConcurrencyLimit = client.defineConcurrencyLimit({
+  id: `ph-limit`,
+  limit: 1, 
+});
+
+const updateVoteData = client.defineJob({
+  id: "update vote data",
+  name: "Update Vote and Comment data",
+  version: "0.0.1",
+  trigger: invokeTrigger({
+    schema: z.object({
+      id: z.number()
+    })
+  }),
+  concurrencyLimit: producthuntConcurrencyLimit,
+  run: async (payload, io, ctx) =>  {
+    const data = await fetchVoteCount(payload.id);
+    await db.update(producthunt)
+          .set({votesCount: data.votesCount, commentCount: data.commentsCount})
+          .where(eq(producthunt.id, payload.id));
+    return {
+      id: payload.id,
+      data: data
+    }
+  }
+});
+
+client.defineJob({
+  id: "schedule vote data",
+  name: "schedule update vote and comment data",
+  version: "0.0.1",
+  trigger: intervalTrigger({
+    seconds: 3600,
+  }),
+  run: async () => {
+    const posts = await db.query.producthunt.findMany({
+      where: gte(producthunt.featuredAt, subDays(new Date(), 3).toUTCString())
+    })
+    posts.forEach(async (post) => {
+      await updateVoteData.invoke("update-vote-" + post.id, {
+        id: post.id
+      })
+    });
+  } 
+})
 
 const takeScreenshotJob = client.defineJob({
   id: "take ph screenshot",
@@ -29,7 +76,7 @@ const takeScreenshotJob = client.defineJob({
       uuid: z.string()
     })
   }),
-  concurrencyLimit,
+  concurrencyLimit: screenshotConcurrencyLimit,
   run: async (payload, io, ctx) => {
     console.log(payload.url, payload.uuid);
     const result = await io.waitForRequest<ScreenshotResponse>(

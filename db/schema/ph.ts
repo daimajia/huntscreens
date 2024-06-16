@@ -35,7 +35,8 @@ export const producthunt = pgTable('producthunt', {
   featuredAt: timestamp("featuredAt", { mode: "string" }),
   uuid: uuid('uuid').defaultRandom(),
   s3: boolean('s3').default(false),
-  added_at: timestamp('added_at').defaultNow()
+  added_at: timestamp('added_at').defaultNow(),
+  commentCount: integer("comment_count").default(0)
 });
 
 export type Producthunt = typeof producthunt.$inferSelect;

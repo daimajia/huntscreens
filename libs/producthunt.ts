@@ -6,7 +6,13 @@ export type PHPost = {
   cursor: string,
   node: Producthunt
 }
-export async function fetchPHPosts() : Promise<PHPost[]> {
+
+export type PostVoteData = {
+  votesCount: number,
+  commentsCount: number
+}
+
+const phrequest = async (body: string) => {
   const PH_ACCESS_TOKEN = process.env.PH_ACCESS_TOKEN;
   assert(PH_ACCESS_TOKEN);
   const config = {
@@ -16,8 +22,27 @@ export async function fetchPHPosts() : Promise<PHPost[]> {
       Accept: 'application/json',
     },
   };
-  const body = {
-    query: `
+  const requestBody = {
+    query: `${body}`
+  };
+  const {data: {data: data}} = await axios.post('https://api.producthunt.com/v2/api/graphql', requestBody, config);
+  return data;
+}
+
+export async function fetchVoteCount(id: number) : Promise<PostVoteData> {
+  const {post: ret} = await phrequest(`
+    {
+      post( id:${id}){
+          votesCount,
+          commentsCount
+        }
+    }
+  `)
+  return ret;
+}
+
+export async function fetchPHPosts() : Promise<PHPost[]> {
+  const body = `
     {
       posts( first: 20, featured: true){
         edges{
@@ -49,18 +74,7 @@ export async function fetchPHPosts() : Promise<PHPost[]> {
           }
         } 
       }
-  }
-  
-  `,
-  };
-
-  const {
-    data: {
-      data: {
-        posts: { edges },
-      },
-    },
-  } = await axios.post('https://api.producthunt.com/v2/api/graphql', body, config);
-
+  }`;
+  const {posts: {edges}} = await phrequest(body);
   return edges;
 }
