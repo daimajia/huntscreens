@@ -17,7 +17,8 @@ const config: Config = {
     },
   },
   plugins: [
-    daisyui
+    daisyui,
+    require('tailwindcss-dotted-background'),
   ],
   daisyui: {
     themes: ["light", "dark", "cupcake"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
