@@ -52,7 +52,7 @@ client.defineJob({
   name: "schedule update vote and comment data",
   version: "0.0.1",
   trigger: intervalTrigger({
-    seconds: 3600,
+    seconds: 7200,
   }),
   run: async () => {
     const posts = await db.query.producthunt.findMany({
@@ -132,7 +132,7 @@ client.defineJob({
   name: "fetch ph newest",
   version: "0.0.2",
   trigger: intervalTrigger({
-    seconds: 1800,
+    seconds: 7200
   }),
   run: async (payload, io, ctx) => {
     await io.logger.info('start fetch ph newest');
