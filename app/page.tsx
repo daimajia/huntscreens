@@ -18,9 +18,11 @@ export default async function Home() {
   const phs = await getPHPosts();
   return (
     <main className="flex flex-col items-center justify-between p-5 md:p-10 gap-10">
-      <div className=' w-full'>
-        <h1 className=' font-semibold text-4xl leading-10 tracking-tight'>
-          The best way to browse the ProductHunt!
+      <div className=' w-full flex flex-row justify-between'>
+        <h1 className='scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl'>
+          The best way to 
+          <br/>
+          explore the ProductHunt!
         </h1>
       </div>
       <div className='grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full'>

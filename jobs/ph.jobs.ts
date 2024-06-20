@@ -56,7 +56,8 @@ client.defineJob({
   }),
   run: async () => {
     const posts = await db.query.producthunt.findMany({
-      where: gte(producthunt.featuredAt, subDays(new Date(), 3).toUTCString())
+      where: gte(producthunt.featuredAt, subDays(new Date(), 2).toUTCString()),
+      limit: 100
     })
     posts.forEach(async (post) => {
       await updateVoteData.invoke("update-vote-" + post.id, {
