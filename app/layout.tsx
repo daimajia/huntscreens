@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Header from './components/header'
 import Umami from './thridparties/umami'
 import { ThemeProvider } from './components/theme-provider'
 
@@ -15,19 +14,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <body >
-          <Header />
+    <html lang="en" suppressHydrationWarning>
+      <head></head>
+      <body >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
           <Umami />
-        </body>
-      </ThemeProvider>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
