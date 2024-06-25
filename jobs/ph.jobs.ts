@@ -17,7 +17,7 @@ type ScreenshotResponse = {
 
 const screenshotConcurrencyLimit = client.defineConcurrencyLimit({
   id: `screenshotone-limit`,
-  limit: 5, 
+  limit: 1, 
 });
 
 const producthuntConcurrencyLimit = client.defineConcurrencyLimit({
