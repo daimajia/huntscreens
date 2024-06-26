@@ -1,32 +1,25 @@
-import { db } from '@/db/db';
-import { Producthunt, producthunt } from '@/db/schema/ph';
-import MiniScreenshotCard from './components/screenshot.card';
-import { count, desc, eq, gte } from 'drizzle-orm';
-import { cache } from 'react';
 import Header from './components/header';
-import { startOfToday } from 'date-fns';
 import SubscribeButton from './components/subscribe.button';
+import ProductLists from './components/product.list';
+import { db } from '@/db/db';
+import { producthunt } from '@/db/schema/ph';
+import { startOfToday } from 'date-fns';
+import { count, gte } from 'drizzle-orm';
+import { cache } from 'react';
+import SortDropdown from './components/sort.dropdown';
 
-export const revalidate = 60;
-
-const getPHPosts = cache(async () => {
-  const data = await db.query.producthunt.findMany({
-    where: eq(producthunt.s3, true),
-    orderBy: [desc(producthunt.added_at)],
-    limit: 30
-  })
-  return data as Producthunt[];
-});
+export const revalidate = 0;
 
 const getTodayCount = cache(async () => {
   const cnt = await db.select({ count: count() }).from(producthunt).where(gte(producthunt.featuredAt, startOfToday().toUTCString()))
   return cnt[0].count;
 });
 
-export default async function Home() {
-  const phs = await getPHPosts();
+export default async function Home({ searchParams }: {
+  searchParams: { sort?: "time" | "vote" },
+}) {
   const todayCount = await getTodayCount();
-
+  const sort = searchParams.sort || "time";
   return (
     <>
       <Header />
@@ -40,15 +33,20 @@ export default async function Home() {
           </div>
           <div className='flex flex-row gap-4 items-center'>
             <SubscribeButton />
-            <span className=' text-gray-500'>
-              {todayCount} added today
-            </span>
+
+            <div className='grow'>
+              <span className=' text-gray-500'>
+                {todayCount} added today
+              </span>
+            </div>
+
+            <div>
+              <SortDropdown selectedValue={sort}/>
+            </div>
           </div>
         </div>
         <div className='grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full'>
-          {phs.map((ph) => <>
-            <MiniScreenshotCard key={ph.id} producthunt={ph} />
-          </>)}
+          <ProductLists sortBy={sort}/>
         </div>
       </main>
     </>
