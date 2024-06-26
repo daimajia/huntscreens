@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Cross1Icon, Cross2Icon } from "@radix-ui/react-icons";
+import { Cross2Icon } from "@radix-ui/react-icons";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
 import { useRouter } from "next/navigation";
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -21,7 +21,7 @@ export default function GoBack(props: { className?: string }) {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="left" className="mr-5">
-          <Badge>press esc</Badge>
+          <Badge>[ESC]</Badge>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

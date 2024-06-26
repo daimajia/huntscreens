@@ -67,7 +67,7 @@ client.defineJob({
   } 
 })
 
-const takeScreenshotJob = client.defineJob({
+export const takeScreenshotJob = client.defineJob({
   id: "take ph screenshot",
   name: "take ph screenshot",
   version: "0.0.1",
