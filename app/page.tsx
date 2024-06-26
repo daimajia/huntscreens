@@ -5,8 +5,9 @@ import { db } from '@/db/db';
 import { producthunt } from '@/db/schema/ph';
 import { startOfToday } from 'date-fns';
 import { count, gte } from 'drizzle-orm';
-import { cache } from 'react';
+import { Suspense, cache } from 'react';
 import SortDropdown from './components/sort.dropdown';
+import Loading from './components/list.loading';
 
 export const revalidate = 0;
 
@@ -41,13 +42,15 @@ export default async function Home({ searchParams }: {
             </div>
 
             <div>
-              <SortDropdown selectedValue={sort}/>
+              <SortDropdown selectedValue={sort} />
             </div>
           </div>
         </div>
-        <div className='grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full'>
-          <ProductLists sortBy={sort}/>
-        </div>
+        <Suspense fallback={<Loading />}>
+          <div className='grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full'>
+            <ProductLists sortBy={sort} />
+          </div>
+        </Suspense>
       </main>
     </>
   )

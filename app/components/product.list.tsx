@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 import { producthunt, Producthunt } from "@/db/schema/ph";
 import { eq, desc } from "drizzle-orm";
-import { cache } from "react";
+import { cache, Suspense } from "react";
 import MiniScreenshotCard from "./screenshot.card";
 
 export const revalidate = 300;
