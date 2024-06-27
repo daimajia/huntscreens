@@ -9,11 +9,11 @@ export default function MiniScreenshotCard(props: {
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
         <Link href={`/p/${props.producthunt.id}`}>
-          <img className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-muted border" src={`https://shot.huntscreens.com/${props.producthunt.uuid}.png` || ""}></img>
+          <img loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-muted border" src={`https://shot.huntscreens.com/${props.producthunt.uuid}.png` || ""}></img>
         </Link>
       </div>
       <div className="flex flex-row gap-5 items-center">
-        <img className="h-10 rounded-md" src={props.producthunt.thumbnail?.url || ""}></img>
+        <img loading="lazy" className="h-10 rounded-md" src={props.producthunt.thumbnail?.url || ""}></img>
         <div className="flex flex-row w-full justify-between items-center">
           <div className="flex flex-col">
             <div className=" font-bold ">
