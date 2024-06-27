@@ -3,11 +3,12 @@ import SubscribeButton from './components/subscribe.button';
 import ProductLists from './components/product.list';
 import { db } from '@/db/db';
 import { producthunt } from '@/db/schema/ph';
-import { startOfToday, subHours } from 'date-fns';
+import { subHours } from 'date-fns';
 import { count, gte } from 'drizzle-orm';
 import { Suspense, cache } from 'react';
 import SortDropdown from './components/sort.dropdown';
 import Loading from './components/list.loading';
+import { unstable_serialize } from 'swr'
 
 export const revalidate = 0;
 
@@ -47,9 +48,7 @@ export default async function Home({ searchParams }: {
           </div>
         </div>
         <Suspense fallback={<Loading />}>
-          <div className='grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full'>
-            <ProductLists sortBy={sort} />
-          </div>
+          <ProductLists sortBy={sort}/>
         </Suspense>
       </main>
     </>
