@@ -20,7 +20,7 @@ export default async function SubscribeButton() {
         </Badge>
       </div>
     </> : <>
-      <form action={handleLoginAction}>
+      <form action={handleLoginAction} className="hidden md:flex">
         <Button variant={"default"}>
           <EnvelopeOpenIcon className="mr-2 h-4 w-4" />
           Receive Daily Email
