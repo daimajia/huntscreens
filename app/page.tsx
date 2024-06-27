@@ -27,8 +27,8 @@ export default async function Home({ searchParams }: {
       <main className="flex flex-col items-center justify-between p-5 gap-10">
         <div className=' w-full flex flex-col gap-4 px-5'>
           <div className='flex flex-col'>
-            <h1 className='text-2xl font-bold tracking-tight lg:text-4xl'>
-              The best way to explore the ProductHunt!
+            <h1 className='text-2xl font-bold tracking-tight lg:text-4xl md:mt-3'>
+              <span className='bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-pink-500'>The best way to explore the ProductHunt !</span>
             </h1>
             <h2 className=' text-gray-500'>Screenshot every new product, browse the Producthunt with ease.</h2>
           </div>
