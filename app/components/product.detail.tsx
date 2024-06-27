@@ -2,6 +2,7 @@ import { Producthunt } from "@/db/schema/ph";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import GoBack from "./back.button";
+import { Badge } from "@/components/ui/badge";
 
 export default function ProductDetailPage(props: {
   product: Producthunt,
@@ -46,9 +47,17 @@ export default function ProductDetailPage(props: {
           </h2>
         </div>
 
+        <div className="p-5 gap-2 flex flex-wrap">
+          {product.topics?.nodes.map((item) => <>
+            <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
+          </>)}
+        </div>
+
         <div className="p-5 flex flex-row gap-5">
           <Link className="w-full h-full" href={product?.website || ""} target="__blank">
-            <Button className="w-full h-full" variant={"outline"}>GET IT</Button>
+            <Button className="w-full h-full" variant={"outline"}>
+              GET IT
+            </Button>
           </Link>
           <Link className="w-full h-full" href={product?.url || ""} target="__blank">
             <Button className="w-full border" variant={"outline"}>VOTE ({product?.votesCount || ""})</Button>
