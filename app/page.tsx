@@ -3,7 +3,7 @@ import SubscribeButton from './components/subscribe.button';
 import ProductLists from './components/product.list';
 import { db } from '@/db/db';
 import { producthunt } from '@/db/schema/ph';
-import { startOfToday } from 'date-fns';
+import { startOfToday, subHours } from 'date-fns';
 import { count, gte } from 'drizzle-orm';
 import { Suspense, cache } from 'react';
 import SortDropdown from './components/sort.dropdown';
@@ -12,7 +12,7 @@ import Loading from './components/list.loading';
 export const revalidate = 0;
 
 const getTodayCount = cache(async () => {
-  const cnt = await db.select({ count: count() }).from(producthunt).where(gte(producthunt.featuredAt, startOfToday().toUTCString()))
+  const cnt = await db.select({ count: count() }).from(producthunt).where(gte(producthunt.featuredAt, subHours(new Date(), 24).toUTCString()));
   return cnt[0].count;
 });
 
