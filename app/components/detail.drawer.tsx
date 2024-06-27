@@ -1,21 +1,26 @@
-import { Button } from "@/components/ui/button";
-import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from "@/components/ui/drawer";
+import { Drawer, DrawerTrigger, DrawerContent } from "@/components/ui/drawer";
+import { Producthunt } from "@/db/schema/ph";
+import { ReactNode, useState } from "react";
+import ProductDetailPage from "./product.detail";
+import { useHotkeys } from "react-hotkeys-hook";
 
-export default function DetailDrawer() {
+export default function DetailDrawer(props: {
+  children: ReactNode,
+  product: Producthunt
+}) {
+  const [open, setOpen] = useState(false)
+  useHotkeys("esc", () => {
+    setOpen(false);
+  });
   return <>
-    <Drawer>
-      <DrawerTrigger>Open</DrawerTrigger>
+    <Drawer open={open}>
+      <DrawerTrigger asChild onClick={() => {
+        setOpen(true);
+      }}>
+        {props.children}
+      </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-          <DrawerDescription>This action cannot be undone.</DrawerDescription>
-        </DrawerHeader>
-        <DrawerFooter>
-          <Button>Submit</Button>
-          <DrawerClose>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
+        <ProductDetailPage product={props.product} />
       </DrawerContent>
     </Drawer>
   </>

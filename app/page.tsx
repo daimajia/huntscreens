@@ -8,7 +8,6 @@ import { count, gte } from 'drizzle-orm';
 import { Suspense, cache } from 'react';
 import SortDropdown from './components/sort.dropdown';
 import Loading from './components/list.loading';
-import { unstable_serialize } from 'swr'
 
 export const revalidate = 0;
 
@@ -48,7 +47,7 @@ export default async function Home({ searchParams }: {
           </div>
         </div>
         <Suspense fallback={<Loading />}>
-          <ProductLists sortBy={sort}/>
+          <ProductLists sortBy={sort} />
         </Suspense>
       </main>
     </>

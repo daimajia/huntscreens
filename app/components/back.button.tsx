@@ -10,7 +10,6 @@ import { twMerge } from "tailwind-merge";
 
 export default function GoBack(props: { className?: string }) {
   const router = useRouter();
-  useHotkeys("esc", () => router.back())
 
   return <>
     <TooltipProvider delayDuration={100}>

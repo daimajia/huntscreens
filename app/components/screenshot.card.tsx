@@ -1,6 +1,7 @@
 import { Producthunt } from "@/db/schema/ph";
 import Link from "next/link";
 import UpVote from "./upvote";
+import DetailDrawer from "./detail.drawer";
 
 export default function MiniScreenshotCard(props: {
   producthunt: Producthunt
@@ -8,7 +9,7 @@ export default function MiniScreenshotCard(props: {
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
-        <Link href={`/p/${props.producthunt.id}`}>
+        <Link passHref key={props.producthunt.id} href={`/p/${props.producthunt.id}`}>
           <img loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-muted border" src={`https://shot.huntscreens.com/${props.producthunt.uuid}.png` || ""}></img>
         </Link>
       </div>
