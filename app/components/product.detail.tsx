@@ -48,9 +48,9 @@ export default function ProductDetailPage(props: {
         </div>
 
         <div className="p-5 gap-2 flex flex-wrap">
-          {product.topics?.nodes.map((item) => <>
+          {product.topics?.nodes.map((item) =>
             <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
-          </>)}
+          )}
         </div>
 
         <div className="p-5 flex flex-row gap-5">
@@ -66,11 +66,7 @@ export default function ProductDetailPage(props: {
 
 
         {/* <div className="flex h-full items-end px-5">
-          <div className="flex flex-row gap-5">
-            <div className="w-full">
-              <Button>Download</Button>
-            </div>
-          </div>
+          <DetailPagination />
         </div> */}
       </div>
     </div>

@@ -17,9 +17,9 @@ const ProductPageBlock = (props: {
     {isLoading && <Loading />}
     {!isLoading && products && <>
       <div className="grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full">
-        {products?.map((ph) => <>
+        {products?.map((ph) =>
           <MiniScreenshotCard key={ph.id} producthunt={ph} />
-        </>)}
+        )}
       </div>
     </>
     }
@@ -41,7 +41,7 @@ export default function ProductLists(props: {
       <div className='w-full flex flex-col' >
         {infPages}
         <div className="flex flex-row justify-center items-center p-10">
-          <Button onClick={() => setPage(page + 1)}>Load More</Button>
+          <Button onClick={() => setPage(page + 1)}>Load More...</Button>
         </div>
       </div>
     </SWRConfig>

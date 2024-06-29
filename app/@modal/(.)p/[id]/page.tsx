@@ -1,7 +1,7 @@
 'use client';
 import ProductDetailPage from "@/app/components/product.detail";
 import DetailSkeleton from "@/app/skeletons/detail.skeleton";
-import { Drawer, DrawerContent } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -11,6 +11,7 @@ export default function ShowModal({ params: { id: pid } }: { params: { id: strin
   const router = useRouter();
   const [open, setOpen] = useState(true);
   const fetcher = (url: string) => fetch(url).then(r => r.json())
+
   const { data: product, isLoading } = useSWR("/api/product/" + pid, fetcher);
   useHotkeys('esc', () => {
     setOpen(false);
@@ -20,7 +21,8 @@ export default function ShowModal({ params: { id: pid } }: { params: { id: strin
     <Drawer onClose={() => {
       router.back();
     }} open={open}>
-      <DrawerContent>
+      <DrawerTitle></DrawerTitle>
+      <DrawerContent aria-describedby={isLoading ? "loading" : product.uuid}>
         {isLoading ? <>
           <DetailSkeleton />
         </> : <>
