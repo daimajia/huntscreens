@@ -1,4 +1,4 @@
-import { fetchPHPosts, fetchVoteCount } from '@/libs/producthunt';
+import { fetchPHPosts, fetchVoteCount } from '@/lib/producthunt';
 import { expect, test } from 'vitest';
 
 test("test producthunt api", async () => {

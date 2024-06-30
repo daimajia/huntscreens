@@ -1,4 +1,4 @@
-import { prettyURL } from "@/libs/utils/url";
+import { prettyURL } from "@/lib/utils/url";
 import { expect, test } from "vitest";
 
 test('url pretty', () => {

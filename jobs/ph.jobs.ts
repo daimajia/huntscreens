@@ -1,10 +1,10 @@
 import { intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
-import { fetchPHPosts, fetchVoteCount } from "@/libs/producthunt";
+import { fetchPHPosts, fetchVoteCount } from "@/lib/producthunt";
 import { producthunt } from "@/db/schema/ph";
 import { db } from "@/db/db";
 import { v4 as uuidv4 } from 'uuid';
-import { prettyURL } from "@/libs/utils/url";
+import { prettyURL } from "@/lib/utils/url";
 import { z } from 'zod';
 import { eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
