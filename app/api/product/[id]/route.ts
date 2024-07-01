@@ -1,7 +1,5 @@
-import { db } from "@/db/db";
-import { producthunt } from "@/db/schema/ph";
-import assert from "assert";
-import { eq, desc } from "drizzle-orm";
+import queryProduct from "@/lib/api/query.product";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 type Params = {
@@ -9,8 +7,7 @@ type Params = {
 }
 
 export async function GET(request: Request, context: { params: Params }) {
-  const product = await db.query.producthunt.findFirst({
-    where: eq(producthunt.id, context.params.id)
-  })
-  return NextResponse.json(product);
+  const sort = cookies().get('sort')?.value || 'time';
+  const data = await queryProduct(context.params.id, sort === "time" ? "time" : "vote")
+  return NextResponse.json(data);
 }

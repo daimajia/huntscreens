@@ -3,9 +3,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import GoBack from "./back.button";
 import { Badge } from "@/components/ui/badge";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function ProductDetailPage(props: {
   product: Producthunt,
+  next?: Producthunt | null,
+  prev?: Producthunt | null
 }) {
   const product = props.product;
   return <>
@@ -23,7 +26,7 @@ export default function ProductDetailPage(props: {
       <div className="md:w-[500px] hidden md:flex flex-col pb-10  border rounded-lg my-10 border-r-0 rounded-r-none shadow-sm">
 
         <div className="absolute top-15 right-5">
-          <GoBack className=" border-t-0 rounded-t-none hover:border-t" />
+          <GoBack buttonAction="home" className=" border-t-0 rounded-t-none hover:border-t" />
         </div>
 
         <div className="flex flex-col gap-4 items-center justify-center">
@@ -65,9 +68,26 @@ export default function ProductDetailPage(props: {
         </div>
 
 
-        {/* <div className="flex h-full items-end px-5">
-          <DetailPagination />
-        </div> */}
+        <div className="flex h-full items-end px-5">
+          <div className="w-full flex flex-row justify-start gap-4">
+            {props.prev &&
+              <Link href={`/p/${props.prev.id}`} shallow={true}>
+                <Button variant={"outline"} size={"icon"} className="rounded-full" >
+                  <ChevronLeft strokeWidth={1.5} color="gray" className=" w-6 h-6" />
+                </Button>
+              </Link>
+            }
+
+            {props.next &&
+              <Link href={`/p/${props.next.id}`} shallow={true}>
+                <Button variant={"outline"} size={"icon"} className="rounded-full" >
+                  <ChevronRight strokeWidth={1.5} color="gray" className=" w-6 h-6" />
+                </Button>
+              </Link>
+            }
+
+          </div>
+        </div>
       </div>
     </div>
   </>
