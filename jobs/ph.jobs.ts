@@ -70,7 +70,7 @@ client.defineJob({
 export const takeScreenshotJob = client.defineJob({
   id: "take ph screenshot",
   name: "take ph screenshot",
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: invokeTrigger({
     schema: z.object({
       url: z.string().url(),
@@ -79,7 +79,7 @@ export const takeScreenshotJob = client.defineJob({
   }),
   concurrencyLimit: screenshotConcurrencyLimit,
   run: async (payload, io, ctx) => {
-    console.log(payload.url, payload.uuid);
+    console.log('start', payload.url, payload.uuid);
     const result = await io.waitForRequest<ScreenshotResponse>(
       `screenshotone-${payload.uuid}`,
       async (url) => {
@@ -105,7 +105,6 @@ export const takeScreenshotJob = client.defineJob({
             image_quality: 100,
             block_banners_by_heuristics: "true",
             delay: 5,
-            wait_until:'load',
             block_ads: "true",
             block_chats: "true",
             block_cookie_banners: "true",
@@ -132,12 +131,12 @@ export const takeScreenshotJob = client.defineJob({
 client.defineJob({
   id: "refresh-all-imgs",
   name: "refresh images",
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: invokeTrigger(),
   run: async () => {
     const res = await db.query.producthunt.findMany({
       where: eq(producthunt.webp, false),
-      limit: 1
+      limit: 20,
     });
     res.forEach(async (item) => {
       await takeScreenshotJob.invoke(`refreshing-imgs-${item.uuid}`, {
