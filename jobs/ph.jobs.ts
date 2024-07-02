@@ -106,7 +106,6 @@ export const takeScreenshotJob = client.defineJob({
             image_quality: 100,
             block_banners_by_heuristics: "true",
             delay: 5,
-            timeout: 60,
             wait_until:'load',
             block_ads: "true",
             block_chats: "true",
