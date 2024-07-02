@@ -20,7 +20,7 @@ export default function ProductDetailPage(props: {
           <span className="w-3 h-3 rounded-full bg-green-400"></span>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 border-t-0 w-full h-screen overflow-auto  border-gray-200 dark:border-gray-600 border">
-          <img loading="lazy" src={`https://shot.huntscreens.com/${product?.uuid}.png`}></img>
+          <img loading="lazy" src={`https://shot.huntscreens.com/${product?.uuid}.webp`}></img>
         </div>
       </div>
       <div className="md:w-[500px] hidden md:flex flex-col pb-10  border rounded-lg my-10 border-r-0 rounded-r-none shadow-sm">
