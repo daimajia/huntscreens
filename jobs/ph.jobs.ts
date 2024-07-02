@@ -98,7 +98,6 @@ export const takeScreenshotJob = client.defineJob({
             webhook_url: url,
             storage_return_location: "true",
             full_page: "true",
-            full_page_scroll: 'true',
             viewport_width: 1920,
             viewport_height: 1080,
             device_scale_factor: 1,
@@ -127,6 +126,25 @@ export const takeScreenshotJob = client.defineJob({
       payload: payload,
       result: result.store
     };
+  }
+});
+
+client.defineJob({
+  id: "refresh-all-imgs",
+  name: "refresh images",
+  version: "0.0.1",
+  trigger: invokeTrigger(),
+  run: async () => {
+    const res = await db.query.producthunt.findMany({
+      where: eq(producthunt.webp, false),
+      limit: 1
+    });
+    res.forEach(async (item) => {
+      await takeScreenshotJob.invoke(`refreshing-imgs-${item.uuid}`, {
+        url: item.website || "",
+        uuid: item.uuid || ""
+      })
+    })
   }
 });
 
