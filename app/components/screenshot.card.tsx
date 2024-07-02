@@ -25,7 +25,9 @@ export default function MiniScreenshotCard(props: {
             </div>
           </div>
           <div>
-            <UpVote voteCount={props.producthunt.votesCount || 0} />
+            <Link target="__blank" href={props.producthunt.url || ""}>
+              <UpVote voteCount={props.producthunt.votesCount || 0} />
+            </Link>
           </div>
         </div>
       </div>
