@@ -102,7 +102,7 @@ export const takeScreenshotJob = client.defineJob({
             viewport_width: 1920,
             viewport_height: 1080,
             device_scale_factor: 1,
-            format: "png",
+            format: "webp",
             image_quality: 100,
             block_banners_by_heuristics: "true",
             delay: 5,
@@ -122,7 +122,7 @@ export const takeScreenshotJob = client.defineJob({
     );
     if(result.store.location) {
       console.log('updating:', payload.url);
-      await db.update(producthunt).set({s3: true}).where(eq(producthunt.uuid, payload.uuid));
+      await db.update(producthunt).set({webp: true}).where(eq(producthunt.uuid, payload.uuid));
     }
     return {
       payload: payload,

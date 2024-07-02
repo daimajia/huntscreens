@@ -35,6 +35,7 @@ export const producthunt = pgTable('producthunt', {
   featuredAt: timestamp("featuredAt", { mode: "string" }),
   uuid: uuid('uuid').defaultRandom(),
   s3: boolean('s3').default(false),
+  webp: boolean('webp').default(false),
   added_at: timestamp('added_at').defaultNow(),
   commentCount: integer("comment_count").default(0)
 });
