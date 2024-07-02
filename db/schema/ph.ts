@@ -1,4 +1,4 @@
-import { boolean, integer, json, pgTable, serial, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { boolean, index, integer, json, pgTable, serial, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 type Thumbnail = {
   type: string,
@@ -38,6 +38,12 @@ export const producthunt = pgTable('producthunt', {
   webp: boolean('webp').default(false),
   added_at: timestamp('added_at').defaultNow(),
   commentCount: integer("comment_count").default(0)
+}, (table) => {
+  return {
+    addedAtIndex: index('added_at_index').on(table.added_at),
+    voteCountIndex: index('vote_count_index').on(table.votesCount),
+    featureAtIndex: index('featured_at_index').on(table.featuredAt)
+  }
 });
 
 export type Producthunt = typeof producthunt.$inferSelect;
