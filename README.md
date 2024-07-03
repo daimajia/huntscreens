@@ -99,8 +99,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 
 
-## Next
-* [ ] YC companies
+## What's Next?
+* [ ] screenshot YC companies
 
-Submit issues or [leave a comment on my twitter](https://twitter.com/daimajia/status/1808315790720180516) if you have any idea!
+You can view all the dev plan on [this Kanban](https://github.com/users/daimajia/projects/4/views/1).
+
+Any idea or bugs? [Submit issues](https://github.com/daimajia/huntscreens/issues) or [leave a comment on my twitter](https://twitter.com/daimajia/status/1808315790720180516) !
 
