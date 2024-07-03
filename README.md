@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [HuntScreens.com](https://huntscreens.com)
+
+The best way to explore the ProductHunt. Capture every new featured product!
+
+![](https://shot.huntscreens.com/huntscreens.com.png)
+
+#### Background story
+
+I felt that browsing ProductHunt wasn't very intuitive, so I quickly made a small project using NextJs. It takes screenshots of each new project on ProductHunt, so now I can quickly browse through them every day and easily see if there's anything interesting to me without having to read a lot of text and click around.
 
 ## Getting Started
 
-First, run the development server:
+### Tech stacks
+
+- [Next.js](https://nextjs.org/docs) 
+- [Shadcn](https://ui.shadcn.com/)  UI framework based on Tailwind.
+
+- [Supabase](https://supabase.com/) Managed postgres databse.
+- [Logto.io](https://logto.io/) Fully open sourced Auth solution.
+- [Triggerdev v2.0](https://trigger.dev/docs/documentation/introduction) Background jobs.
+- [Resend](https://resend.com/) Email service.
+- [ScreenshotOne](https://screenshotone.com/) Screenshot Api.
+
+Before deploy, make sure you know all the services or tools above clearly. It may take some time.
+
+### Env Variables
+
+```sh
+# setup trigger api key and endpoint url.
+# https://trigger.dev/
+
+TRIGGER_API_KEY=
+TRIGGER_API_URL=
+NEXT_PUBLIC_TRIGGER_PUBLIC_API_KEY=
+
+# setup Producthunt API access token
+# https://api.producthunt.com/v2/docs
+
+PH_ACCESS_TOKEN=
+
+# setup postgres database url.
+# https://supabase.com
+
+DATABASE_URL=
+
+# setup screenshot one api.
+# !remember to setup s3 extension on ScreenshotOne.
+# https://screenshotone.com/
+
+SCREENSHOTONE_ACCESS_KEY=
+SCREENSHOTONE_SIGNED_KEY=
+
+# setup resend email service api
+# https://resend.com
+
+RESEND_KEY=
+RESEND_AUDIENCE_ID=
+
+
+# cloudflare r2 endpoint url.
+
+NEXT_PUBLIC_CLOUDFLARE_R2=
+
+# setup Logto user authentication
+# https://logto.io
+
+LOGTO_APPID=
+LOGTO_APP_SECRET=
+LOGTO_BASE_URL=
+LOGTO_COOKIE_SECRET=
+LOGTO_ENDPOINT=
+```
+
+After Env vars, generate and migrate the database table:
+
+```
+pnpm db:generate
+pnpm db:migrate
+```
+
+after that, run the dev server.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm i
+pnpm run dev
+```
+
+open another terminal, run the trigger service.
+
+```
+pnpm triggerdev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
