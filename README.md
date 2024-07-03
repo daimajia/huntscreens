@@ -15,7 +15,7 @@ One day, I felt that browsing ProductHunt wasn't very intuitive, so I quickly ma
 - [Next.js](https://nextjs.org/docs) 
 - [Shadcn](https://ui.shadcn.com/)  UI framework based on Tailwind.
 
-- [Supabase](https://supabase.com/) Managed postgres databse.
+- [Supabase](https://supabase.com/) Managed postgres database.
 - [Drizzle](https://orm.drizzle.team/docs/overview) Database ORM.
 - [Logto.io](https://logto.io/) Fully open sourced Auth solution.
 - [Triggerdev v2.0](https://trigger.dev/docs/documentation/introduction) Background jobs.
