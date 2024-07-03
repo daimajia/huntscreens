@@ -1,12 +1,12 @@
-# [HuntScreens.com](https://huntscreens.com)
+# [HuntScreens.com](https://huntscreens.com?ref=github)
 
 The best way to explore the ProductHunt. Capture every new featured product!
 
-![](https://shot.huntscreens.com/huntscreens.com.png)
+[![](https://shot.huntscreens.com/huntscreens.com.png)](https://huntscreens.com?ref=github)
 
 #### Background story
 
-I felt that browsing ProductHunt wasn't very intuitive, so I quickly made a small project using NextJs. It takes screenshots of each new project on ProductHunt, so now I can quickly browse through them every day and easily see if there's anything interesting to me without having to read a lot of text and click around.
+One day, I felt that browsing ProductHunt wasn't very intuitive, so I quickly made a small project using NextJs. It takes screenshots of each new project on ProductHunt, so now I can quickly browse through them every day and easily see if there's anything interesting to me without having to read a lot of text and click around.
 
 ## Getting Started
 
@@ -16,12 +16,16 @@ I felt that browsing ProductHunt wasn't very intuitive, so I quickly made a smal
 - [Shadcn](https://ui.shadcn.com/)  UI framework based on Tailwind.
 
 - [Supabase](https://supabase.com/) Managed postgres databse.
+- [Drizzle](https://orm.drizzle.team/docs/overview) Database ORM.
 - [Logto.io](https://logto.io/) Fully open sourced Auth solution.
 - [Triggerdev v2.0](https://trigger.dev/docs/documentation/introduction) Background jobs.
 - [Resend](https://resend.com/) Email service.
 - [ScreenshotOne](https://screenshotone.com/) Screenshot Api.
+- [Cloudflare R2](https://developers.cloudflare.com/r2/) Image storage.
+- [Umami](https://umami.is/) Website Analytics
+- [Koyeb](https://www.koyeb.com/) Paas Service. 
 
-Before deploy, make sure you know all the services or tools above clearly. It may take some time.
+Before deployment, make sure you know all the services or tools above clearly. It may take some time.
 
 ### Env Variables
 
@@ -94,4 +98,9 @@ pnpm triggerdev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
+
+## Next
+* [ ] YC companies
+
+Submit issues or [leave a comment on my twitter](https://twitter.com/daimajia/status/1808315790720180516) if you have any idea!
 
