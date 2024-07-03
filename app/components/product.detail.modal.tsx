@@ -78,7 +78,7 @@ export default function ProductDetailModal(props: {
           </div>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 border-t-0 w-full h-screen overflow-auto  border-gray-200 dark:border-gray-600 border">
-          <img loading="lazy" src={`https://shot.huntscreens.com/${product?.uuid}.webp`}></img>
+          <img loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`}></img>
         </div>
       </div>
       <div className="md:w-[500px] hidden md:flex flex-col pb-10 my-10 border rounded-lg border-r-0 rounded-r-none shadow-sm">

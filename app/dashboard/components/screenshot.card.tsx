@@ -10,7 +10,7 @@ export default function ManageScreenshotCard(props: {
 
   const handleResubmit = async (data: FormData) => {
     'use server';
-    await takeScreenshotJob.invoke({url: data.get('website')?.toString()!, uuid: data.get('uuid')?.toString()!})
+    await takeScreenshotJob.invoke({ url: data.get('website')?.toString()!, uuid: data.get('uuid')?.toString()! })
   };
 
   return <>
@@ -18,7 +18,7 @@ export default function ManageScreenshotCard(props: {
       <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
         <div>
           <Link href={`/p/${props.producthunt.id}`}>
-            <img loading="lazy"  className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-muted border" src={`https://shot.huntscreens.com/${props.producthunt.uuid}.webp` || ""}></img>
+            <img loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-muted border" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${props.producthunt.uuid}.webp` || ""}></img>
           </Link>
         </div>
         <div className="flex flex-row gap-5 items-center">
