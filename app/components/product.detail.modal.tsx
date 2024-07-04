@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, SquareArrowOutUpRight } from "lucide-react";
 import useSWR from "swr";
 import { ProductDetailData } from "../types/api.types";
 import DetailSkeleton from "../skeletons/detail.skeleton";
@@ -62,6 +62,13 @@ export default function ProductDetailModal(props: {
             <span className="w-3 h-3 rounded-full bg-green-400"></span>
           </div>
           <div className="flex flex-row gap-2">
+            <div className="md:hidden">
+              <Link href={product.website || ""} target="__blank">
+                <Button size={"icon"} variant={"ghost"} className="rounded-full">
+                  <SquareArrowOutUpRight color="gray" className=" w-5 h-5" />
+                </Button>
+              </Link>
+            </div>
             {isLoading &&
               <Spiner className="mr-5" />
             }
