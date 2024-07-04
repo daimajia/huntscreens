@@ -82,6 +82,20 @@ pnpm db:generate
 pnpm db:migrate
 ```
 
+after migration, run the following sql at supabase or from any postgres client, to create table view:
+
+```sql
+
+create view
+  sortedphs as
+select
+  row_number() over (order by added_at desc) as row_no,
+  *
+from
+  producthunt;
+
+```
+
 after that, run the dev server.
 
 ```bash
