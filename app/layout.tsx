@@ -4,8 +4,8 @@ import Umami from './thridparties/umami'
 import { ThemeProvider } from './components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'Screenshots for Hunters!',
-  description: 'The best way to browse ProductHunt!',
+  title: 'HuntScreens - Best way to explore Products!',
+  description: 'The best way to browse ProductHunt! Take screenshots of each project on ProductHunt!',
 }
 
 export default function RootLayout({
