@@ -6,7 +6,11 @@ import { MetadataRoute } from 'next'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const phs = await db.query.producthunt.findMany({
     where: eq(producthunt.webp, true),
-    orderBy: [desc(producthunt.added_at)]
+    orderBy: [desc(producthunt.added_at)],
+    columns: {
+      id: true,
+      added_at: true
+    }
   });
   return [
     {
@@ -15,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...phs.map((ph) => ({
       url: `https://huntscreens.com/p/${ph.id}`,
-      lastModified: ph.added_at?.toISOString(),
+      lastModified: ph.added_at?.toISOString() || new Date(),
     }))
   ]
 }
