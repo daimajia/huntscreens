@@ -61,7 +61,7 @@ export default function ProductDetailModal(props: {
             <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
             <span className="w-3 h-3 rounded-full bg-green-400"></span>
           </div>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 items-center justify-center">
             <div className="md:hidden">
               <Link href={product.website || ""} target="__blank">
                 <Button size={"icon"} variant={"ghost"} className="rounded-full">
