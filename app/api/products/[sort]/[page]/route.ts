@@ -14,7 +14,7 @@ export async function GET(request: Request, context: { params: Params }) {
   assert(context.params.page >= 0);
   const data = await db.query.producthunt.findMany({
     where: eq(producthunt.webp, true),
-    orderBy: [context.params.sort === "time" ? desc(producthunt.id) : desc(producthunt.votesCount)],
+    orderBy: [context.params.sort === "time" ? desc(producthunt.added_at) : desc(producthunt.votesCount)],
     limit: 30,
     offset: (context.params.page - 1) * 30
   })

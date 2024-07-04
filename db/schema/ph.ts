@@ -1,4 +1,5 @@
-import { boolean, index, integer, json, pgTable, serial, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+import { boolean, index, integer, json, pgTable, pgView, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 type Thumbnail = {
   type: string,
@@ -45,5 +46,10 @@ export const producthunt = pgTable('producthunt', {
     featureAtIndex: index('featured_at_index').on(table.featuredAt)
   }
 });
+
+export const sortedProducthunts = pgView("sortedphs", {
+  id: serial('id').primaryKey(),
+  row_no: integer("row_no").notNull()
+}).as(sql`SELECT ROW_NUMBER() OVER (order by added_at DESC) as row_no, id from producthunt order by added_at DESC`);
 
 export type Producthunt = typeof producthunt.$inferSelect;
