@@ -32,6 +32,7 @@ export const producthunt = pgTable('producthunt', {
   thumbnail: json('thumbnail').$type<Thumbnail>(),
   cursor: text('cursor'),
   topics: json('topics').$type<Topic>(),
+  tags: text('tags').array().default(sql`'{}'::text[]`),
   createdAt: timestamp("createdAt", { mode: "string" }),
   featuredAt: timestamp("featuredAt", { mode: "string" }),
   uuid: uuid('uuid').defaultRandom(),

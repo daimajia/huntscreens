@@ -170,6 +170,8 @@ client.defineJob({
           const resp = await fetch(element.node.website);
           element.node.website = prettyURL(resp.url);
         }
+        
+        element.node.tags = element.node.topics?.nodes.flatMap(topic => topic.name) || [];
 
         await db.insert(producthunt).values(element.node).onConflictDoNothing();
 
