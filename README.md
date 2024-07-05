@@ -20,10 +20,11 @@ One day, I felt that browsing ProductHunt wasn't very intuitive, so I quickly ma
 - [Logto.io](https://logto.io/) Fully open sourced Auth solution.
 - [Triggerdev v2.0](https://trigger.dev/docs/documentation/introduction) Background jobs.
 - [Resend](https://resend.com/) Email service.
+- [React Email](https://react.email/) Write emails without pain.
 - [ScreenshotOne](https://screenshotone.com/) Screenshot Api.
 - [Cloudflare R2](https://developers.cloudflare.com/r2/) Image storage.
 - [Umami](https://umami.is/) Website Analytics
-- [Koyeb](https://www.koyeb.com/) Paas Service. 
+- [Koyeb](https://www.koyeb.com/) Paas Service.
 
 Before deployment, make sure you know all the services or tools above clearly. It may take some time.
 
@@ -77,7 +78,7 @@ LOGTO_ENDPOINT=
 
 After Env vars, generate and migrate the database table:
 
-```
+```bash
 pnpm db:generate
 pnpm db:migrate
 ```
@@ -105,12 +106,17 @@ pnpm run dev
 
 open another terminal, run the trigger service.
 
-```
+```bash
 pnpm triggerdev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+If you want to create email template, open a new terminal, and run:
 
+```bash
+pnpm email dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
 ## What's Next?
