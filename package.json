@@ -12,7 +12,8 @@
     "triggerdev": "pnpm dlx @trigger.dev/cli@latest dev",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@logto/next": "^3.3.1",
