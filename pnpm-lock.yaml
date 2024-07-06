@@ -115,7 +115,7 @@ dependencies:
     version: 3.4.0
   screenshotone-api-sdk:
     specifier: ^1.1.10
-    version: 1.1.10
+    version: 1.1.10(encoding@0.1.13)
   swr:
     specifier: ^2.2.5
     version: 2.2.5(react@18.2.0)
@@ -166,6 +166,9 @@ devDependencies:
   drizzle-kit:
     specifier: ^0.21.4
     version: 0.21.4
+  encoding:
+    specifier: ^0.1.13
+    version: 0.1.13
   eslint:
     specifier: ^8
     version: 8.52.0
@@ -4657,10 +4660,10 @@ packages:
     hasBin: true
     dev: false
 
-  /cross-fetch@4.0.0:
+  /cross-fetch@4.0.0(encoding@0.1.13):
     resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
     dependencies:
-      node-fetch: 2.7.0
+      node-fetch: 2.7.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -5012,6 +5015,11 @@ packages:
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
+
+  /encoding@0.1.13:
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    dependencies:
+      iconv-lite: 0.6.3
 
   /engine.io-client@6.5.4:
     resolution: {integrity: sha512-GeZeeRjpD2qf49cZQ0Wvh/8NJNfeXkXXcoGh+F77oEAgo9gUHwT1fCRxSNU+YEEaysOJTnsFHmM5oAcPy4ntvQ==}
@@ -6169,7 +6177,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
-    dev: true
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -6981,7 +6988,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /node-fetch@2.7.0:
+  /node-fetch@2.7.0(encoding@0.1.13):
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -6990,6 +6997,7 @@ packages:
       encoding:
         optional: true
     dependencies:
+      encoding: 0.1.13
       whatwg-url: 5.0.0
     dev: false
 
@@ -7939,7 +7947,6 @@ packages:
 
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
-    dev: true
 
   /saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
@@ -7962,12 +7969,12 @@ packages:
       ajv-keywords: 3.5.2(ajv@6.12.6)
     dev: false
 
-  /screenshotone-api-sdk@1.1.10:
+  /screenshotone-api-sdk@1.1.10(encoding@0.1.13):
     resolution: {integrity: sha512-M9nCOw4KLZ1h9Hl3OxgLvM6frIPe5Eg114C8lUPe6MA5X3YKiUqM5jdCSQEZlpZsa23JYZao57ZXgS5UPFB36w==}
     dependencies:
       '@peculiar/webcrypto': 1.5.0
       big.js: 6.2.1
-      cross-fetch: 4.0.0
+      cross-fetch: 4.0.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
     dev: false

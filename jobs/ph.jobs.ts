@@ -1,4 +1,4 @@
-import { intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
+import { eventTrigger, intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
 import { fetchPHPosts, fetchVoteCount } from "@/lib/producthunt";
 import { producthunt } from "@/db/schema/ph";
@@ -6,8 +6,9 @@ import { db } from "@/db/db";
 import { v4 as uuidv4 } from 'uuid';
 import { prettyURL } from "@/lib/utils/url";
 import { z } from 'zod';
-import { eq, gte } from "drizzle-orm";
+import { desc, eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
+import { getUsage } from "@/lib/screenshotone";
 
 type ScreenshotResponse = {
   store: {
@@ -17,7 +18,7 @@ type ScreenshotResponse = {
 
 const screenshotConcurrencyLimit = client.defineConcurrencyLimit({
   id: `screenshotone-limit`,
-  limit: 1, 
+  limit: 40,
 });
 
 const producthuntConcurrencyLimit = client.defineConcurrencyLimit({
@@ -67,11 +68,12 @@ client.defineJob({
   } 
 })
 
-export const takeScreenshotJob = client.defineJob({
+client.defineJob({
   id: "take ph screenshot",
   name: "take ph screenshot",
-  version: "0.0.2",
-  trigger: invokeTrigger({
+  version: "0.0.3",
+  trigger: eventTrigger({
+    name: "take.screenshot",
     schema: z.object({
       url: z.string().url(),
       uuid: z.string()
@@ -79,9 +81,14 @@ export const takeScreenshotJob = client.defineJob({
   }),
   concurrencyLimit: screenshotConcurrencyLimit,
   run: async (payload, io, ctx) => {
-    console.log('start', payload.url, payload.uuid);
+    const screenshotoneUsage = await getUsage();
+    await io.logger.info('Screenshotone Usage', {screenshotoneUsage});
+    if(screenshotoneUsage.available === 0) {
+      throw Error("no screenshotone quota");
+    }
+
     const result = await io.waitForRequest<ScreenshotResponse>(
-      `screenshotone-${payload.uuid}`,
+      `call-screenshotone-${payload.uuid}`,
       async (url) => {
         await fetch(`https://api.screenshotone.com/take`, {
           method: "post",
@@ -118,8 +125,10 @@ export const takeScreenshotJob = client.defineJob({
       }
     );
     if(result.store.location) {
-      console.log('updating:', payload.url);
+      await io.logger.info('Screenshot successfully:', { payload });
       await db.update(producthunt).set({webp: true}).where(eq(producthunt.uuid, payload.uuid));
+    }else{
+      await io.logger.error('got screenshot error', result);
     }
     return {
       payload: payload,
@@ -131,18 +140,22 @@ export const takeScreenshotJob = client.defineJob({
 client.defineJob({
   id: "refresh-all-imgs",
   name: "refresh images",
-  version: "0.0.2",
+  version: "0.0.3",
   trigger: invokeTrigger(),
-  run: async () => {
+  run: async (payload, io, ctx) => {
     const res = await db.query.producthunt.findMany({
       where: eq(producthunt.webp, false),
       limit: 20,
+      orderBy: desc(producthunt.added_at)
     });
     res.forEach(async (item) => {
-      await takeScreenshotJob.invoke(`refreshing-imgs-${item.uuid}`, {
-        url: item.website || "",
-        uuid: item.uuid || ""
-      })
+      await io.sendEvent(`refreshing-imgs-${item.uuid}`, {
+        name: "take.screenshot",
+        payload: {
+          url: item.website || "",
+          uuid: item.uuid || ""
+        }
+      });
     })
   }
 });
@@ -150,7 +163,7 @@ client.defineJob({
 client.defineJob({
   id: "fetch-ph-newest",
   name: "fetch ph newest",
-  version: "0.0.2",
+  version: "0.0.3",
   trigger: intervalTrigger({
     seconds: 7200
   }),
@@ -176,9 +189,12 @@ client.defineJob({
         await db.insert(producthunt).values(element.node).onConflictDoNothing();
 
         if(element.node.website){
-          await takeScreenshotJob.invoke("screenshot-"  + element.node.uuid, {
-            url: element.node.website,
-            uuid: element.node.uuid
+          await io.sendEvent("screenshot-"  + element.node.uuid, {
+            name: "take.screenshot",
+            payload: {
+              url: element.node.website,
+              uuid: element.node.uuid
+            }
           })
         }
       }

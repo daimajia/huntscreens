@@ -2,7 +2,7 @@ import UpVote from "@/app/components/upvote";
 import { Producthunt } from "@/db/schema/ph";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { takeScreenshotJob } from "@/jobs";
+// import { takeScreenshotJob } from "@/jobs";
 
 export default function ManageScreenshotCard(props: {
   producthunt: Producthunt

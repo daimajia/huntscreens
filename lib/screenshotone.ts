@@ -2,6 +2,27 @@ import assert from "assert";
 import * as screenshotone from "screenshotone-api-sdk";
 
 
+type ScreenshotUsage = {
+  total:number,
+  available:number,
+  used:number,
+  concurrency:{
+    limit:number,
+    remaining:number,
+    reset:number
+  }
+}
+
+
+export async function getUsage():Promise<ScreenshotUsage> {
+  const res = await fetch('https://api.screenshotone.com/usage?access_key=' + process.env.SCREENSHOTONE_ACCESS_KEY);
+  if(res.ok) {
+    return res.json();
+  }else{
+    throw Error("error to fetch screenshotone usage api");
+  }
+}
+
 export function takeScreenshot(url: string, s3_path? : string) {
   const access_key = process.env.SCREENSHOTONE_ACCESS_KEY;
   const secret_key = process.env.SCREENSHOTONE_SIGNED_KEY;
