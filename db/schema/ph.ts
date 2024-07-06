@@ -51,6 +51,17 @@ export const producthunt = pgTable('producthunt', {
 export const sortedProducthunts = pgView("sortedphs", {
   id: serial('id').primaryKey(),
   row_no: integer("row_no").notNull()
-}).as(sql`SELECT ROW_NUMBER() OVER (order by added_at DESC) as row_no, id from producthunt order by added_at DESC`);
+}).as(sql`
+    select
+    row_number() over (
+      order by
+        added_at desc
+    ) as row_no,
+      *
+    from
+      producthunt
+    where
+      webp = true;
+  `);
 
 export type Producthunt = typeof producthunt.$inferSelect;

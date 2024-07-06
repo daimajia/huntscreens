@@ -90,10 +90,15 @@ after migration, run the following sql at supabase or from any postgres client, 
 create view
   sortedphs as
 select
-  row_number() over (order by added_at desc) as row_no,
+  row_number() over (
+    order by
+      added_at desc
+  ) as row_no,
   *
 from
-  producthunt;
+  producthunt
+where
+  webp = true;
 
 ```
 
