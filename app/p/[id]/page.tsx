@@ -5,6 +5,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 import { producthunt } from "@/db/schema/ph";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { id: number }
@@ -18,6 +19,7 @@ export async function generateMetadata(
     where: eq(producthunt.id, params.id)
   });
   return {
+    metadataBase: new URL("https://huntscreens.com"),
     title: `${product?.name} - ${product?.tagline}`,
     description: product?.description,
     publisher: "huntscreens.com",
@@ -43,8 +45,10 @@ export async function generateMetadata(
 export default async function ProductDetail({ params }: Props) {
   const sort = cookies().get('sort')?.value || 'time';
   const data = await queryProduct(params.id, sort === "time" ? "time" : "vote");
+  if (!data.product) {
+    return notFound();
+  }
   return <>
     {data && data.product && <ProductDetailPage product={data.product} next={data.next} prev={data.prev} />}
-    {(!data || !data.product) && <>Not exist</>}
   </>
 }

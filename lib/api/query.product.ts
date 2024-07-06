@@ -4,11 +4,19 @@ import { Producthunt, producthunt, sortedProducthunts } from "@/db/schema/ph";
 import { eq, inArray } from "drizzle-orm";
 
 export default async function queryProduct(id: number, sort: SortBy): Promise<ProductDetailData> {
-  const item = await db.select()
+  const product = await db.select()
   .from(sortedProducthunts)
   .where(eq(sortedProducthunts.id, id));
 
-  const currentRowNo = item[0].row_no;
+  if(product.length === 0) {
+    return {
+      product: null,
+      next: null,
+      prev: null
+    }
+  }
+
+  const currentRowNo = product[0].row_no;
 
   const related = await db.select().from(sortedProducthunts).where(
     inArray(sortedProducthunts.row_no, [currentRowNo - 1, currentRowNo, currentRowNo + 1])
