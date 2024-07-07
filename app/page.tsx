@@ -8,6 +8,7 @@ import { count, gte } from 'drizzle-orm';
 import { Suspense, cache } from 'react';
 import SortDropdown from './components/sort.dropdown';
 import Loading from './components/list.loading';
+import PHTopics from './components/navs/ph.navs';
 
 export const revalidate = 0;
 
@@ -17,10 +18,14 @@ const getTodayCount = cache(async () => {
 });
 
 export default async function Home({ searchParams }: {
-  searchParams: { sort?: "time" | "vote" },
+  searchParams: {
+    sort?: "time" | "vote",
+    topic?: string
+  },
 }) {
   const todayCount = await getTodayCount();
   const sort = searchParams.sort || "time";
+  const topic = searchParams.topic || "All";
   return (
     <>
       <Header />
@@ -40,15 +45,19 @@ export default async function Home({ searchParams }: {
                 {todayCount} added today
               </span>
             </div>
-
-            <div>
-              <SortDropdown selectedValue={sort} />
-            </div>
           </div>
         </div>
-        <Suspense fallback={<Loading />}>
-          <ProductLists sortBy={sort} />
-        </Suspense>
+
+        <div className='flex flex-col gap-3 w-full'>
+          <div className='w-full px-5 flex flex-col gap-2 md:gap-0 md:flex-row md:justify-between items-center'>
+            <PHTopics selectedTag={topic} />
+            <SortDropdown selectedValue={sort} />
+          </div>
+
+          <Suspense fallback={<Loading />}>
+            <ProductLists sortBy={sort} topic={topic} />
+          </Suspense>
+        </div>
       </main>
     </>
   )

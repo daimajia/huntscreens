@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Producthunt } from "@/db/schema/ph";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ export default function ProductDetailPage(props: {
           <span className="w-3 h-3 rounded-full bg-green-400"></span>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 border-t-0 w-full h-screen overflow-auto  border-gray-200 dark:border-gray-600 border">
-          <img loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`}></img>
+          <img alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`}></img>
         </div>
       </div>
       <div className="md:w-[500px] hidden md:flex flex-col pb-10  border rounded-lg my-10 border-r-0 rounded-r-none shadow-sm">
@@ -31,7 +32,7 @@ export default function ProductDetailPage(props: {
 
         <div className="flex flex-col gap-4 items-center justify-center">
           <div className="flex flex-row gap-4 items-center  p-5 mt-10">
-            <img loading="lazy" src={product?.thumbnail?.url} className=" w-20 rounded-lg" />
+            <img alt={`${product.name} thumbnail`} loading="lazy" src={product?.thumbnail?.url} className=" w-20 rounded-lg" />
             <div className="flex flex-col gap-1 ">
               <h1 className=" text-xl font-semibold">{product?.name}</h1>
               <h2 className="  text-slate-600">

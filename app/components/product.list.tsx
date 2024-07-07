@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button";
 
 const ProductPageBlock = (props: {
   sortBy: 'time' | 'vote',
+  topic: string,
   pageNum: number
 }) => {
   const fetcher = (url: string) => fetch(url).then(r => r.json())
-  const { data: products, isLoading } = useSWR<Producthunt[]>(`/api/products/${props.sortBy}/${props.pageNum}`, fetcher);
+  const { data: products, isLoading } = useSWR<Producthunt[]>(`/api/products/${props.topic}/${props.sortBy}/${props.pageNum}`, fetcher);
 
   return <>
     {isLoading && <Loading />}
@@ -28,13 +29,15 @@ const ProductPageBlock = (props: {
 
 export default function ProductLists(props: {
   sortBy?: "time" | "vote",
+  topic?: string,
   fallbackData?: any
 }) {
   const [page, setPage] = useState(1);
   const sort = props.sortBy || "time";
+  const topic = props.topic || "All";
   const infPages = [];
   for (let i = 0; i < page; i++) {
-    infPages.push(<ProductPageBlock key={i} sortBy={sort} pageNum={i + 1} />)
+    infPages.push(<ProductPageBlock topic={topic} key={i} sortBy={sort} pageNum={i + 1} />)
   }
   return <>
     <SWRConfig>

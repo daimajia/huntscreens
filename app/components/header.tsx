@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { ModeToggle } from "./theme-button";
 import { logtoConfig } from "../logto";
@@ -13,8 +14,8 @@ export default async function Header() {
     <div className="flex flex-row justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
       <div className="bg-dark-logo">
         <Link href="/">
-          <img loading="lazy" src="/logo.png" className="dark:hidden w-40"></img>
-          <img loading="lazy" src="/dark-logo.png" className="w-0 dark:w-40"></img>
+          <img alt="logo" loading="lazy" src="/logo.png" className="dark:hidden w-40"></img>
+          <img alt="dark logo" loading="lazy" src="/dark-logo.png" className="w-0 dark:w-40"></img>
         </Link>
       </div>
       <div className="flex flex-row gap-4 items-center justify-center">
