@@ -6,7 +6,6 @@ import SignIn from "./sign-in";
 import UserMenu from "./user.menu";
 import { Button } from "@/components/ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { GithubIcon, LucideGithub } from "lucide-react";
 
 export default async function Header() {
   const { isAuthenticated, userInfo } = await getLogtoContext(logtoConfig, { fetchUserInfo: true });

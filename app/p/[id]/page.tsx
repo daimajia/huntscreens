@@ -6,6 +6,7 @@ import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 import { producthunt } from "@/db/schema/ph";
 import { notFound } from "next/navigation";
+import Header from "@/app/components/header";
 
 type Props = {
   params: { id: number }
@@ -49,6 +50,7 @@ export default async function ProductDetail({ params }: Props) {
     return notFound();
   }
   return <>
+    <Header />
     {data && data.product && <ProductDetailPage product={data.product} next={data.next} prev={data.prev} />}
   </>
 }

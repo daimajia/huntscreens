@@ -13,7 +13,7 @@ export default function ProductDetailPage(props: {
   const product = props.product;
   return <>
     <div className="flex flex-row w-full">
-      <div className="w-full h-screen flex flex-col p-0 md:p-10">
+      <div className="w-full h-[calc(100vh-77px)] flex flex-col p-0 md:p-10">
         <div className="w-full h-11 rounded-t-lg bg-gray-200 dark:bg-gray-700  flex justify-start items-center space-x-1.5 px-3">
           <span className="w-3 h-3 rounded-full bg-red-400"></span>
           <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
