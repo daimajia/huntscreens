@@ -3,7 +3,7 @@ import { producthunt } from "@/db/schema/ph";
 import assert from "assert";
 import { eq, desc, and, arrayContains } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 type Params = {
   topic: string,
@@ -12,6 +12,7 @@ type Params = {
 }
 
 export async function GET(request: Request, context: { params: Params }) {
+  
   assert(context.params.page >= 0);
   const query = context.params.topic === "All" 
                 ? eq(producthunt.webp, true) : 
@@ -26,5 +27,6 @@ export async function GET(request: Request, context: { params: Params }) {
     offset: (context.params.page - 1) * 30
   })
   cookies().set('sort', context.params.sort);
+  cookies().set('topic', context.params.topic);
   return NextResponse.json(data);
 }

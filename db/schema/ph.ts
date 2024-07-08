@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { boolean, index, integer, json, pgTable, pgView, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 type Thumbnail = {
@@ -48,20 +48,15 @@ export const producthunt = pgTable('producthunt', {
   }
 });
 
-export const sortedProducthunts = pgView("sortedphs", {
-  id: serial('id').primaryKey(),
-  row_no: integer("row_no").notNull()
-}).as(sql`
-    select
-    row_number() over (
-      order by
-        added_at desc
-    ) as row_no,
-      *
-    from
-      producthunt
-    where
-      webp = true;
-  `);
+export const sortedphs = pgView('sortedphs').as(
+  (qb) => qb.select({
+    row_no: sql<number>`
+      row_number() over (order by added_at desc)
+    `.as('row_no'),
+    id: producthunt.id,
+    tags: producthunt.tags,
+    votesCount: producthunt.votesCount
+  }).from(producthunt).where(eq(producthunt.webp, true))
+)
 
 export type Producthunt = typeof producthunt.$inferSelect;

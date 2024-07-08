@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, SquareArrowOutUpRight } from "lucide-react";
 import useSWR from "swr";
+import { getCookie } from 'cookies-next';
 import { ProductDetailData } from "../types/api.types";
 import DetailSkeleton from "../skeletons/detail.skeleton";
 import { useEffect, useState } from "react";
@@ -19,7 +20,9 @@ export default function ProductDetailModal(props: {
 
   const [currentPid, setCurrentPid] = useState(props.productId);
   const [product, setCurrentProduct] = useState<Producthunt | null>(null);
-  const { data, isLoading } = useSWR<ProductDetailData>(`/api/product/${currentPid}`, fetcher);
+  const sort = getCookie("sort") || "time";
+  const topic = getCookie('topic') || "All";
+  const { data, isLoading } = useSWR<ProductDetailData>(`/api/product/${topic}/${sort}/${currentPid}`, fetcher);
 
   useEffect(() => {
     if (product) window.history.replaceState(null, '', `/p/${product.id}`);
