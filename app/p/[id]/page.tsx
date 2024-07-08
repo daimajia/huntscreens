@@ -45,7 +45,8 @@ export async function generateMetadata(
 
 export default async function ProductDetail({ params }: Props) {
   const sort = cookies().get('sort')?.value || 'time';
-  const data = await queryProduct(params.id, sort === "time" ? "time" : "vote");
+  const topic = cookies().get('topic')?.value || 'All';
+  const data = await queryProduct(params.id, sort === "time" ? "time" : "vote", topic);
   if (!data.product) {
     return notFound();
   }
