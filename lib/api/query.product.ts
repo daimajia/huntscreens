@@ -26,6 +26,14 @@ export default async function queryProduct(id: number, sort: SortBy, topic: stri
   )
 
   const result = await db.with(lagleadsub).select().from(lagleadsub).where(eq(lagleadsub.id, id));
+
+  if(result.length === 0){
+    return {
+      product: null,
+      next: null,
+      prev: null
+    }
+  }
   
   const prevRowNo = result[0].prev || 0;
   const nextRowNo = result[0].next || 0;
