@@ -55,6 +55,7 @@ client.defineJob({
           from: `HuntScreens Daily Digest <hello@huntscreens.com>`,
           react: <DailyDigestEmail producthunts={phs} contactId={contact.id} />
         });
+        await io.wait("wait 30 seconds", 10);
       }
     });
   }
