@@ -18,7 +18,7 @@ client.defineJob({
   }),
   run: async(payload, io, ctx) => {
     for(let i = payload.from_id; i <= payload.end_id; i++) {
-      await io.sendEvent("screenshot-yc", {
+      await io.sendEvent(`screenshot-yc-id-${i}`, {
         name: "screenshot.yc",
         payload: {
           id: i
