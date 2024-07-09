@@ -8,18 +8,7 @@ import { prettyURL } from "@/lib/utils/url";
 import { z } from 'zod';
 import { desc, eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
-import { getUsage } from "@/lib/screenshotone";
-
-type ScreenshotResponse = {
-  store: {
-    location: string;
-  }
-}
-
-const screenshotConcurrencyLimit = client.defineConcurrencyLimit({
-  id: `screenshotone-limit`,
-  limit: 40,
-});
+import { getScreenshotOneParams, getUsage, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
 
 const producthuntConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ph-limit`,
@@ -95,29 +84,7 @@ client.defineJob({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            access_key: process.env.SCREENSHOTONE_ACCESS_KEY,
-            url: payload.url,
-            store: "true",
-            storage_path: payload.uuid,
-            response_type: "json",
-            async: "true",
-            webhook_url: url,
-            storage_return_location: "true",
-            full_page: "true",
-            viewport_width: 1920,
-            viewport_height: 1080,
-            device_scale_factor: 1,
-            format: "webp",
-            image_quality: 100,
-            block_banners_by_heuristics: "true",
-            delay: 5,
-            block_ads: "true",
-            block_chats: "true",
-            block_cookie_banners: "true",
-            cache: "true",
-            cache_ttl: 2592000
-          }),
+          body: JSON.stringify(getScreenshotOneParams(payload.url, payload.uuid, url)),
         })
       },
       {

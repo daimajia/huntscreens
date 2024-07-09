@@ -1,5 +1,5 @@
 import { datetime } from "drizzle-orm/mysql-core";
-import { boolean, date, integer, pgTable, serial, text } from "drizzle-orm/pg-core";
+import { boolean, date, integer, pgTable, serial, text, uuid } from "drizzle-orm/pg-core";
 
 export type YC  = typeof yc.$inferSelect;
 
@@ -25,5 +25,7 @@ export const yc = pgTable('yc', {
   industries: text('industries').array(),
   regions: text('regions').array(),
   stage: text('stage'),
-  objectID: text('objectID')
+  objectID: text('objectID'),
+  uuid: uuid('uuid').defaultRandom().notNull(),
+  webp: boolean('webp').default(false)
 })

@@ -1,6 +1,43 @@
+import { client } from "@/trigger";
 import assert from "assert";
 import * as screenshotone from "screenshotone-api-sdk";
 
+export type ScreenshotResponse = {
+  store: {
+    location: string;
+  }
+}
+
+export const screenshotConcurrencyLimit = client.defineConcurrencyLimit({
+  id: `screenshotone-limit`,
+  limit: 40,
+});
+
+export function getScreenshotOneParams(website: string, uuid: string, webhook_url: string) {
+  return {
+    access_key: process.env.SCREENSHOTONE_ACCESS_KEY,
+    url: website,
+    store: "true",
+    storage_path: uuid,
+    response_type: "json",
+    async: "true",
+    webhook_url: webhook_url,
+    storage_return_location: "true",
+    full_page: "true",
+    viewport_width: 1920,
+    viewport_height: 1080,
+    device_scale_factor: 1,
+    format: "webp",
+    image_quality: 100,
+    block_banners_by_heuristics: "true",
+    delay: 5,
+    block_ads: "true",
+    block_chats: "true",
+    block_cookie_banners: "true",
+    cache: "true",
+    cache_ttl: 2592000
+  }
+}
 
 type ScreenshotUsage = {
   total:number,
