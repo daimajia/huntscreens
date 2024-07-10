@@ -13,14 +13,8 @@ export default function ProductLists(props: {
   const sort = props.sortBy || "time";
   const topic = props.topic || "All";
   const infPages = [];
-  const [endpoint_url, setEndpointUrl] = useState(`/api/products/${props.topic}/${props.sortBy}/1`)
-
-  useEffect(() => {
-    setEndpointUrl(`/api/products/${topic}/${sort}/${page}`);
-  }, [page, sort, topic]);
-
   for (let i = 0; i < page; i++) {
-    infPages.push(<ProductBlock cardType="ph" key={i} endpoint_url={endpoint_url} />)
+    infPages.push(<ProductBlock cardType="ph" key={i} endpoint_url={`/api/products/${topic}/${sort}/${i + 1}`} />)
   }
   return <>
     <SWRConfig>

@@ -10,15 +10,9 @@ export default function StartupList(props: {
   sortBy: StartupSortBy
 }) {
   const [page, setPage] = useState(1);
-  const [sort, setSort] = useState(props.sortBy);
   const infPages = [];
-  const [endpoint_url, setEndpointUrl] = useState(`/api/startups/yc/${sort}/1`)
-  useEffect(() => {
-    setEndpointUrl(`/api/startups/yc/${sort}/${page}`);
-  }, [page, sort]);
-
   for (let i = 0; i < page; i++) {
-    infPages.push(<ProductBlock key={i} cardType="startup" endpoint_url={endpoint_url} />);
+    infPages.push(<ProductBlock key={i} cardType="startup" endpoint_url={`/api/startups/yc/${props.sortBy}/${i + 1}`} />);
   }
   return <>
     <SWRConfig>
