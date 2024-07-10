@@ -1,14 +1,10 @@
-import Header from './components/header';
-import SubscribeButton from './components/subscribe.button';
-import ProductLists from './components/product.list';
 import { db } from '@/db/db';
 import { producthunt } from '@/db/schema/ph';
 import { subHours } from 'date-fns';
 import { count, gte } from 'drizzle-orm';
-import { Suspense, cache } from 'react';
-import SortDropdown from './components/sort.dropdown';
-import Loading from './components/list.loading';
-import PHTopics from './components/navs/ph.navs';
+import { cache } from 'react';
+import Header from '../components/header';
+import SubscribeButton from '../components/subscribe.button';
 
 export const revalidate = 0;
 
@@ -17,15 +13,12 @@ const getTodayCount = cache(async () => {
   return cnt[0].count;
 });
 
-export default async function Home({ searchParams }: {
-  searchParams: {
-    sort?: "time" | "vote",
-    topic?: string
-  },
+export default async function Home({
+  children,
+}: {
+  children: React.ReactNode
 }) {
   const todayCount = await getTodayCount();
-  const sort = searchParams.sort || "time";
-  const topic = searchParams.topic || "All";
   return (
     <>
       <Header />
@@ -48,16 +41,7 @@ export default async function Home({ searchParams }: {
           </div>
         </div>
 
-        <div className='flex flex-col gap-3 w-full'>
-          <div className='w-full px-5 flex flex-col gap-2 md:gap-0 md:flex-row md:justify-between items-center'>
-            <PHTopics selectedTag={topic} />
-            <SortDropdown selectedValue={sort} />
-          </div>
-
-          <Suspense fallback={<Loading />}>
-            <ProductLists sortBy={sort} topic={topic} />
-          </Suspense>
-        </div>
+        {children}
       </main>
     </>
   )
