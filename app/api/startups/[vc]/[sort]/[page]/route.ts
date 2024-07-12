@@ -2,6 +2,7 @@ import { db } from "@/db/db"
 import { yc } from "@/db/schema"
 import assert from "assert"
 import { and, desc, eq, isNotNull, ne } from "drizzle-orm"
+import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 type Params = {
@@ -23,5 +24,7 @@ export async function GET(request: Request, context: {params: Params}) {
     limit: 30,
     offset: (context.params.page - 1) * 30
   });
+  cookies().set("vc", context.params.vc);
+  cookies().set('yc.sort', context.params.sort);
   return NextResponse.json(data);
 }

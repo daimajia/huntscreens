@@ -1,5 +1,7 @@
+import { sql, eq } from "drizzle-orm";
 import { datetime } from "drizzle-orm/mysql-core";
-import { boolean, date, integer, pgTable, serial, text, uuid } from "drizzle-orm/pg-core";
+import { boolean, date, integer, pgTable, pgView, serial, text, uuid } from "drizzle-orm/pg-core";
+import { producthunt } from "./ph";
 
 export type YC  = typeof yc.$inferSelect;
 
@@ -29,3 +31,13 @@ export const yc = pgTable('yc', {
   uuid: uuid('uuid').defaultRandom().notNull(),
   webp: boolean('webp').default(false)
 })
+
+export const sortedyc = pgView('sortedyc').as(
+  (qb) => qb.select({
+    row_no: sql<number>`
+      row_number() over (order by launched_at desc)
+    `.as('row_no'),
+    id: yc.id,
+    team_size: yc.team_size
+  }).from(yc).where(eq(yc.webp, true))
+)

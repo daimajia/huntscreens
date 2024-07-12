@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SWRConfig } from "swr";
-import ProductBlock from "../../components/product.block";
+import ProductBlock from "../../../components/product.block";
 
 export type StartupSortBy = "time" | "teamsize";
 
@@ -12,7 +12,7 @@ export default function StartupList(props: {
   const [page, setPage] = useState(1);
   const infPages = [];
   for (let i = 0; i < page; i++) {
-    infPages.push(<ProductBlock key={i} cardType="startup" endpoint_url={`/api/startups/yc/${props.sortBy}/${i + 1}`} />);
+    infPages.push(<ProductBlock key={i} cardType="yc" endpoint_url={`/api/startups/yc/${props.sortBy}/${i + 1}`} />);
   }
   return <>
     <SWRConfig>

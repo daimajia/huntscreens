@@ -1,28 +1,27 @@
-import { ProductDetailData, SortBy } from "@/app/types/api.types";
+import { StartupSortBy } from "@/app/(cats)/startup/yc/components/startup.list";
 import { db } from "@/db/db";
-import { Producthunt, producthunt, sortedphs } from "@/db/schema/ph";
-import { arrayContains, eq, inArray, sql } from "drizzle-orm";
+import { sortedyc, yc, YC } from "@/db/schema";
+import { sql, eq, inArray } from "drizzle-orm";
 
-export default async function queryProduct(id: number, sort: SortBy, topic: string): Promise<ProductDetailData<Producthunt>> {
+export default async function query_yc(id: number, sort: StartupSortBy) {
   let setupLagLead = db.select({
-    row_no: sortedphs.row_no,
-    id: sortedphs.id,
+    row_no: sortedyc.row_no,
+    id: sortedyc.id,
     prev: sql`lag(row_no, 1) over (order by row_no)`.mapWith(Number).as('prev'),
     next: sql`lead(row_no, 1) over (order by row_no)`.mapWith(Number).as('next'),
-  }).from(sortedphs)
+  }).from(sortedyc)
 
-  if(sort === 'vote') {
+  if(sort === 'teamsize') {
     setupLagLead = db.select({
-      row_no: sortedphs.row_no,
-      id: sortedphs.id,
-      votesCount: sortedphs.votesCount,
-      prev: sql`lag(row_no, 1) over (order by "votesCount" desc)`.mapWith(Number).as('prev'),
-      next: sql`lead(row_no, 1) over (order by "votesCount" desc)`.mapWith(Number).as('next'),
-    }).from(sortedphs);
+      row_no: sortedyc.row_no,
+      id: sortedyc.id,
+      prev: sql`lag(row_no, 1) over (order by "team_size" desc)`.mapWith(Number).as('prev'),
+      next: sql`lead(row_no, 1) over (order by "team_size" desc)`.mapWith(Number).as('next'),
+    }).from(sortedyc);
   }
 
   const lagleadsub = db.$with("lagleadsub").as(
-    topic === "All" ? setupLagLead : setupLagLead.where(arrayContains(sortedphs.tags, [topic]))
+    setupLagLead
   )
 
   const result = await db.with(lagleadsub).select().from(lagleadsub).where(eq(lagleadsub.id, id));
@@ -41,15 +40,15 @@ export default async function queryProduct(id: number, sort: SortBy, topic: stri
   const hasPrevData = prevRowNo !== 0;
   const hasNextData = nextRowNo !== 0;
 
-  const prevAndNext = await db.select().from(sortedphs).where(inArray(sortedphs.row_no, [prevRowNo, nextRowNo]));
+  const prevAndNext = await db.select().from(sortedyc).where(inArray(sortedyc.row_no, [prevRowNo, nextRowNo]));
   const prevAndNextIndexed:  {[id:number] : {id: number}} = {};
   prevAndNext.forEach((p) => prevAndNextIndexed[p.row_no] = p);
   const prevId = hasPrevData ? prevAndNextIndexed[prevRowNo].id : 0;
   const nextId = hasNextData ? prevAndNextIndexed[nextRowNo].id : 0;
 
-  const datapack = await db.select().from(producthunt).where(inArray(producthunt.id, [prevId, id, nextId]))
+  const datapack = await db.select().from(yc).where(inArray(yc.id, [prevId, id, nextId]))
 
-  let indexedData: {[id:number] : Producthunt} = {};
+  let indexedData: {[id:number] : YC} = {};
   datapack.forEach((p) => indexedData[p.id] = p)
   
   return {

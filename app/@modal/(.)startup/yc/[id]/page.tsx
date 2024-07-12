@@ -12,7 +12,7 @@ export default function ShowModal({ params: { id: pid } }: { params: { id: strin
       <DrawerPortal>
         <DrawerOverlay className="fixed inset-0 bg-gray-500/10" />
         <DrawerContent className="flex flex-col rounded-t-[10px] md:rounded-t-none h-[80%] md:h-[100%] mt-24 fixed bottom-0 left-0 right-0" aria-describedby={"product"}>
-          <ProductDetailModal productId={pid} productType="ph" />
+          <ProductDetailModal productId={pid} productType="yc" />
         </DrawerContent>
       </DrawerPortal>
     </Drawer>

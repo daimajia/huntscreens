@@ -2,7 +2,7 @@
 import Link from "next/link";
 import UpVote from "./upvote";
 
-export type CardType = "ph" | "startup";
+export type CardType = "ph" | "yc";
 
 type BaseMiniCardMetadata = {
   id: number,
@@ -26,10 +26,11 @@ interface MiniCardProps<T extends CardType> {
 }
 
 export default function MiniScreenshotCard<T extends CardType>({ cardType, product }: MiniCardProps<T>) {
+  const page_url = cardType === "ph" ? `/p/${product.id}` : `/startup/yc/${product.id}`;
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
-        <Link passHref key={product.id} href={`/p/${product.id}`}>
+        <Link passHref key={product.id} href={page_url}>
           <img alt="" loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product.uuid}.webp` || ""}></img>
         </Link>
       </div>
