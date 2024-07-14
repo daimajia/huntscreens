@@ -1,17 +1,18 @@
 import useSWR from "swr";
 import Loading from "../../components/list.loading";
-import MiniScreenshotCard, { CardType, MiniCardMetadata } from "../../components/screenshot.card";
+import MiniScreenshotCard, { MiniCardMetadata } from "../../components/screenshot.card";
 import { Producthunt, YC } from "@/db/schema";
+import { ProductTypes } from "@/app/types/product.types";
 
 type ApiReturnDataType<T> = T extends "ph" ? Producthunt : YC;
 
-interface PageBlockProps<T extends CardType> {
+interface PageBlockProps<T extends ProductTypes> {
   cardType: T,
   endpoint_url: string,
 }
 
 
-export default function ProductBlock<T extends CardType>({ cardType, endpoint_url }: PageBlockProps<T>) {
+export default function ProductBlock<T extends ProductTypes>({ cardType, endpoint_url }: PageBlockProps<T>) {
   const fetcher = (url: string) => fetch(url).then(r => r.json());
   const { data, isLoading } = useSWR<ApiReturnDataType<T>[]>(endpoint_url, fetcher);
 
