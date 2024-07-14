@@ -52,6 +52,6 @@ export default async function ProductDetail({ params }: Props) {
   }
   return <>
     <Header />
-    {data && data.product && <ProductDetailPage product={data.product} next={data.next} prev={data.prev} />}
+    {data && data.product && <ProductDetailPage productType="ph" product={data.product} next={data.next} prev={data.prev} />}
   </>
 }

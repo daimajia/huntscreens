@@ -13,12 +13,10 @@ import { Producthunt } from "@/db/schema/ph";
 import GoBack from "./back.button";
 import Spiner from "../skeletons/loading.spin";
 import { YC } from "@/db/schema";
+import { ProductModel, ProductTypes } from "../types/product.types";
 
-type ProductType = "ph" | "yc";
 
-type ProductModel<T extends ProductType> = T extends "ph" ? Producthunt : YC;
-
-export default function ProductDetailModal<T extends ProductType>(props: {
+export default function ProductDetailModal<T extends ProductTypes>(props: {
   productType: T,
   productId: string,
 }) {

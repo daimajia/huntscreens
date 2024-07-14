@@ -12,13 +12,35 @@ export default async function Header() {
   const { isAuthenticated, userInfo } = await getLogtoContext(logtoConfig, { fetchUserInfo: true });
   return <>
     <div className="flex flex-row justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
+
+      <div className="hidden md:flex flex-row justify-center items-center gap-4 text-sm ">
+        <Link href="/" className="hover:underline flex flex-row gap-1 justify-center items-center">
+          <img src="/phlogo.png" alt="" className=" h-10" />
+          ProductHunt
+        </Link>
+        <Link href="/startup/yc" className="hover:underline flex flex-row gap-1 justify-center items-center">
+          <img src="/yc.png" alt="" className="h-7 rounded-full" />
+          Y Combinator
+        </Link>
+      </div>
+
       <div className="bg-dark-logo">
         <Link href="/">
           <img alt="logo" loading="lazy" src="/logo.png" className="dark:hidden w-40"></img>
           <img alt="dark logo" loading="lazy" src="/dark-logo.png" className="w-0 dark:w-40"></img>
         </Link>
       </div>
-      <div className="flex flex-row gap-4 items-center justify-center">
+
+      <div className="md:hidden flex flex-row gap-3">
+        <Link href="/" className="hover:underline flex flex-row gap-1 justify-center items-center">
+          <img src="/phlogo.png" alt="" className=" h-10" />
+        </Link>
+        <Link href="/startup/yc" className="hover:underline flex flex-row gap-1 justify-center items-center">
+          <img src="/yc.png" alt="" className="h-7 rounded-full" />
+        </Link>
+      </div>
+
+      <div className="hidden md:flex flex-row gap-4 items-center justify-center">
         {isAuthenticated && userInfo && <>
           <UserMenu picture={userInfo.picture} name={userInfo.name} />
         </>}

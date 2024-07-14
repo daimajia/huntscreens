@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import UpVote from "./upvote";
+import { ProductTypes } from "../types/product.types";
 
-export type CardType = "ph" | "yc";
 
 type BaseMiniCardMetadata = {
   id: number,
@@ -20,12 +20,12 @@ type ProductHuntMetadata = {
 
 export type MiniCardMetadata<T> = T extends 'ph' ? BaseMiniCardMetadata & ProductHuntMetadata : BaseMiniCardMetadata;
 
-interface MiniCardProps<T extends CardType> {
+interface MiniCardProps<T extends ProductTypes> {
   cardType: T,
   product: MiniCardMetadata<T>
 }
 
-export default function MiniScreenshotCard<T extends CardType>({ cardType, product }: MiniCardProps<T>) {
+export default function MiniScreenshotCard<T extends ProductTypes>({ cardType, product }: MiniCardProps<T>) {
   const page_url = cardType === "ph" ? `/p/${product.id}` : `/startup/yc/${product.id}`;
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>

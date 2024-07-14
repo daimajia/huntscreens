@@ -5,13 +5,18 @@ import { Button } from "@/components/ui/button";
 import GoBack from "./back.button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { YC } from "@/db/schema";
+import { ProductModel, ProductTypes } from "../types/product.types";
 
-export default function ProductDetailPage(props: {
-  product: Producthunt,
-  next?: Producthunt | null,
-  prev?: Producthunt | null
+export default function ProductDetailPage<T extends ProductTypes>(props: {
+  productType: T,
+  product: ProductModel<T>,
+  next?: ProductModel<T> | null,
+  prev?: ProductModel<T> | null
 }) {
   const product = props.product;
+  const thumbnail = props.productType === "ph" ? (props.product as Producthunt).thumbnail?.url : (props.product as YC).thumb_url;
+  const linkPrefix = props.productType === "ph" ? "/p" : "/startup/yc";
   return <>
     <div className="flex flex-row w-full">
       <div className="w-full h-[calc(100vh-77px)] flex flex-col p-0 md:p-10">
@@ -32,7 +37,7 @@ export default function ProductDetailPage(props: {
 
         <div className="flex flex-col gap-4 items-center justify-center">
           <div className="flex flex-row gap-4 items-center  p-5 mt-10">
-            <img alt={`${product.name} thumbnail`} loading="lazy" src={product?.thumbnail?.url} className=" w-20 rounded-lg" />
+            <img alt={`${product.name} thumbnail`} loading="lazy" src={thumbnail || ""} className=" w-20 rounded-lg" />
             <div className="flex flex-col gap-1 ">
               <h1 className=" text-xl font-semibold">{product?.name}</h1>
               <h2 className="  text-slate-600">
@@ -52,9 +57,11 @@ export default function ProductDetailPage(props: {
         </div>
 
         <div className="p-5 gap-2 flex flex-wrap">
-          {product.topics?.nodes.map((item) =>
-            <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
-          )}
+          {props.productType === "ph" &&
+            (product as Producthunt).topics?.nodes.map((item) =>
+              <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
+            )
+          }
         </div>
 
         <div className="p-5 flex flex-row gap-5">
@@ -63,16 +70,19 @@ export default function ProductDetailPage(props: {
               GET IT
             </Button>
           </Link>
-          <Link className="w-full h-full" href={product?.url || ""} target="__blank">
-            <Button className="w-full border" variant={"outline"}>VOTE ({product?.votesCount || ""})</Button>
-          </Link>
+          {props.productType === "ph" &&
+            <Link className="w-full h-full" href={(props.product as Producthunt)?.url || ""} target="__blank">
+              <Button className="w-full border" variant={"outline"}>VOTE ({(props.product as Producthunt)?.votesCount || ""})</Button>
+            </Link>
+          }
+
         </div>
 
 
         <div className="flex h-full items-end px-5">
           <div className="w-full flex flex-row justify-start gap-4">
             {props.prev &&
-              <Link href={`/p/${props.prev.id}`} shallow={true}>
+              <Link href={`${linkPrefix}/${props.prev.id}`} shallow={true}>
                 <Button variant={"outline"} size={"icon"} className="rounded-full" >
                   <ChevronLeft strokeWidth={1.5} color="gray" className=" w-6 h-6" />
                 </Button>
@@ -80,7 +90,7 @@ export default function ProductDetailPage(props: {
             }
 
             {props.next &&
-              <Link href={`/p/${props.next.id}`} shallow={true}>
+              <Link href={`${linkPrefix}/${props.next.id}`} shallow={true}>
                 <Button variant={"outline"} size={"icon"} className="rounded-full" >
                   <ChevronRight strokeWidth={1.5} color="gray" className=" w-6 h-6" />
                 </Button>
