@@ -21,9 +21,9 @@ export default async function Header() {
   }
 
   return <>
-    <div className="flex flex-row justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
+    <div className="grid grid-cols-2 md:grid-cols-3 justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
 
-      <div className="hidden md:flex flex-row justify-center items-center gap-4 text-sm ">
+      <div className="hidden md:flex flex-row items-center gap-4 text-sm ">
         <Link href="/" className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/phlogo.png" alt="" className=" h-10" />
           ProductHunt
@@ -34,14 +34,14 @@ export default async function Header() {
         </Link>
       </div>
 
-      <div className="bg-dark-logo">
+      <div className="bg-dark-logo flex justify-center">
         <Link href="/">
           <img alt="logo" loading="lazy" src="/logo.png" className="dark:hidden w-40"></img>
           <img alt="dark logo" loading="lazy" src="/dark-logo.png" className="w-0 dark:w-40"></img>
         </Link>
       </div>
 
-      <div className="md:hidden flex flex-row gap-3">
+      <div className="md:hidden flex flex-row gap-3 justify-end">
         <Link href="/" className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/phlogo.png" alt="" className=" h-10" />
         </Link>
@@ -50,7 +50,7 @@ export default async function Header() {
         </Link>
       </div>
 
-      <div className="hidden md:flex flex-row gap-4 items-center justify-center">
+      <div className="hidden md:flex flex-row gap-4 items-center justify-end">
         {response.isAuthenticated &&
           <UserMenu picture={response.claims?.picture} name={response.claims?.name} />}
 
