@@ -14,6 +14,8 @@ import GoBack from "./back.button";
 import Spiner from "../skeletons/loading.spin";
 import { YC } from "@/db/schema";
 import { ProductModel, ProductTypes } from "../types/product.types";
+import { PersonIcon } from "@radix-ui/react-icons";
+import YCInfoBadge from "./yc.info.badge";
 
 
 export default function ProductDetailModal<T extends ProductTypes>(props: {
@@ -123,14 +125,16 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
             <GoBack className=" border-t-0 rounded-t-none hover:border-t" />
           </div>
 
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <div className="flex flex-row gap-4 items-center  p-5 mt-10">
-              {props.productType === "yc" && (product as YC).thumb_url &&
-                <img alt={`${product.name} thumbnail`} loading="lazy" src={(product as YC).thumb_url || ""} className=" w-20 rounded-lg border" />
-              }
-              {props.productType === "ph" &&
-                <img alt={`${product.name} thumbnail`} loading="lazy" src={(product as Producthunt)?.thumbnail?.url} className=" w-20 rounded-lg" />
-              }
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-row gap-4 items-center p-5 mt-10 justify-start">
+              <div>
+                {props.productType === "yc" && (product as YC).thumb_url &&
+                  <img alt={`${product.name} thumbnail`} loading="lazy" src={(product as YC).thumb_url || ""} className=" w-20 rounded-lg border" />
+                }
+                {props.productType === "ph" &&
+                  <img alt={`${product.name} thumbnail`} loading="lazy" src={(product as Producthunt)?.thumbnail?.url} className=" w-20 rounded-lg border" />
+                }
+              </div>
               <div className="flex flex-col gap-1 ">
                 <h1 className=" text-xl font-semibold">{product?.name}</h1>
                 <h2 className="  text-slate-600">
@@ -142,21 +146,24 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
           <div>
           </div>
 
+          {props.productType === "yc" && <>
+            <YCInfoBadge yc={(product as YC)}/>
+          </>}
 
-          <div className="px-5 h-60 overflow-auto">
+
+          <div className="px-5 overflow-auto min-h-10">
             <h2 className="text-slate-500">
               {product?.description}
             </h2>
           </div>
 
-          {props.productType === "ph" &&
+          {product && props.productType === "ph" &&
             <div className="p-5 gap-2 flex flex-wrap">
-              {product && props.productType === "ph" && (product as Producthunt).topics?.nodes.map((item) =>
+              {(product as Producthunt).topics?.nodes.map((item) =>
                 <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
               )}
             </div>
           }
-
 
           <div className="p-5 flex gap-5 grow">
             <Link className="w-full" href={product?.website || ""} target="__blank">

@@ -35,7 +35,6 @@ export default function DetailSkeleton() {
 
       <div className="p-5 flex flex-row gap-5">
         <Button className="w-full h-full" variant={"outline"}>GET IT</Button>
-        <Button className="w-full border" variant={"outline"}>VOTE</Button>
       </div>
 
     </div>

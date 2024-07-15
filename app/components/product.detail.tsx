@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { YC } from "@/db/schema";
 import { ProductModel, ProductTypes } from "../types/product.types";
+import YCInfoBadge from "./yc.info.badge";
 
 export default function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -49,6 +50,10 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
         <div>
         </div>
 
+        {props.productType === "yc" && <>
+          <YCInfoBadge yc={(product as YC)} />
+        </>}
+
 
         <div className="px-5">
           <h2 className="text-slate-500">
@@ -56,14 +61,14 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
           </h2>
         </div>
 
-        <div className="p-5 gap-2 flex flex-wrap">
-          {props.productType === "ph" &&
-            (product as Producthunt).topics?.nodes.map((item) =>
+        {product && props.productType === "ph" &&
+          <div className="p-5 gap-2 flex flex-wrap">
+            {(product as Producthunt).topics?.nodes.map((item) =>
               <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
-            )
-          }
-        </div>
-
+            )}
+          </div>
+        }
+        
         <div className="p-5 flex flex-row gap-5">
           <Link className="w-full h-full" href={product?.website || ""} target="__blank">
             <Button className="w-full h-full" variant={"outline"}>
