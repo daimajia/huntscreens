@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@logto/next':
-    specifier: ^3.3.1
-    version: 3.3.1(next@13.5.6)
+    specifier: ^3.3.4
+    version: 3.3.4(next@13.5.6)
   '@radix-ui/react-avatar':
     specifier: ^1.1.0
     version: 1.1.0(@types/react-dom@18.2.14)(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)
@@ -1429,36 +1429,36 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  /@logto/client@2.7.0:
-    resolution: {integrity: sha512-8mj+757befwQJ4M0h4f3fQwUB1lruDkyLNTyRFOQxFfDMN1QeD70B4nMnz6iTX/Gi09HnIskmj9MHWrbvH6LSQ==}
+  /@logto/client@2.7.3:
+    resolution: {integrity: sha512-slHm+fPU1vwfKDUNmKmsBHZhWv6pH1DW0p87axy2PEy6/B3aKKQRpW1J/6AhR3JyYfcElmykFGlvr5yT1HZGYQ==}
     dependencies:
-      '@logto/js': 4.1.3
+      '@logto/js': 4.1.5
       '@silverhand/essentials': 2.9.1
       camelcase-keys: 7.0.2
-      jose: 5.4.1
+      jose: 5.6.3
     dev: false
 
-  /@logto/js@4.1.3:
-    resolution: {integrity: sha512-TIYrVSyD0c1mEt3fU9NKbWRTblujs3Ct/DYgNzBLzE/tmSVvwM6Z4JxnwZZ3xyfnL8dC4UfSQRlc2gjSMzKUGw==}
+  /@logto/js@4.1.5:
+    resolution: {integrity: sha512-3TpF2WKsjFyt0Gqc4gYV3zGbfDp+2cI6Tp2lGvptCfOn6K4sUccjve3jU7IKih1aACS5CdvlEybg5B7rvcbvpg==}
     dependencies:
       '@silverhand/essentials': 2.9.1
       camelcase-keys: 7.0.2
     dev: false
 
-  /@logto/next@3.3.1(next@13.5.6):
-    resolution: {integrity: sha512-g/PHN7nsFN25G6HdsRM7Dk0fv1DxZ5/x86GxF+13/BBUKkqlyzhAwtdnPnFUqRwXRmd+vRfkiru7v9DBE5AIsQ==}
+  /@logto/next@3.3.4(next@13.5.6):
+    resolution: {integrity: sha512-vZy0L5Hf5KtiByDa3AB3yIRDhehWzZUjknftQmelDRoY96bfLfDCA88GaRT2WjabwEDJUbYjoQOdYfnpxzUQqw==}
     peerDependencies:
       next: '>=12'
     dependencies:
       '@edge-runtime/cookies': 4.1.1
-      '@logto/node': 2.5.2
+      '@logto/node': 2.5.5
       next: 13.5.6(@babel/core@7.24.5)(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@logto/node@2.5.2:
-    resolution: {integrity: sha512-O6+OCS+kUBVMjVJaG1e7XE5G+uZ+AfiKAAx3TWeY4n8JDTYy1A0MEm4oD506/pyiNwMgAGy4IEQ7Ad8UmZYHRQ==}
+  /@logto/node@2.5.5:
+    resolution: {integrity: sha512-dWKcqYj304Mj98I67MPO6z0XCCr59KLyIBRJ6Rbd13Imrxes58idN2u2M7pmGmqnU6Ssp+K7S0qkaNyd0epb9A==}
     dependencies:
-      '@logto/client': 2.7.0
+      '@logto/client': 2.7.3
       '@silverhand/essentials': 2.9.1
       js-base64: 3.7.7
     dev: false
@@ -6489,8 +6489,8 @@ packages:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
 
-  /jose@5.4.1:
-    resolution: {integrity: sha512-U6QajmpV/nhL9SyfAewo000fkiRQ+Yd2H0lBxJJ9apjpOgkOcBQJWOrMo917lxLptdS/n/o/xPzMkXhF46K8hQ==}
+  /jose@5.6.3:
+    resolution: {integrity: sha512-1Jh//hEEwMhNYPDDLwXHa2ePWgWiFNNUadVmguAAw2IJ6sj9mNxV5tGXJNqlMkJAybF6Lgw1mISDxTePP/187g==}
     dev: false
 
   /jotai@2.8.3(@types/react@18.2.31)(react@18.2.0):
