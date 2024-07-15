@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 export default async function SubscribeButton() {
   let response: LogtoContext;
   try {
-    response = await getLogtoContext(logtoConfig, { fetchUserInfo: true });
+    response = await getLogtoContext(logtoConfig);
   } catch (e) {
     console.log(e);
     response = {

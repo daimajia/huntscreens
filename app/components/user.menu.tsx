@@ -14,7 +14,7 @@ export default async function UserMenu(props: {
       <DropdownMenuTrigger asChild>
         <Avatar className="w-8 h-8">
           <AvatarImage src={props.picture || ""} alt="avatar" />
-          <AvatarFallback>{props.name}</AvatarFallback>
+          <AvatarFallback>{props.name || "Hi"}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

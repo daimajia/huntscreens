@@ -11,7 +11,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 export default async function Header() {
   let response: LogtoContext;
   try {
-    response = await getLogtoContext(logtoConfig, { fetchUserInfo: true });
+    response = await getLogtoContext(logtoConfig);
   } catch (e) {
     console.log(e);
     response = {
@@ -51,13 +51,14 @@ export default async function Header() {
       </div>
 
       <div className="hidden md:flex flex-row gap-4 items-center justify-center">
-        {response.isAuthenticated && response.userInfo && <>
-          <UserMenu picture={response.userInfo.picture} name={response.userInfo.name} />
-        </>}
+        {response.isAuthenticated &&
+          <UserMenu picture={response.claims?.picture} name={response.claims?.name} />}
+
         {!response.isAuthenticated && <SignIn onSignIn={async () => {
           'use server';
           await signIn(logtoConfig);
         }} />}
+
         <Link title="Looking forward to your contribution.❤️" href="https://github.com/daimajia/huntscreens" target="__blank">
           <Button size={"icon"} variant={"outline"}>
             <GitHubLogoIcon className="w-4 h-4" />

@@ -7,7 +7,9 @@ import { addAudience } from '@/lib/resend';
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   await handleSignIn(logtoConfig, searchParams);
-  const {userInfo} = await getLogtoContext(logtoConfig, {fetchUserInfo: true});
-  await addAudience(userInfo?.email!);
+  const response = await getLogtoContext(logtoConfig);
+  if(response.claims?.email){
+    await addAudience(response.claims.email);
+  }
   redirect('/');
 }
