@@ -1,11 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { logtoConfig } from "../logto";
-import { CheckCircledIcon, CheckIcon, EnvelopeOpenIcon, FaceIcon, HeartFilledIcon } from "@radix-ui/react-icons";
-import { getLogtoContext, signIn } from "@logto/next/server-actions";
+import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
+import { getLogtoContext, LogtoContext, signIn } from "@logto/next/server-actions";
 import { Badge } from "@/components/ui/badge";
 
 export default async function SubscribeButton() {
-  const { isAuthenticated } = await getLogtoContext(logtoConfig);
+  let response: LogtoContext;
+  try {
+    response = await getLogtoContext(logtoConfig, { fetchUserInfo: true });
+  } catch (e) {
+    console.log(e);
+    response = {
+      isAuthenticated: false,
+      userInfo: undefined
+    }
+  }
+
 
   const handleLoginAction = async () => {
     'use server';
@@ -13,7 +23,7 @@ export default async function SubscribeButton() {
   }
 
   return <>
-    {isAuthenticated ? <>
+    {response.isAuthenticated ? <>
       <div className=" text-slate-500 flex flex-row gap-1 items-center justify-center">
         <Badge variant="outline" className=" border-green-500 text-green-700">
           subscribed
