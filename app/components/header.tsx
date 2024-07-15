@@ -2,14 +2,24 @@
 import Link from "next/link";
 import { ModeToggle } from "./theme-button";
 import { logtoConfig } from "../logto";
-import { getLogtoContext, signIn } from "@logto/next/server-actions";
+import { getLogtoContext, LogtoContext, signIn } from "@logto/next/server-actions";
 import SignIn from "./sign-in";
 import UserMenu from "./user.menu";
 import { Button } from "@/components/ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export default async function Header() {
-  const { isAuthenticated, userInfo } = await getLogtoContext(logtoConfig, { fetchUserInfo: true });
+  let response: LogtoContext;
+  try {
+    response = await getLogtoContext(logtoConfig, { fetchUserInfo: true });
+  } catch (e) {
+    console.log(e);
+    response = {
+      isAuthenticated: false,
+      userInfo: undefined
+    }
+  }
+
   return <>
     <div className="flex flex-row justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
 
@@ -41,10 +51,10 @@ export default async function Header() {
       </div>
 
       <div className="hidden md:flex flex-row gap-4 items-center justify-center">
-        {isAuthenticated && userInfo && <>
-          <UserMenu picture={userInfo.picture} name={userInfo.name} />
+        {response.isAuthenticated && response.userInfo && <>
+          <UserMenu picture={response.userInfo.picture} name={response.userInfo.name} />
         </>}
-        {!isAuthenticated && <SignIn onSignIn={async () => {
+        {!response.isAuthenticated && <SignIn onSignIn={async () => {
           'use server';
           await signIn(logtoConfig);
         }} />}
