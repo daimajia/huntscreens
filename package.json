@@ -81,7 +81,7 @@
     "tailwindcss-dotted-background": "^1.1.0",
     "tsx": "^4.11.2",
     "typescript": "^5",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.3"
   },
   "trigger.dev": {
     "endpointId": "huntscreen2-Nd8p"
