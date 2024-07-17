@@ -2,10 +2,29 @@ import { parse } from 'node-html-parser';
 import { removeUrlParams } from './utils/url';
 import assert from 'assert';
 import { Taaft } from '@/db/schema';
+import { subDays, subHours } from 'date-fns';
 
 type PuppeteerResp = {
   error: boolean,
   source: string | null
+}
+
+function convertToDate(dateString: string): Date {
+  const now = new Date();
+  
+  if (dateString.includes('Added')) {
+    const [, amount, unit] = dateString.split(' ');
+    if (unit === 'ago') {
+      if (amount.endsWith('h')) {
+        const hours = parseInt(amount);
+        return subHours(now, hours);
+      } else if (amount.endsWith('d')) {
+        const days = parseInt(amount);
+        return subDays(now, days);
+      }
+    }
+  }
+  return new Date(dateString);
 }
 
 function removeTAAFTQueryParams(url?: string | null) {
@@ -78,6 +97,7 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
   assert(product_link);
   assert(description && description.length > 0);
   assert(launch);
+
   return {
     name: product_name,
     tagline: product_tagline,
@@ -87,7 +107,7 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
     description: description,
     savesCount: Number(product_saves || 0),
     commentsCount: Number(comments || 0),
-    added_at: new Date(launch).toUTCString(),
+    added_at: convertToDate(launch).toISOString(),
     screenshot: screenshot || null,
     related: related_products,
     pros: pros,
