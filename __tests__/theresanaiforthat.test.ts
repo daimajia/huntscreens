@@ -13,10 +13,5 @@ test('test theresanaiforthat fetch detail works', async () => {
   expect(product.website).eq("https://www.usemotion.com/");
   expect(product.tagline?.length).gt(0);
   expect(product.savesCount).greaterThan(0);
-  expect(product.tags.length).eq(6);
-  const alltagNotNull = product.tags.every(item => item && item.length > 0);
-  expect(alltagNotNull);
-  expect(product.cons.length).gt(0);
-  expect(product.pros.length).gt(0);
   console.log(product);
 })

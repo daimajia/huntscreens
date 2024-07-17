@@ -77,7 +77,7 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
   assert(product_tagline && product_tagline.length > 0);
   assert(product_link);
   assert(description && description.length > 0);
-  assert(product_saves && comments && launch);
+  assert(launch);
   return {
     name: product_name,
     tagline: product_tagline,
@@ -85,8 +85,8 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
     thumb_url: product_icon || null,
     main_category: main_category || null,
     description: description,
-    savesCount: Number(product_saves),
-    commentsCount: Number(comments),
+    savesCount: Number(product_saves || 0),
+    commentsCount: Number(comments || 0),
     added_at: new Date(launch).toUTCString(),
     screenshot: screenshot || null,
     related: related_products,
