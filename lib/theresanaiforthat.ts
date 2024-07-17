@@ -46,8 +46,8 @@ export async function fetchTAAFTLatest() {
       return {
         icon: icon?.attributes['src'],
         product_name: product_name,
-        product_link: product_link,
-        taaft_link: 'https://theresanaiforthat.com' + taaft_link?.attributes['href']
+        product_link: removeTAAFTQueryParams(product_link),
+        taaft_link: removeTAAFTQueryParams('https://theresanaiforthat.com' + taaft_link?.attributes['href'])
       }
     })
     return results;

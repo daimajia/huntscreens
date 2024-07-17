@@ -100,17 +100,21 @@ client.defineJob({
   trigger: intervalTrigger({
     seconds: 21600
   }),
-  concurrencyLimit:chromeRunLimitation,
   run: async (payload, io, ctx) => {
     io.runTask("fetch-taaft-task", async () => {
       const latest = await fetchTAAFTLatest();
       for(const product of latest){
-        await io.sendEvent(product.taaft_link, {
-          name: "taaft.detail",
-          payload: {
-            taaft_url: product.taaft_link
-          }
-        })
+        const exist = await db.query.taaft.findFirst({
+          where: eq(taaft.website, product.product_link)
+        });
+        if(!exist) {
+          await io.sendEvent(product.taaft_link, {
+            name: "taaft.detail",
+            payload: {
+              taaft_url: product.taaft_link
+            }
+          })
+        }
       }
       return latest;
     })
