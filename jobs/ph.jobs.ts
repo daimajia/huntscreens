@@ -49,11 +49,11 @@ client.defineJob({
       where: gte(producthunt.featuredAt, subDays(new Date(), 2).toUTCString()),
       limit: 100
     })
-    posts.forEach(async (post) => {
+    for(const post of posts) {
       await updateVoteData.invoke("update-vote-" + post.id, {
         id: post.id
       })
-    });
+    }
   } 
 })
 
@@ -115,7 +115,7 @@ client.defineJob({
       limit: 20,
       orderBy: desc(producthunt.added_at)
     });
-    res.forEach(async (item) => {
+    for(const item of res){
       await io.sendEvent(`refreshing-imgs-${item.uuid}`, {
         name: "take.screenshot",
         payload: {
@@ -123,7 +123,7 @@ client.defineJob({
           uuid: item.uuid || ""
         }
       });
-    })
+    }
   }
 });
 
@@ -137,8 +137,7 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     await io.logger.info('start fetch ph newest');
     const edges = await fetchPHPosts();
-    edges.forEach(async element => {
-
+    for(const element of edges){
       const product = await db.query.producthunt.findFirst({
         where: eq(producthunt.id, element.node.id)
       })
@@ -165,6 +164,6 @@ client.defineJob({
           })
         }
       }
-    });
+    }
   }
 });
