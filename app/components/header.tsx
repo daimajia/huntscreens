@@ -28,7 +28,7 @@ export default async function Header() {
           <img src="/phlogo.png" alt="" className=" h-10" />
           ProductHunt
         </Link>
-        <Link href="/startup/yc" className="hover:underline flex flex-row gap-1 justify-center items-center">
+        <Link href="/startup/yc?sort=teamsize" className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/yc.png" alt="" className="h-7 rounded-full" />
           Y Combinator
         </Link>
