@@ -101,7 +101,7 @@ client.defineJob({
     seconds: 21600
   }),
   run: async (payload, io, ctx) => {
-    io.runTask("fetch-taaft-task", async () => {
+    await io.runTask("fetch-taaft-task", async () => {
       const latest = await fetchTAAFTLatest();
       for(const product of latest){
         const exist = await db.query.taaft.findFirst({
