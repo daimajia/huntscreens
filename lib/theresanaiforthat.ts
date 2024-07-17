@@ -28,7 +28,7 @@ export async function fetchTAAFTLatest() {
         icon: icon?.attributes['src'],
         product_name: product_name,
         product_link: product_link,
-        taaft_link: 'https://theresanaiforthat.com/' + taaft_link?.attributes['href']
+        taaft_link: 'https://theresanaiforthat.com' + taaft_link?.attributes['href']
       }
     })
     return results;
@@ -70,7 +70,7 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
         icon: icon?.attributes['src'] || null,
         name: product_name || null,
         website: removeTAAFTQueryParams(product_link) || null,
-        taaft_url: removeTAAFTQueryParams('https://theresanaiforthat.com/' + taaft_link?.attributes['href']) || null
+        taaft_url: removeTAAFTQueryParams('https://theresanaiforthat.com' + taaft_link?.attributes['href']) || null
       }
   }) || [];
   assert(product_name && product_name.length > 0, `product_name is empty | null | undefined`);
