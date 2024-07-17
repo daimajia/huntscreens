@@ -4,7 +4,7 @@ import { fetchPHPosts, fetchVoteCount } from "@/lib/producthunt";
 import { producthunt } from "@/db/schema/ph";
 import { db } from "@/db/db";
 import { v4 as uuidv4 } from 'uuid';
-import { prettyURL } from "@/lib/utils/url";
+import { removeUrlParams } from "@/lib/utils/url";
 import { z } from 'zod';
 import { desc, eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
@@ -148,7 +148,7 @@ client.defineJob({
         
         if(element.node.website) {
           const resp = await fetch(element.node.website);
-          element.node.website = prettyURL(resp.url);
+          element.node.website = removeUrlParams(resp.url, 'ref');
         }
         
         element.node.tags = element.node.topics?.nodes.flatMap(topic => topic.name) || [];
