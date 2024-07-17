@@ -62,6 +62,7 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
   const json = await resp.json() as PuppeteerResp;
   if(json.error || !json.source) throw new Error('taaft puppeteer return error');
   const root = parse(json.source);
+  root.querySelector('div.description')?.querySelector('div.method')?.remove();
   const description = root.querySelector('div.description')?.innerText.trim();
   const product_name = root.querySelector('h1.title_inner')?.innerText;
   const product_tagline = root.querySelector('div#use_case')?.innerText;
