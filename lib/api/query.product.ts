@@ -7,8 +7,8 @@ export default async function queryProduct(id: number, sort: SortBy, topic: stri
   let setupLagLead = db.select({
     row_no: sortedphs.row_no,
     id: sortedphs.id,
-    prev: sql`lag(row_no, 1) over (order by row_no)`.mapWith(Number).as('prev'),
-    next: sql`lead(row_no, 1) over (order by row_no)`.mapWith(Number).as('next'),
+    prev: sql`lag(row_no, 1) over (order by date (added_at) desc, "votesCount" desc)`.mapWith(Number).as('prev'),
+    next: sql`lead(row_no, 1) over (order by date (added_at) desc, "votesCount" desc)`.mapWith(Number).as('next'),
   }).from(sortedphs)
 
   if(sort === 'vote') {
