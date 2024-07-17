@@ -1,7 +1,5 @@
 import { sql, eq } from "drizzle-orm";
-import { datetime } from "drizzle-orm/mysql-core";
 import { boolean, date, integer, pgTable, pgView, serial, text, uuid } from "drizzle-orm/pg-core";
-import { producthunt } from "./ph";
 
 export type YC  = typeof yc.$inferSelect;
 

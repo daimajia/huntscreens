@@ -1,5 +1,7 @@
 import { parse } from 'node-html-parser';
 import { removeUrlParams } from './utils/url';
+import assert from 'assert';
+import { Taaft } from '@/db/schema';
 
 type PuppeteerResp = {
   error: boolean,
@@ -34,14 +36,16 @@ export async function fetchTAAFTLatest() {
     throw new Error('taaft puppeteer return error');
   }
 }
+type TaaftApiType = Omit<Taaft, "id" | "webp" | "created_at" | "uuid">;
 
-export async function fetchProductDetails(url: string) {
+export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiType> {
   const resp = await fetch(`${process.env.PUPPETEER}/api/source?url=${url}`, {next: {revalidate: 3000}});
   const json = await resp.json() as PuppeteerResp;
   if(json.error || !json.source) throw new Error('taaft puppeteer return error');
   const root = parse(json.source);
   const description = root.querySelector('div.description')?.innerText.trim();
   const product_name = root.querySelector('h1.title_inner')?.innerText;
+  const product_tagline = root.querySelector('div#use_case')?.innerText;
   const product_icon = root.querySelector('img.taaft_icon')?.attributes['src'];
   const product_link = root.querySelector('a#ai_top_link')?.attributes['href'];
   const product_saves = root.querySelector('div.saves')?.innerText;
@@ -53,8 +57,8 @@ export async function fetchProductDetails(url: string) {
   const launch = root.querySelector('span.launch_date_top')?.innerText;
   const screenshot = root.querySelector('img.ai_image')?.attributes['src'];
   const faqs = root.querySelectorAll('div.faq-info').flatMap((item) => ({
-    question: item.querySelector('div.faq-info-title')?.innerText,
-    answer: item.querySelector('div.faq-info-description')?.innerText
+    question: item.querySelector('div.faq-info-title')?.innerText || null,
+    answer: item.querySelector('div.faq-info-description')?.innerText || null
   }))
   const related = root.querySelector('div.box:has(h2#recommendations)');
   const related_products = related?.querySelectorAll('div.li_row').flatMap((item) => {
@@ -63,23 +67,28 @@ export async function fetchProductDetails(url: string) {
       const product_name = taaft_link?.innerText;
       const product_link = item.querySelector('a.external_ai_link')?.attributes['href'];
       return {
-        icon: icon?.attributes['src'],
-        product_name: product_name,
-        product_link: removeTAAFTQueryParams(product_link),
-        taaft_link: removeTAAFTQueryParams('https://theresanaiforthat.com/' + taaft_link?.attributes['href'])
+        icon: icon?.attributes['src'] || null,
+        name: product_name || null,
+        website: removeTAAFTQueryParams(product_link) || null,
+        taaft_url: removeTAAFTQueryParams('https://theresanaiforthat.com/' + taaft_link?.attributes['href']) || null
       }
-  });
-  
+  }) || [];
+  assert(product_name && product_name.length > 0, `product_name is empty | null | undefined`);
+  assert(product_tagline && product_tagline.length > 0);
+  assert(product_link);
+  assert(description && description.length > 0);
+  assert(product_saves && comments && launch);
   return {
     name: product_name,
+    tagline: product_tagline,
     website: removeTAAFTQueryParams(product_link),
-    thumbnail: product_icon,
-    main_category: main_category,
+    thumb_url: product_icon || null,
+    main_category: main_category || null,
     description: description,
     savesCount: Number(product_saves),
     commentsCount: Number(comments),
-    added_at: new Date(launch!),
-    screenshot: screenshot,
+    added_at: new Date(launch).toUTCString(),
+    screenshot: screenshot || null,
     related: related_products,
     pros: pros,
     cons: cons,

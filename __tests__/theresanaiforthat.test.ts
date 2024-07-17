@@ -1,4 +1,4 @@
-import { fetchProductDetails, fetchTAAFTLatest } from "@/lib/theresanaiforthat";
+import { fetchTAAFTProductDetails, fetchTAAFTLatest } from "@/lib/theresanaiforthat";
 import { expect, test } from "vitest";
 
 test("test theresanaiforthat fetch latest works", async ()=> {
@@ -7,10 +7,11 @@ test("test theresanaiforthat fetch latest works", async ()=> {
 });
 
 test('test theresanaiforthat fetch detail works', async () => {
-  const product = await fetchProductDetails("https://theresanaiforthat.com/ai/usemotion");
+  const product = await fetchTAAFTProductDetails("https://theresanaiforthat.com/ai/usemotion");
   expect(product.name).eq("Usemotion");
   expect(product.description).length.greaterThan(100);
   expect(product.website).eq("https://www.usemotion.com/");
+  expect(product.tagline?.length).gt(0);
   expect(product.savesCount).greaterThan(0);
   expect(product.tags.length).eq(6);
   const alltagNotNull = product.tags.every(item => item && item.length > 0);
