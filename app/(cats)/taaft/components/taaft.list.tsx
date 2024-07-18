@@ -4,8 +4,6 @@ import { useState } from "react";
 import { SWRConfig } from "swr";
 import ProductBlock from "../../components/product.block";
 
-// export type StartupSortBy = "time" | "teamsize";
-
 export default function TaaftList() {
   const [page, setPage] = useState(1);
   const infPages = [];

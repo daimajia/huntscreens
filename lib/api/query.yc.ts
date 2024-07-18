@@ -1,9 +1,9 @@
-import { StartupSortBy } from "@/app/(cats)/startup/yc/components/startup.list";
 import { db } from "@/db/db";
 import { sortedyc, yc, YC } from "@/db/schema";
+import { YCSortBy } from "@/types/yc.types";
 import { sql, eq, inArray } from "drizzle-orm";
 
-export default async function query_yc(id: number, sort: StartupSortBy) {
+export default async function query_yc(id: number, sort: YCSortBy) {
   let setupLagLead = db.select({
     row_no: sortedyc.row_no,
     id: sortedyc.id,
