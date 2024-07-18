@@ -1,15 +1,18 @@
 import { db } from "@/db/db"
 import { yc } from "@/db/schema"
+import { YCSortBy, YCStatus } from "@/types/yc.types"
 import assert from "assert"
-import { and, desc, eq, isNotNull, ne } from "drizzle-orm"
+import { and, desc, eq, isNotNull } from "drizzle-orm"
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 type Params = {
   vc: "yc",
-  sort: "time" | "teamsize",
+  status: YCStatus,
+  sort: YCSortBy,
   page: number
 }
+
 export async function GET(request: Request, context: {params: Params}) {
   assert(context.params.page > 0);
   let order;
@@ -18,8 +21,13 @@ export async function GET(request: Request, context: {params: Params}) {
   }else{
     order = desc(yc.team_size);
   }
+  const where = [eq(yc.webp, true), isNotNull(yc.team_size)];
+  if(context.params.status === "Acquired" || context.params.status === "Public"){
+    where.push(eq(yc.status, context.params.status));
+  }
+
   const data = await db.query.yc.findMany({
-    where: and(eq(yc.webp, true), isNotNull(yc.team_size)),
+    where: and(...where),
     orderBy: order,
     limit: 30,
     offset: (context.params.page - 1) * 30

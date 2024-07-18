@@ -2,15 +2,15 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { SWRConfig } from "swr";
-import ProductBlock from "../../../components/product.block";
-import { YCSearchParams } from "@/types/yc.types";
+import ProductBlock from "../../components/product.block";
 
+// export type StartupSortBy = "time" | "teamsize";
 
-export default function StartupList({ sort, status }: YCSearchParams) {
+export default function TaaftList() {
   const [page, setPage] = useState(1);
   const infPages = [];
   for (let i = 0; i < page; i++) {
-    infPages.push(<ProductBlock key={i} cardType="yc" endpoint_url={`/api/startups/yc/${status}/${sort}/${i + 1}`} />);
+    infPages.push(<ProductBlock key={i} cardType="taaft" endpoint_url={`/api/taafts/${i + 1}`} />);
   }
   return <>
     <SWRConfig>

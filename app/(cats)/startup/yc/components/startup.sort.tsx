@@ -1,19 +1,32 @@
 "use client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { StartupSortBy } from "./startup.list";
-import { useRouter } from "next/navigation";
-
+import { YCSortBy } from "@/types/yc.types";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
 export default function YCSorter(props: {
-  sort: StartupSortBy
+  sort: YCSortBy
 }) {
   const router = useRouter();
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams]
+  )
+
+
   return <>
     <Select defaultValue={props.sort} onValueChange={(value) => {
-      router.push("?sort=" + value);
+      router.push(pathname + "?" + createQueryString("sort", value));
     }}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Sort by"/>
+        <SelectValue placeholder="Sort by" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="time">Launch Time</SelectItem>

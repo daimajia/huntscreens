@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import UpVote from "./upvote";
-import { ProductTypes } from "../types/product.types";
+import { ProductTypes, urlMapper } from "../types/product.types";
 
 
-type BaseMiniCardMetadata = {
+export type BaseMiniCardMetadata = {
   id: number,
   name: string,
   uuid: string,
@@ -18,7 +18,7 @@ type ProductHuntMetadata = {
   producthunt_url: string
 }
 
-export type MiniCardMetadata<T> = T extends 'ph' ? BaseMiniCardMetadata & ProductHuntMetadata : BaseMiniCardMetadata;
+export type MiniCardMetadata<T extends ProductTypes> = T extends 'ph' ? BaseMiniCardMetadata & ProductHuntMetadata : BaseMiniCardMetadata;
 
 interface MiniCardProps<T extends ProductTypes> {
   cardType: T,
@@ -26,11 +26,10 @@ interface MiniCardProps<T extends ProductTypes> {
 }
 
 export default function MiniScreenshotCard<T extends ProductTypes>({ cardType, product }: MiniCardProps<T>) {
-  const page_url = cardType === "ph" ? `/p/${product.id}` : `/startup/yc/${product.id}`;
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
-        <Link passHref key={product.id} href={page_url}>
+        <Link passHref key={product.id} href={urlMapper[cardType](product.id)}>
           <img alt="" loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product.uuid}.webp` || ""}></img>
         </Link>
       </div>

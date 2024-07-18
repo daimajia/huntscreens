@@ -6,7 +6,7 @@ import GoBack from "./back.button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { YC } from "@/db/schema";
-import { ProductModel, ProductTypes } from "../types/product.types";
+import { ProductModel, ProductTypes, urlMapper } from "../types/product.types";
 import YCInfoBadge from "./yc.info.badge";
 
 export default function ProductDetailPage<T extends ProductTypes>(props: {
@@ -17,7 +17,6 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
 }) {
   const product = props.product;
   const thumbnail = props.productType === "ph" ? (props.product as Producthunt).thumbnail?.url : (props.product as YC).thumb_url;
-  const linkPrefix = props.productType === "ph" ? "/p" : "/startup/yc";
   return <>
     <div className="flex flex-row w-full">
       <div className="w-full h-[calc(100vh-77px)] flex flex-col p-0 md:p-10">
@@ -68,7 +67,7 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
             )}
           </div>
         }
-        
+
         <div className="p-5 flex flex-row gap-5">
           <Link className="w-full h-full" href={product?.website || ""} target="__blank">
             <Button className="w-full h-full" variant={"outline"}>
@@ -87,7 +86,7 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
         <div className="flex h-full items-end px-5">
           <div className="w-full flex flex-row justify-start gap-4">
             {props.prev &&
-              <Link href={`${linkPrefix}/${props.prev.id}`} shallow={true}>
+              <Link href={urlMapper[props.productType](props.prev.id)} shallow={true}>
                 <Button variant={"outline"} size={"icon"} className="rounded-full" >
                   <ChevronLeft strokeWidth={1.5} color="gray" className=" w-6 h-6" />
                 </Button>
@@ -95,7 +94,7 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
             }
 
             {props.next &&
-              <Link href={`${linkPrefix}/${props.next.id}`} shallow={true}>
+              <Link href={urlMapper[props.productType](props.next.id)} shallow={true}>
                 <Button variant={"outline"} size={"icon"} className="rounded-full" >
                   <ChevronRight strokeWidth={1.5} color="gray" className=" w-6 h-6" />
                 </Button>

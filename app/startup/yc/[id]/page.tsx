@@ -7,7 +7,7 @@ import { producthunt } from "@/db/schema/ph";
 import { notFound } from "next/navigation";
 import Header from "@/app/components/header";
 import query_yc from "@/lib/api/query.yc";
-import { StartupSortBy } from "@/app/(cats)/startup/yc/components/startup.list";
+import { YCSortBy } from "@/types/yc.types";
 
 type Props = {
   params: { id: number }
@@ -46,7 +46,7 @@ export async function generateMetadata(
 
 export default async function YCPage({ params }: Props) {
   const sort = cookies().get('yc.sort')?.value || 'time';
-  const data = await query_yc(params.id, sort as StartupSortBy);
+  const data = await query_yc(params.id, sort as YCSortBy);
   if (!data.product) {
     return notFound();
   }
