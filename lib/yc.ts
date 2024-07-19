@@ -38,7 +38,7 @@ export async function fethcYCLatestCompanies(page=0): Promise<YCJson[]> {
   const client = algoliasearch("45BWZJ1SGC", "MjBjYjRiMzY0NzdhZWY0NjExY2NhZjYxMGIxYjc2MTAwNWFkNTkwNTc4NjgxYjU0YzFhYTY2ZGQ5OGY5NDMxZnJlc3RyaWN0SW5kaWNlcz0lNUIlMjJZQ0NvbXBhbnlfcHJvZHVjdGlvbiUyMiUyQyUyMllDQ29tcGFueV9CeV9MYXVuY2hfRGF0ZV9wcm9kdWN0aW9uJTIyJTVEJnRhZ0ZpbHRlcnM9JTVCJTIyeWNkY19wdWJsaWMlMjIlNUQmYW5hbHl0aWNzVGFncz0lNUIlMjJ5Y2RjJTIyJTVE");
   const index = client.initIndex("YCCompany_By_Launch_Date_production");
   const results = await index.search<YCCompany>("", {
-    hitsPerPage: 50,
+    hitsPerPage: 100,
     page: page,
   })
   return results.hits.map((item) => convertToYCModel(item));
