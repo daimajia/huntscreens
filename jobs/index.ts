@@ -3,4 +3,5 @@
 export * from "./ph.jobs";
 export * from "./yc.jobs";
 export * from "./email.jobs";
-export * from "./tafft.jobs"
+export * from "./tafft.jobs";
+export * from "./indiehackers.jobs";
