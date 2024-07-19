@@ -3,6 +3,8 @@ import { boolean, date, integer, pgTable, pgView, serial, text, uuid } from "dri
 
 export type YC  = typeof yc.$inferSelect;
 
+export type YCJson = Omit<YC, "id" | "uuid" | "webp">;
+
 export const yc = pgTable('yc', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),

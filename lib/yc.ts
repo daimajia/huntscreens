@@ -1,4 +1,4 @@
-import { YCJson } from "@/db/schema";
+import { YCJson } from "@/db/schema/yc";
 import algoliasearch from "algoliasearch";
 
 type YCCompany = {
