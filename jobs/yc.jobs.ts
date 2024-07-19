@@ -1,10 +1,37 @@
-import { eventTrigger, invokeTrigger } from "@trigger.dev/sdk";
+import { eventTrigger, intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
 import { z } from "zod";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 import { yc } from "@/db/schema";
 import { getScreenshotOneParams, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
+import { fethcYCLatestCompanies } from "@/lib/yc";
+
+client.defineJob({
+  id: "Schedule YC Latest Portfolio",
+  name: "Schedule YC Latest Portfolio",
+  version: "0.0.1",
+  trigger: intervalTrigger({
+    seconds: 7200
+  }),
+  run: async (payload, io, ctx) => {
+    const ycCompanies = await fethcYCLatestCompanies();
+    for(const company of ycCompanies){
+      const exist = await db.query.yc.findFirst({
+        where: eq(yc.objectID, company.objectID!)
+      });
+      if(!exist) {
+        const data = await db.insert(yc).values(company).returning();
+        await io.sendEvent(`take ${company.website} screenshot`, {
+          name: "screenshot.yc",
+          payload: {
+            id: data[0].id
+          }
+        })
+      }
+    }
+  }
+});
 
 client.defineJob({
   id: "Trigger YC screenshot events",
