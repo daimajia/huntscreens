@@ -1,25 +1,12 @@
-import { db } from '@/db/db';
-import { producthunt } from '@/db/schema/ph';
-import { subHours } from 'date-fns';
-import { count, gte } from 'drizzle-orm';
-import { cache } from 'react';
 import Header from '../components/header';
 import SubscribeButton from '../components/subscribe.button';
 import Link from 'next/link';
-
-export const revalidate = 0;
-
-const getTodayCount = cache(async () => {
-  const cnt = await db.select({ count: count() }).from(producthunt).where(gte(producthunt.featuredAt, subHours(new Date(), 24).toUTCString()));
-  return cnt[0].count;
-});
 
 export default async function Home({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const todayCount = await getTodayCount();
   return (
     <>
       <Header />
@@ -35,12 +22,6 @@ export default async function Home({
           </div>
           <div className='flex flex-row gap-4 items-center'>
             <SubscribeButton />
-
-            <div className='grow'>
-              <span className=' text-gray-500'>
-                {todayCount} added today
-              </span>
-            </div>
           </div>
         </div>
 

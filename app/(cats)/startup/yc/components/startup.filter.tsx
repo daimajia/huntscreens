@@ -36,7 +36,7 @@ export default function YCFilter(props: {
           <Button onClick={() => setSelected(key)} className="" variant={selected === key ? "secondary" : "ghost"} size={"sm"}>
             {key === "Died" && <Skull color="red" size={15} className="mr-1" />}
             {key === "Public" && <TrendingUp color="green" size={15} className="mr-1" />}
-            {key === "Acquired" && <CoinsIcon color="black" size={15} className="mr-1" />}
+            {key === "Acquired" && <CoinsIcon size={15} className="mr-1 dark:text-white text-gray-600" />}
             {key}
           </Button>
         </Link>
