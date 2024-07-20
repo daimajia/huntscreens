@@ -1,5 +1,6 @@
-import { eq, sql } from 'drizzle-orm';
-import { boolean, index, integer, json, pgTable, pgView, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { SortBy } from '@/app/types/api.types';
+import { and, arrayContains, eq, SQL, sql } from 'drizzle-orm';
+import { boolean, index, integer, json, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 type Thumbnail = {
   type: string,
@@ -48,15 +49,44 @@ export const producthunt = pgTable('producthunt', {
   }
 });
 
-export const sortedphs = pgView('sortedphs').as(
-  (qb) => qb.select({
-    row_no: sql<number>`
-      row_number() over (order by added_at desc)
-    `.as('row_no'),
-    id: producthunt.id,
-    tags: producthunt.tags,
-    votesCount: producthunt.votesCount
-  }).from(producthunt).where(eq(producthunt.webp, true))
-)
-
 export type Producthunt = typeof producthunt.$inferSelect;
+
+export const phViewQueryByTopic = (qb: QueryBuilder, sort: SortBy, topic: string) => {
+  let window;
+  
+  switch(sort) {
+    case "time":
+      window = sql`(ORDER BY DATE(${producthunt.added_at}) DESC, ${producthunt.votesCount} DESC)`;
+      break;
+    case "vote":
+      window = sql`(ORDER BY ${producthunt.votesCount} DESC)`;
+      break;
+  }
+
+  return phViewQuery(qb, window, and(eq(producthunt.webp, true), arrayContains(producthunt.tags, [topic])))
+}
+
+const phViewQuery = (qb: QueryBuilder, window: SQL, where=eq(producthunt.webp, true)) => {
+  return qb
+    .select({
+      id: producthunt.id,
+      tags: producthunt.tags,
+      added_at: producthunt.added_at,
+      votesCount: producthunt.votesCount,
+      prev: sql<number>`LAG(${producthunt.id}) OVER ${window}`.as('prev'),
+      next: sql<number>`LEAD(${producthunt.id}) OVER ${window}`.as('next'),
+      row_no: sql<number>`ROW_NUMBER() OVER ${window}`.as('row_no'),
+    })
+    .from(producthunt)
+    .where(where);
+}
+
+export const sortedphbytime = pgView('sortedphbytime').as((qb) => {
+  const window = sql`(ORDER BY DATE(${producthunt.added_at}) DESC, ${producthunt.votesCount} DESC)`;
+  return phViewQuery(qb, window);
+});
+
+export const sortedphbyvote = pgView('sortedphbyvote').as((qb) => {
+  const window = sql`(ORDER BY ${producthunt.votesCount} DESC)`;
+  return phViewQuery(qb, window);
+});
