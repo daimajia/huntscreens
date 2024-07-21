@@ -25,7 +25,7 @@ export default async function Header() {
   return <>
     <div className="grid grid-cols-2 md:grid-cols-3 justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
 
-      <div className="hidden md:flex flex-row gap-5 items-center text-sm ">
+      <div className="hidden lg:flex flex-row gap-5 items-center text-sm ">
 
         <div className="flex flex-row justify-center items-center gap-1">
           <Link href="/" className="hover:underline relative flex flex-row gap-1 justify-center items-center">
@@ -59,7 +59,7 @@ export default async function Header() {
         </Link>
       </div>
 
-      <div className="md:hidden flex flex-row gap-3 justify-end">
+      <div className="lg:hidden flex flex-row gap-3 justify-end">
         <Link href="/" className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/phlogo.png" alt="" className=" h-8" />
         </Link>
