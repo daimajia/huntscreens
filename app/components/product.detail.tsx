@@ -6,7 +6,7 @@ import GoBack from "./back.button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { YC } from "@/db/schema";
-import { ProductModel, ProductTypes, urlMapper } from "../types/product.types";
+import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
 import YCInfoBadge from "./yc.info.badge";
 
 export default function ProductDetailPage<T extends ProductTypes>(props: {
@@ -16,7 +16,7 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
   prev?: ProductModel<T> | null
 }) {
   const product = props.product;
-  const thumbnail = props.productType === "ph" ? (props.product as Producthunt).thumbnail?.url : (props.product as YC).thumb_url;
+  const thumbnail = thumbailGetter(props.productType, props.product);
   return <>
     <div className="flex flex-row w-full">
       <div className="w-full h-[calc(100vh-77px)] flex flex-col p-0 md:p-10">

@@ -13,7 +13,7 @@ import { Producthunt } from "@/db/schema/ph";
 import GoBack from "./back.button";
 import Spiner from "../skeletons/loading.spin";
 import { YC } from "@/db/schema";
-import { ProductModel, ProductTypes, urlMapper } from "../types/product.types";
+import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
 import YCInfoBadge from "./yc.info.badge";
 
 
@@ -39,7 +39,8 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
       requestUrl = `/api/startup/yc/${yc_status}/${yc_sort}/${currentPid}`;
       break;
     case "indiehackers":
-      requestUrl = `/api/indiehacker/${currentPid}`;
+      const ih_sort = getCookie('ih.sort') || "time";
+      requestUrl = `/api/indiehacker/${ih_sort}/${currentPid}`;
   }
 
   const { data, isLoading } = useSWR<ProductDetailData<ProductModel<T>>>(`${requestUrl}`, fetcher);
@@ -124,11 +125,8 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
           <div className="flex flex-col gap-4">
             <div className="flex flex-row gap-4 items-center p-5 mt-10 justify-start">
               <div>
-                {props.productType === "yc" && (product as YC).thumb_url &&
-                  <img alt={`${product.name} thumbnail`} loading="lazy" src={(product as YC).thumb_url || ""} className=" w-20 rounded-lg border" />
-                }
-                {props.productType === "ph" &&
-                  <img alt={`${product.name} thumbnail`} loading="lazy" src={(product as Producthunt)?.thumbnail?.url} className=" w-20 rounded-lg border" />
+                {product &&
+                  <img alt={`${product.name} thumbnail`} loading="lazy" src={thumbailGetter(props.productType, product) || ""} className=" w-20 rounded-lg border" />
                 }
               </div>
               <div className="flex flex-col gap-1 ">
@@ -143,7 +141,7 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
           </div>
 
           {props.productType === "yc" && <>
-            <YCInfoBadge yc={(product as YC)}/>
+            <YCInfoBadge yc={(product as YC)} />
           </>}
 
 

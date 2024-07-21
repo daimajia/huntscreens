@@ -1,12 +1,13 @@
 import { db } from "@/db/db";
-import { producthunt, taaft, yc } from "@/db/schema";
+import { indiehackers, producthunt, yc } from "@/db/schema";
 import { startOfDay, subDays } from "date-fns";
 import { count, gt } from "drizzle-orm";
 
 type UpdateCount = {
   YC: number,
   PH: number,
-  TAAFT?: number
+  TAAFT?: number,
+  Indiehackers: number
 }
 
 export default async function getUpdateCounts() {
@@ -17,10 +18,10 @@ export default async function getUpdateCounts() {
   const yc2 = db.select({
     YC: count()
   }).from(yc).where(gt(yc.launched_at, yesterday.toISOString()));
-  // const taaftCnt = db.select({
-  //   TAAFT: count()
-  // }).from(taaft).where(gt(taaft.added_at, yesterday.toISOString()));
-  const results = await Promise.all([ph, yc2]);
+  const indiehackersCnt = db.select({
+    Indiehackers: count()
+  }).from(indiehackers).where(gt(indiehackers.added_at, yesterday));
+  const results = await Promise.all([ph, yc2, indiehackersCnt]);
   const updateCount: UpdateCount = results.reduce((acc, curr) => ({...acc, ...curr[0]}), {} as UpdateCount);
   return updateCount;
 }

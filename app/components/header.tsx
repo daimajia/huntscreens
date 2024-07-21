@@ -35,6 +35,14 @@ export default async function Header() {
           {updateCns.PH > 0 && <span title={`${updateCns.PH} new product today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.PH}</span>}
         </div>
 
+        <div className="flex flex-row justify-center items-center gap-1">
+          <Link href="/indiehackers" className="hover:underline relative flex flex-row gap-1 justify-center items-center">
+            <img src="/indiehackers.jpg" alt="" className=" h-7 rounded-full" />
+            IndieHackers
+          </Link>
+          {updateCns.Indiehackers > 0 && <span title={`${updateCns.Indiehackers} new hackers today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.Indiehackers}</span>}
+        </div>
+
         <div className="flex flex-row items-center justify-center gap-1">
           <Link href="/startup/yc" className="hover:underline relative flex flex-row gap-1 justify-center items-center">
             <img src="/yc.png" alt="" className="h-7 rounded-full" />
@@ -42,7 +50,6 @@ export default async function Header() {
           </Link>
           {updateCns.YC > 0 && <span title={`${updateCns.YC} new company today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.YC}</span>}
         </div>
-
       </div>
 
       <div className="bg-dark-logo flex justify-center">
@@ -54,7 +61,10 @@ export default async function Header() {
 
       <div className="md:hidden flex flex-row gap-3 justify-end">
         <Link href="/" className="hover:underline flex flex-row gap-1 justify-center items-center">
-          <img src="/phlogo.png" alt="" className=" h-10" />
+          <img src="/phlogo.png" alt="" className=" h-8" />
+        </Link>
+        <Link href="/indiehackers" className="hover:underline flex flex-row gap-1 justify-center items-center">
+          <img src="/indiehackers.jpg" alt="" className=" h-7 rounded-full" />
         </Link>
         <Link href="/startup/yc" className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/yc.png" alt="" className="h-7 rounded-full" />

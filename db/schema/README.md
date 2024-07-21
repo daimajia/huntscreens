@@ -1,4 +1,4 @@
-ProductHunt Views
+### ProductHunt Views
 
 ```sql
 
@@ -38,7 +38,7 @@ WINDOW w AS (ORDER BY "votesCount" DESC);
 
 ```
 
-YC Views
+### YC Views
 
 ```sql
 
@@ -79,5 +79,46 @@ WHERE
   webp = true and team_size >= 0
 WINDOW w AS (ORDER BY team_size DESC, id DESC);
 
+
+```
+
+### Indiehackers Views
+
+
+```sql
+
+CREATE VIEW sorted_indiehackers_by_revenue AS
+SELECT
+  ROW_NUMBER() OVER w AS row_no,
+  LAG(id) OVER w AS prev,
+  LEAD(id) OVER w AS next,
+  id,
+  name,
+  revenue,
+  added_at
+FROM
+  indiehackers
+WHERE
+  webp = true
+WINDOW w AS (ORDER BY revenue DESC);
+
+```
+
+```sql
+
+CREATE VIEW sorted_indiehackers_by_addedat AS
+SELECT
+  ROW_NUMBER() OVER w AS row_no,
+  LAG(id) OVER w AS prev,
+  LEAD(id) OVER w AS next,
+  id,
+  name,
+  revenue,
+  added_at
+FROM
+  indiehackers
+WHERE
+  webp = true
+WINDOW w AS (ORDER BY added_at DESC);
 
 ```

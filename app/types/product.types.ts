@@ -17,3 +17,25 @@ export const urlMapper: Record<ProductTypes, (id: string | number) => string> = 
 }
 
 export type ProductModel<T extends ProductTypes> = ApiReturnDataType<T>;
+
+
+export function thumbailGetter<T extends ProductTypes>(productType: T, product: ApiReturnDataType<T>) {
+  let thumbnail: string | undefined | null;
+  switch (productType) {
+    case "ph":
+      thumbnail = (product as Producthunt).thumbnail?.url;
+      break;
+    case "indiehackers":
+      thumbnail = (product as IndieHackers).thumbnail;
+      break;
+    case "taaft":
+      thumbnail = (product as Taaft).thumb_url;
+      break;
+    case "yc":
+      thumbnail = (product as YC).thumb_url;
+      break
+    default:
+      throw new Error("remember to set thumbail");
+  }
+  return thumbnail;
+}

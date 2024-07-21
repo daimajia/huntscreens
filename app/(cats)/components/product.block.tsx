@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import Loading from "../../components/list.loading";
 import MiniScreenshotCard, { MiniCardMetadata } from "../../components/screenshot.card";
-import { Producthunt, Taaft, YC } from "@/db/schema";
+import { IndieHackers, Producthunt, Taaft, YC } from "@/db/schema";
 import { ApiReturnDataType, ProductTypes } from "@/app/types/product.types";
 
 interface PageBlockProps<T extends ProductTypes> {
@@ -25,23 +25,18 @@ function generatedata<T extends ProductTypes>(cardType: T, item: ApiReturnDataTy
   } else if (cardType === "yc") {
     const company = item as YC;
     return {
-      id: company.id,
-      name: company.name,
-      tagline: company.tagline,
-      website: company.website,
-      uuid: company.uuid,
+      ...company,
       thumbnail: company.thumb_url
-    } as MiniCardMetadata<T>
-  } else {
+    } as unknown as MiniCardMetadata<T>
+  } else if(cardType === "taaft"){
     const taaft = item as Taaft;
     return {
-      id: taaft.id,
-      name: taaft.name,
-      tagline: taaft.tagline,
-      website: taaft.website,
-      uuid: taaft.uuid,
+      ...taaft,
       thumbnail: taaft.thumb_url
-    } as MiniCardMetadata<T>;
+    } as unknown as MiniCardMetadata<T>;
+  }else {
+    const ih = item as IndieHackers;
+    return ih as unknown as MiniCardMetadata<T>
   }
 }
 
