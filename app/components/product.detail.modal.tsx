@@ -13,8 +13,7 @@ import { Producthunt } from "@/db/schema/ph";
 import GoBack from "./back.button";
 import Spiner from "../skeletons/loading.spin";
 import { YC } from "@/db/schema";
-import { ProductModel, ProductTypes } from "../types/product.types";
-import { PersonIcon } from "@radix-ui/react-icons";
+import { ProductModel, ProductTypes, urlMapper } from "../types/product.types";
 import YCInfoBadge from "./yc.info.badge";
 
 
@@ -36,8 +35,11 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
       break;
     case "yc":
       const yc_sort = getCookie('yc.sort') || "time";
-      requestUrl = `/api/startup/yc/${yc_sort}/${currentPid}`;
+      const yc_status = getCookie('yc.status') || "All";
+      requestUrl = `/api/startup/yc/${yc_status}/${yc_sort}/${currentPid}`;
       break;
+    case "indiehackers":
+      requestUrl = `/api/indiehacker/${currentPid}`;
   }
 
   const { data, isLoading } = useSWR<ProductDetailData<ProductModel<T>>>(`${requestUrl}`, fetcher);
@@ -45,13 +47,7 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
   useEffect(() => {
     if (!product) return;
     let replaceUrl = "";
-    switch (props.productType) {
-      case "ph":
-        replaceUrl = `/p/${product.id}`;
-        break;
-      case "yc":
-        replaceUrl = `/startup/yc/${product.id}`;
-    }
+    replaceUrl = urlMapper[props.productType](currentPid);
 
     window.history.replaceState(null, '', replaceUrl);
     if (product && product.id.toString() !== currentPid) {

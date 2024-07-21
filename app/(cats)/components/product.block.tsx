@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import Loading from "../../components/list.loading";
-import MiniScreenshotCard, { BaseMiniCardMetadata, MiniCardMetadata } from "../../components/screenshot.card";
+import MiniScreenshotCard, { MiniCardMetadata } from "../../components/screenshot.card";
 import { Producthunt, Taaft, YC } from "@/db/schema";
 import { ApiReturnDataType, ProductTypes } from "@/app/types/product.types";
 
