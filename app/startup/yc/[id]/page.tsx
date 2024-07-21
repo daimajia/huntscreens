@@ -46,7 +46,7 @@ export async function generateMetadata(
 
 export default async function YCPage({ params }: Props) {
   const sort = cookies().get('yc.sort')?.value || 'time';
-  const data = await query_yc(params.id, sort as YCSortBy);
+  const data = await query_yc(params.id, sort as YCSortBy, "All");
   if (!data.product) {
     return notFound();
   }

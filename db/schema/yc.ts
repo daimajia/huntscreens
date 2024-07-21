@@ -1,5 +1,6 @@
-import { sql, eq } from "drizzle-orm";
-import { boolean, date, integer, pgTable, pgView, serial, text, uuid } from "drizzle-orm/pg-core";
+import { YCSortBy, YCStatus } from "@/types/yc.types";
+import { sql, eq, SQL, and, gte } from "drizzle-orm";
+import { boolean, date, integer, pgTable, pgView, QueryBuilder, serial, text, uuid } from "drizzle-orm/pg-core";
 
 export type YC  = typeof yc.$inferSelect;
 
@@ -32,12 +33,38 @@ export const yc = pgTable('yc', {
   webp: boolean('webp').default(false)
 })
 
-export const sortedyc = pgView('sortedyc').as(
-  (qb) => qb.select({
-    row_no: sql<number>`
-      row_number() over (order by launched_at desc)
-    `.as('row_no'),
+export const ycViewQueryByStatus = (qb: QueryBuilder, sort: YCSortBy, status: YCStatus) => {
+  let window;
+  switch(sort) {
+    case "time":
+      window = sql`(ORDER BY ${yc.launched_at} DESC, ${yc.id} DESC)`;
+      break;
+    case "teamsize":
+      window = sql`(ORDER BY ${yc.team_size} DESC, ${yc.id} DESC)`;
+      break;
+  }
+  return ycViewQuery(qb, window, and(eq(yc.webp, true), eq(yc.status, status)));
+}
+
+export const  ycViewQuery = (qb: QueryBuilder, window: SQL, where=eq(yc.webp, true)) => {
+  return qb.select({
     id: yc.id,
-    team_size: yc.team_size
-  }).from(yc).where(eq(yc.webp, true))
-)
+    team_size: yc.team_size,
+    launched_at: yc.launched_at,
+    status: yc.status,
+    stage: yc.stage,
+    prev: sql<number>`LAG(${yc.id}) OVER ${window}`.as('prev'),
+    next: sql<number>`LEAD(${yc.id}) OVER ${window}`.as('next'),
+    row_no: sql<number>`ROW_NUMBER() OVER ${window}`.as('row_no')
+  }).from(yc).where(where);
+}
+
+export const sorted_yc_by_launchedat =  pgView('sorted_yc_by_launchedat').as((qb) => {
+  const window = sql`(ORDER BY ${yc.launched_at} DESC, ${yc.id} DESC)`;
+  return ycViewQuery(qb, window);
+}); 
+
+export const sorted_yc_by_teamsize =  pgView('sorted_yc_by_teamsize').as((qb) => {
+  const window = sql`(ORDER BY ${yc.team_size} DESC, ${yc.id} DESC)`;
+  return ycViewQuery(qb, window, and(eq(yc.webp, true), gte(yc.team_size, 0)));
+}); 

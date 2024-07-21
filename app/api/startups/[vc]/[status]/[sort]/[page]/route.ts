@@ -17,9 +17,9 @@ export async function GET(request: Request, context: {params: Params}) {
   assert(context.params.page > 0);
   let order;
   if(context.params.sort === "time") {
-    order = desc(yc.launched_at);
+    order = [desc(yc.launched_at), desc(yc.id)];
   }else{
-    order = desc(yc.team_size);
+    order = [desc(yc.team_size), desc(yc.id)];
   }
   const where = [eq(yc.webp, true), isNotNull(yc.team_size)];
   if(context.params.status === "Acquired" || context.params.status === "Public"){
@@ -34,5 +34,6 @@ export async function GET(request: Request, context: {params: Params}) {
   });
   cookies().set("vc", context.params.vc);
   cookies().set('yc.sort', context.params.sort);
+  cookies().set('yc.status', context.params.status);
   return NextResponse.json(data);
 }
