@@ -5,10 +5,7 @@ import { eq, inArray } from "drizzle-orm";
 import { QueryBuilder } from "drizzle-orm/pg-core";
 
 export default async function query_yc(id: number, sort: YCSortBy, status: YCStatus) {
-
   let query;
-  console.log(id, status, sort )
-
   if(status === "All") {
     const view = sort === "time" ? sorted_yc_by_launchedat : sorted_yc_by_teamsize;
     query = db.select().from(view).where(eq(view.id, id));
