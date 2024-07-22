@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Header from '../components/header';
 import SubscribeButton from '../components/subscribe.button';
+import underline from "/public/underline.svg";
 
 export const revalidate = 0;
 
@@ -14,8 +16,11 @@ export default async function Home({
       <main className="flex flex-col items-center justify-between p-5 gap-10">
         <div className=' w-full flex flex-col gap-4 px-5 md:mt-5'>
           <div className='flex flex-col justify-center items-center'>
-            <h1 className=' text-center lg:leading-[3.5rem] font-bold text-slate-800 dark:text-gray-100 text-2xl md:mt-3 md:text-5xl leading-10'>
-              Visually Discover Latest<br /> <span className='bg-clip-text text-transparent bg-gradient-to-br from-amber-500 to-pink-500'>Products and Startups</span>
+            <h1 className=' relative text-center lg:leading-[3.5rem] font-bold text-slate-800 dark:text-gray-100 text-2xl md:mt-3 md:text-5xl leading-10'>
+              <span className='relative inline-block'>Visually &nbsp;
+                <Image alt=""  className='w-full' src={underline}/>
+              </span>
+              Discover  Latest <br /> <span className='bg-clip-text text-transparent bg-gradient-to-br from-amber-500 to-pink-500'>Products and Startups</span>
             </h1>
             <h2 className='mt-1 text-neutral-500 dark:text-neutral-300 md:text-lg xl:text-xl'>Explore products and startups through visual snapshots</h2>
             <div className='flex flex-row gap-4 items-center mt-8'>
