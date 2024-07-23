@@ -146,8 +146,13 @@ client.defineJob({
         element.node.uuid = uuidv4();
         
         if(element.node.website) {
-          const resp = await fetch(element.node.website);
-          element.node.website = removeUrlParams(resp.url, 'ref');
+          try{
+            const resp = await fetch(element.node.website);
+            element.node.website = removeUrlParams(resp.url, 'ref');
+          }catch(e){
+            await io.logger.error('website has issues, can not fetch the real url, skipping', element.node);
+            continue;
+          }
         }
         
         element.node.tags = element.node.topics?.nodes.flatMap(topic => topic.name) || [];
