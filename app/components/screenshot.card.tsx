@@ -2,7 +2,7 @@
 import Link from "next/link";
 import UpVote from "./upvote";
 import { ProductTypes, urlMapper } from "../types/product.types";
-
+import { useMediaQuery } from 'usehooks-ts';
 
 export type BaseMiniCardMetadata = {
   id: number,
@@ -26,10 +26,11 @@ interface MiniCardProps<T extends ProductTypes> {
 }
 
 export default function MiniScreenshotCard<T extends ProductTypes>({ cardType, product }: MiniCardProps<T>) {
+  const matches = useMediaQuery("(min-width: 768px)", {defaultValue: true});
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
-        <Link passHref key={product.id} href={urlMapper[cardType](product.id)}>
+        <Link passHref key={product.id} href={matches ? urlMapper[cardType](product.id) : product.website}>
           <img alt="" loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product.uuid}.webp` || ""}></img>
         </Link>
       </div>
