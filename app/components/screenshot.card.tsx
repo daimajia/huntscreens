@@ -10,7 +10,8 @@ export type BaseMiniCardMetadata = {
   uuid: string,
   thumbnail: string | null,
   tagline: string | null,
-  website: string
+  website: string,
+  new: boolean
 }
 
 type ProductHuntMetadata = {
@@ -26,7 +27,7 @@ interface MiniCardProps<T extends ProductTypes> {
 }
 
 export default function MiniScreenshotCard<T extends ProductTypes>({ cardType, product }: MiniCardProps<T>) {
-  const matches = useMediaQuery("(min-width: 768px)", {defaultValue: true});
+  const matches = useMediaQuery("(min-width: 768px)", { defaultValue: true });
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
@@ -38,8 +39,11 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ cardType, p
         <img alt={""} loading="lazy" className="h-10 rounded-md" src={product.thumbnail || ""}></img>
         <div className="flex flex-row w-full justify-between items-center">
           <div className="flex flex-col">
-            <div className=" font-bold ">
-              <Link className="hover:underline" href={product.website || ""} target="_blank">{product.name}</Link>
+            <div className="flex flex-row gap-2 items-center">
+              <Link className="hover:underline  font-bold " href={product.website || ""} target="_blank">{product.name}</Link>
+              {product.new &&
+                <span className="flex items-center justify-center gap-1 ms-0.5 bg-blue-50 border border-blue-300 text-blue-600 text-[.6125rem] leading-4 uppercase align-middle rounded-full py-0.3 px-2 dark:bg-blue-900/70 dark:border-blue-700 dark:text-blue-500 font-semibold">NEW</span>
+              }
             </div>
             <div className=" text-muted-foreground">
               {product.tagline}

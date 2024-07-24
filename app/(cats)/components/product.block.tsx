@@ -3,6 +3,7 @@ import Loading from "../../components/list.loading";
 import MiniScreenshotCard, { MiniCardMetadata } from "../../components/screenshot.card";
 import { IndieHackers, Producthunt, Taaft, YC } from "@/db/schema";
 import { ApiReturnDataType, ProductTypes } from "@/app/types/product.types";
+import { differenceInHours } from "date-fns";
 
 interface PageBlockProps<T extends ProductTypes> {
   cardType: T,
@@ -20,23 +21,30 @@ function generatedata<T extends ProductTypes>(cardType: T, item: ApiReturnDataTy
       uuid: ph.uuid || "",
       thumbnail: ph.thumbnail?.url || "",
       votesCount: ph.votesCount || 0,
-      producthunt_url: ph.url || ""
+      producthunt_url: ph.url || "",
+      new: differenceInHours(new Date(), new Date(ph.added_at || new Date())) <= 24
     } as MiniCardMetadata<T>
   } else if (cardType === "yc") {
     const company = item as YC;
     return {
       ...company,
-      thumbnail: company.thumb_url
+      thumbnail: company.thumb_url,
+      new: differenceInHours(new Date(), company.launched_at || new Date()) <= 24
     } as unknown as MiniCardMetadata<T>
-  } else if(cardType === "taaft"){
+  } else if (cardType === "taaft") {
     const taaft = item as Taaft;
     return {
       ...taaft,
-      thumbnail: taaft.thumb_url
+      thumbnail: taaft.thumb_url,
+      new: differenceInHours(new Date(), taaft.added_at || new Date()) <= 24
     } as unknown as MiniCardMetadata<T>;
-  }else {
+  } else {
     const ih = item as IndieHackers;
-    return ih as unknown as MiniCardMetadata<T>
+    
+    return {
+      ...ih,
+      new: differenceInHours(new Date(), ih.added_at || new Date()) <= 24
+    } as unknown as MiniCardMetadata<T>
   }
 }
 
