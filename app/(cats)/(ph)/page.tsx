@@ -1,13 +1,9 @@
+"use client";
 import Loading from "@/app/components/list.loading";
-import PHTopics from "@/app/components/navs/ph.navs";
-import SortDropdown from "@/app/components/sort.dropdown";
 import { Suspense } from "react";
-import ProductLists from "./components/product.list";
-
-type PHProps = {
-  topic: string,
-  sort: "time" | "vote"
-}
+import ProductList from "../components/product.list";
+import PHTopics from "./components/ph.topic";
+import SortDropdown from "./components/ph.sort";
 
 export default function PHPage({ searchParams }: {
   searchParams: {
@@ -25,7 +21,10 @@ export default function PHPage({ searchParams }: {
       </div>
 
       <Suspense fallback={<Loading />}>
-        <ProductLists sortBy={sort} topic={topic} />
+        <ProductList
+          cardType="ph"
+          genRequestUrl={(page) => `/api/products/${topic}/${sort}/${page}`}
+        />
       </Suspense>
     </div>
   </>

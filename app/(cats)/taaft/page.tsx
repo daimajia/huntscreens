@@ -1,7 +1,8 @@
+"use client";
 import Loading from "@/app/components/list.loading";
 import { Suspense } from "react";
-import TaaftList from "./components/taaft.list";
 import { YCSortBy } from "../../../types/yc.types";
+import ProductList from "../components/product.list";
 
 
 export default async function TaaftPage({ searchParams }: {
@@ -13,11 +14,10 @@ export default async function TaaftPage({ searchParams }: {
   return <>
     <div className='flex flex-col gap-3 w-full'>
       <div className="flex flex-row justify-end px-3">
-        {/* <YCSorter sort={sort} /> */}
       </div>
 
       <Suspense fallback={<Loading />}>
-        <TaaftList />
+        <ProductList cardType="taaft" genRequestUrl={(page) => `/api/taafts/${page}`} />
       </Suspense>
     </div>
   </>

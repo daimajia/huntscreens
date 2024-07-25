@@ -1,3 +1,4 @@
+"use client";
 import useSWR from "swr";
 import Loading from "../../components/list.loading";
 import MiniScreenshotCard, { MiniCardMetadata } from "../../components/screenshot.card";
@@ -8,6 +9,7 @@ import { differenceInHours } from "date-fns";
 interface PageBlockProps<T extends ProductTypes> {
   cardType: T,
   endpoint_url: string,
+  ended: (isEnd: boolean) => void;
 }
 
 function generatedata<T extends ProductTypes>(cardType: T, item: ApiReturnDataType<T>): MiniCardMetadata<T> {
@@ -48,9 +50,12 @@ function generatedata<T extends ProductTypes>(cardType: T, item: ApiReturnDataTy
   }
 }
 
-export default function ProductBlock<T extends ProductTypes>({ cardType, endpoint_url }: PageBlockProps<T>) {
+export default function ProductBlock<T extends ProductTypes>({ cardType, endpoint_url, ended }: PageBlockProps<T>) {
   const fetcher = (url: string) => fetch(url).then(r => r.json());
-  const { data, isLoading } = useSWR<ApiReturnDataType<T>[]>(endpoint_url, fetcher);
+  const { data, isLoading, error } = useSWR<ApiReturnDataType<T>[]>(endpoint_url, fetcher);
+  if(error || ( data && data?.length < 30)) {
+    ended(true)
+  }
   return <>
     {isLoading && <Loading />}
     {!isLoading && data && <>

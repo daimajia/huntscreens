@@ -1,6 +1,7 @@
+"use client";
 import Loading from "@/app/components/list.loading";
 import { Suspense } from "react";
-import IndiehackersList from "./components/indiehackers.list";
+import ProductList from "../components/product.list";
 
 
 export default async function IndiehackersPage() {
@@ -10,7 +11,7 @@ export default async function IndiehackersPage() {
       </div>
 
       <Suspense fallback={<Loading />}>
-        <IndiehackersList ihsort="time" />
+        <ProductList cardType="indiehackers" genRequestUrl={(page) => `/api/indiehackers/time/${page}`}/>
       </Suspense>
     </div>
   </>

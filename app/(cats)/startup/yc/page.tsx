@@ -1,9 +1,10 @@
+"use client";
 import { Suspense } from "react";
-import Loading from "../../../components/list.loading";
-import StartupList from "./components/startup.list";
 import YCSorter from "./components/startup.sort";
 import YCFilter from "./components/startup.filter";
-import { YCSearchParams } from "../../../../types/yc.types";
+import { YCSearchParams } from "@/types/yc.types";
+import Loading from "@/app/components/list.loading";
+import ProductList from "../../components/product.list";
 
 
 export default async function YCPage({ searchParams }: {
@@ -19,7 +20,7 @@ export default async function YCPage({ searchParams }: {
       </div>
 
       <Suspense fallback={<Loading />}>
-        <StartupList sort={sort} status={status} />
+        <ProductList cardType="yc" genRequestUrl={(page) => `/api/startups/yc/${status}/${sort}/${page}`} />
       </Suspense>
     </div>
   </>
