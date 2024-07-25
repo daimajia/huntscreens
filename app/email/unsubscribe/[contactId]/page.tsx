@@ -10,7 +10,7 @@ export default async function UnsubscribePage({ params }: { params: { contactId:
         {res.error ? <>
           Got an error, please contact admin.
         </> :
-          <>Cancel Subscription Successfully  <Link href="https://huntscreens.com" className=" text-blue-500">Back to HuntScreens.com</Link></>
+          <>Successfully Unsubscribed <Link href="https://huntscreens.com" className=" text-blue-500">Back to HuntScreens.com</Link></>
         }
       </div>
     </div>
