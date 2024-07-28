@@ -9,8 +9,18 @@ export async function getCurrentUser() {
   if(!response.claims?.email){
     return null;
   }
-  const exist = await db.query.users.findFirst({
+  let user = await db.query.users.findFirst({
     where: eq(users.email, response.claims.email.toLowerCase())
   })
-  return exist;
+  if(!user) {
+    const ret = await db.insert(users).values({
+      email: response.claims.email.toLowerCase(),
+      subscribed: false,
+      avatar: response.claims.picture,
+      email_verified: response.claims.email_verified,
+      name: response.claims.name
+    }).returning();
+    user = ret[0];
+  }
+  return user;
 }

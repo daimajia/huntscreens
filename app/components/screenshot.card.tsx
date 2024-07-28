@@ -1,8 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+'use client';
 import Link from "next/link";
 import UpVote from "./upvote";
 import { ProductTypes, urlMapper } from "../types/product.types";
 import { useMediaQuery } from 'usehooks-ts';
+import { Bookmark } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToggleFavorite } from "@/stores/favorites.provider";
+import { useState } from "react";
+import Spiner from "../skeletons/loading.spin";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export type BaseMiniCardMetadata = {
   id: number,
@@ -22,12 +29,30 @@ type ProductHuntMetadata = {
 export type MiniCardMetadata<T extends ProductTypes> = T extends 'ph' ? BaseMiniCardMetadata & ProductHuntMetadata : BaseMiniCardMetadata;
 
 interface MiniCardProps<T extends ProductTypes> {
+  isFavorite: boolean,
   cardType: T,
   product: MiniCardMetadata<T>
 }
 
-export default function MiniScreenshotCard<T extends ProductTypes>({ cardType, product }: MiniCardProps<T>) {
+export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite, cardType, product }: MiniCardProps<T>) {
   const matches = useMediaQuery("(min-width: 768px)", { defaultValue: true });
+  const [favLoading, setFavLoading] = useState(false);
+  const router = useRouter();
+  const toggleFavorite = useToggleFavorite();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const toggleFavoriteAction = async (itemId: string, itemType: ProductTypes) => {
+    setFavLoading(true);
+    const resp = await fetch(`/api/user/check-auth?time=${new Date().getTime()}`);
+    const result = await resp.json();
+    if (result['isLogin']) {
+      await toggleFavorite(itemId, itemType);
+      setFavLoading(false);
+    } else {
+      router.push(`/api/user/trigger-signin?redirect=${pathname}${searchParams}`);
+    }
+
+  }
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
@@ -50,14 +75,24 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ cardType, p
             </div>
           </div>
 
-          {
-            cardType === "ph" &&
-            <div>
-              <Link target="__blank" href={(product as MiniCardMetadata<"ph">).producthunt_url || ""}>
-                <UpVote voteCount={(product as MiniCardMetadata<"ph">).votesCount} />
-              </Link>
-            </div>
-          }
+          <div className="flex flex-row justify-end items-center gap-2">
+            <Button variant={"ghost"} size={"icon"} disabled={favLoading} onClick={() => toggleFavoriteAction(product.uuid, cardType)}>
+              {favLoading && <Spiner />}
+              {!favLoading && <>
+                {!isFavorite && <Bookmark strokeWidth={1.3} className="  text-gray-400 hover:text-gray-900 dark:hover:text-gray-50" />}
+                {isFavorite && <Bookmark strokeWidth={1.3} fill="#f05f22" className=" text-[#f05f22]" />}
+              </>}
+
+            </Button>
+            {
+              cardType === "ph" &&
+              <div>
+                <Link target="__blank" href={(product as MiniCardMetadata<"ph">).producthunt_url || ""}>
+                  <UpVote voteCount={(product as MiniCardMetadata<"ph">).votesCount} />
+                </Link>
+              </div>
+            }
+          </div>
         </div>
       </div>
     </div>
