@@ -1,8 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "@logto/next/server-actions";
 import { logtoConfig } from "../logto";
 import SignOut from "./sign-out";
+import Link from "next/link";
+import { BookmarkCheck } from "lucide-react";
 
 
 export default async function UserMenu(props: {
@@ -18,8 +20,14 @@ export default async function UserMenu(props: {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuItem asChild>
+          <Link href={'/favorites'}>My Favorites
+          <BookmarkCheck strokeWidth={1.2} className=" text-gray-400 ml-5"/>
+          </Link>
+        </DropdownMenuItem>
+        
         <DropdownMenuSeparator />
+
         <DropdownMenuItem asChild>
           <SignOut onSignOut={async () => {
             'use server';

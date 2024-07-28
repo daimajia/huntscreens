@@ -1,6 +1,6 @@
 import { YCSortBy, YCStatus } from "@/types/yc.types";
 import { sql, eq, SQL, and, gte } from "drizzle-orm";
-import { boolean, date, integer, pgTable, pgView, QueryBuilder, serial, text, uuid } from "drizzle-orm/pg-core";
+import { boolean, date, index, integer, pgTable, pgView, QueryBuilder, serial, text, uuid } from "drizzle-orm/pg-core";
 
 export type YC  = typeof yc.$inferSelect;
 
@@ -31,6 +31,13 @@ export const yc = pgTable('yc', {
   objectID: text('objectID'),
   uuid: uuid('uuid').defaultRandom().notNull(),
   webp: boolean('webp').default(false)
+}, (table) => {
+  return {
+    ycuuidIndex: index('yc_uuid_idx').on(table.uuid),
+    yc_launchedat_index: index('yc_launched_at_idx').on(table.launched_at),
+    yc_status_index: index('yc_status_idx').on(table.status),
+    yc_team_size: index('yc_teamsiz_idx').on(table.team_size)
+  }
 })
 
 export const ycViewQueryByStatus = (qb: QueryBuilder, sort: YCSortBy, status: YCStatus) => {

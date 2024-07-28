@@ -1,4 +1,6 @@
 import { IndieHackers, Producthunt, Taaft, YC } from "@/db/schema";
+import { differenceInHours } from "date-fns";
+import { MiniCardMetadata } from "../components/screenshot.card";
 
 export type ProductTypes = "ph" | "yc" | "taaft" | "indiehackers";
 
@@ -38,4 +40,43 @@ export function thumbailGetter<T extends ProductTypes>(productType: T, product: 
       throw new Error("remember to set thumbail");
   }
   return thumbnail;
+}
+
+
+export function generatedata<T extends ProductTypes>(cardType: T, item: ApiReturnDataType<T>): MiniCardMetadata<T> {
+  if (cardType === "ph") {
+    const ph = item as Producthunt;
+    return {
+      id: ph.id,
+      name: ph.name || "",
+      tagline: ph.tagline,
+      website: ph.website || "",
+      uuid: ph.uuid || "",
+      thumbnail: ph.thumbnail?.url || "",
+      votesCount: ph.votesCount || 0,
+      producthunt_url: ph.url || "",
+      new: differenceInHours(new Date(), new Date(ph.added_at || new Date())) <= 24
+    } as MiniCardMetadata<T>
+  } else if (cardType === "yc") {
+    const company = item as YC;
+    return {
+      ...company,
+      thumbnail: company.thumb_url,
+      new: differenceInHours(new Date(), company.launched_at || new Date()) <= 24
+    } as unknown as MiniCardMetadata<T>
+  } else if (cardType === "taaft") {
+    const taaft = item as Taaft;
+    return {
+      ...taaft,
+      thumbnail: taaft.thumb_url,
+      new: differenceInHours(new Date(), taaft.added_at || new Date()) <= 24
+    } as unknown as MiniCardMetadata<T>;
+  } else {
+    const ih = item as IndieHackers;
+    
+    return {
+      ...ih,
+      new: differenceInHours(new Date(), ih.added_at || new Date()) <= 24
+    } as unknown as MiniCardMetadata<T>
+  }
 }

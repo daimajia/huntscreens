@@ -4,13 +4,14 @@ import { SWRConfig } from "swr";
 import ProductBlock from "./product.block";
 import { ProductTypes } from "@/app/types/product.types";
 import { Button } from "@/components/ui/button";
-
+import { FavoriteStoreProvider } from "@/stores/favorites.provider";
 
 type ProductListProps<T extends ProductTypes> = {
-  cardType: T,
+  cardType: T | "favorites",
   fallbackData?: any,
   genRequestUrl: (page: number) => string
 }
+
 
 export default function ProductList<T extends ProductTypes>(
   { cardType, fallbackData, genRequestUrl }: ProductListProps<T>
@@ -24,30 +25,32 @@ export default function ProductList<T extends ProductTypes>(
   const loadMore = useCallback(() => {
     if (!isEnded)
       setPage(prevPage => prevPage + 1);
-  }, []);
+  }, [isEnded]);
 
   useEffect(() => {
     if (inView && !isEnded) {
       loadMore();
     }
-  }, [inView, loadMore]);
+  }, [inView, isEnded, loadMore]);
 
   return (
     <SWRConfig value={{ fallbackData: fallbackData }}>
-      <div className='w-full flex flex-col space-y-4'>
-        {[...Array(page)].map((_, i) => (
-          <ProductBlock
-            cardType={cardType}
-            key={i}
-            endpoint_url={genRequestUrl(i + 1)}
-            ended={(isEnd) => setIsEnded(isEnd)}
-          />
-        ))}
-        <div className="flex justify-center items-center p-10" ref={ref}>
-          {!isEnded && <Button onClick={loadMore}>Load More...</Button>}
-          {isEnded && <span className=" text-lg font-semibold">❤️</span>}
+      <FavoriteStoreProvider>
+        <div className='w-full flex flex-col space-y-4'>
+          {[...Array(page)].map((_, i) => (
+            <ProductBlock
+              cardType={cardType}
+              key={i}
+              endpoint_url={genRequestUrl(i + 1)}
+              onEnd={() => setIsEnded(true)}
+            />
+          ))}
+          <div className="flex justify-center items-center p-10" ref={ref}>
+            {!isEnded && <Button onClick={loadMore}>Load More...</Button>}
+            {isEnded && <span className=" text-lg font-semibold">❤️</span>}
+          </div>
         </div>
-      </div>
+      </FavoriteStoreProvider>
     </SWRConfig>
   );
 }

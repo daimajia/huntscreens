@@ -5,7 +5,7 @@ import { YCSortBy } from "../../../types/yc.types";
 import ProductList from "../components/product.list";
 
 
-export default async function TaaftPage({ searchParams }: {
+export default function TaaftPage({ searchParams }: {
   searchParams: {
     sort?: YCSortBy
   }
