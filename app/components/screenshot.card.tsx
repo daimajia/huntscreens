@@ -56,7 +56,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
-        <Link passHref key={product.id} href={matches ? urlMapper[cardType](product.id) : product.website}>
+        <Link passHref key={product.id} href={(matches && !isFavorite) ? urlMapper[cardType](product.id) : product.website}>
           <img alt="" loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product.uuid}.webp` || ""}></img>
         </Link>
       </div>
