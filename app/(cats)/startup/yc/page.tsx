@@ -7,7 +7,7 @@ import Loading from "@/app/components/list.loading";
 import ProductList from "../../components/product.list";
 
 
-export default async function YCPage({ searchParams }: {
+export default function YCPage({ searchParams }: {
   searchParams: YCSearchParams
 }) {
   const sort = searchParams.sort || "time";
