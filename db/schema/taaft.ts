@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { boolean, date, integer, jsonb, pgTable, serial, text, time, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, date, index, integer, jsonb, pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export type Taaft = typeof taaft.$inferSelect;
 
@@ -28,4 +28,9 @@ export const taaft = pgTable('taaft', {
   uuid: uuid('uuid').defaultRandom().notNull(),
   webp: boolean('webp').default(false),
   created_at: timestamp('created_at', {withTimezone: true}).defaultNow(),
+}, (table) => {
+  return {
+    taaftuuidIndex: index('taaft_uuid_index').on(table.uuid),
+    taaftCreatedAtIndex: index('taaft_created_at_index').on(table.created_at)
+  }
 });

@@ -45,7 +45,11 @@ export const producthunt = pgTable('producthunt', {
   return {
     addedAtIndex: index('added_at_index').on(table.added_at),
     voteCountIndex: index('vote_count_index').on(table.votesCount),
-    featureAtIndex: index('featured_at_index').on(table.featuredAt)
+    featureAtIndex: index('featured_at_index').on(table.featuredAt),
+    phuuidIndex: index('ph_uuid_index').on(table.uuid),
+    addedAtVotesCountIndex: index('added_at_votes_count_index').on(table.added_at, table.votesCount),
+    webpIndex: index('webp_index').on(table.webp),
+    tagsIndex: index('tags_index').on(table.tags)
   }
 });
 

@@ -1,5 +1,5 @@
 import { eq, SQL, sql } from "drizzle-orm";
-import { boolean, integer, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, index, integer, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export type IndieHackersJson = Omit<IndieHackers, 'webp' | 'id' | 'uuid'>;
 
@@ -23,6 +23,10 @@ export const indiehackers = pgTable('indiehackers', {
   added_at: timestamp('added_at'),
   uuid: uuid('uuid').defaultRandom(),
   webp: boolean('webp').default(false),
+}, (table) => {
+  return {
+    ihuuidIndex: index('ih_uuid_index').on(table.uuid)
+  }
 });
 
 export const indiehackersViewQuery = (qb: QueryBuilder, window: SQL, where=eq(indiehackers.webp, true)) => {
