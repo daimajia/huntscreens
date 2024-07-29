@@ -9,7 +9,8 @@ import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
-  await handleSignIn(logtoConfig, new URL(request.nextUrl.toString()));
+  const searchParams = request.nextUrl.searchParams;
+  await handleSignIn(logtoConfig, new URL(`${logtoConfig.baseUrl}/callback/subscribe?${searchParams}`));
   const user = await getCurrentUser();
   if(user) {
     await addAudience(user.email);
