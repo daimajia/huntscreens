@@ -15,7 +15,7 @@ const SignIn = ({ onSignIn }: Props) => {
         onSignIn();
       }}
     >
-      Subscribe for Free
+      Log In
     </Button>
   );
 };

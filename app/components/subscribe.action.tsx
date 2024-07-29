@@ -1,0 +1,8 @@
+'use server';
+import { signIn } from "@logto/next/server-actions";
+import { logtoConfig } from "../logto";
+
+export const handleLoginAction = async () => {
+  
+  await signIn(logtoConfig, `${logtoConfig.baseUrl}/callback/subscribe`);
+}
