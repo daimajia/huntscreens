@@ -25,7 +25,7 @@ export async function GET() {
     title: "HuntScreens",
     description: "VisuallyDiscover Latest Products and Startups",
     generator: "RSS for Node and Next.js",
-    feed_url: "https://huntscreens.com/feed.xml",
+    feed_url: "https://huntscreens.com/rss.xml",
     site_url: "https://huntscreens.com",
     webMaster: "daimajia@gmail.com (daimajia)",
     language: "en-US",
