@@ -3,6 +3,8 @@ import { indiehackers, producthunt, yc } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import RSS from "rss";
 
+export const revalidate = 600;
+
 export async function GET() {
   const phs = await db.query.producthunt.findMany({
     where: eq(producthunt.webp, true),
@@ -34,6 +36,10 @@ export async function GET() {
   phs.map((item) => feed.item({
     title: item.name || "",
     description: item.description || "",
+    enclosure: {
+      url: `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${item.uuid}.webp`,
+      type: "image/webp"
+    },
     url: `https://huntscreens.com/p/${item.id}`,
     categories: item.tags || [],
     date: item.added_at || new Date()
