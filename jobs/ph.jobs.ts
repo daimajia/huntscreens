@@ -159,7 +159,7 @@ client.defineJob({
 
         const inserted = await db.insert(producthunt).values(element.node).onConflictDoNothing().returning();
         
-        await io.sendEvent("add intro", {
+        await io.sendEvent("add intro" + inserted[0].uuid, {
           name: "run.ai.intro",
           payload: {
             url: inserted[0].website,

@@ -80,7 +80,7 @@ client.defineJob({
     const uuid = inserted[0].uuid;
 
 
-    await io.sendEvent("add intro", {
+    await io.sendEvent("add intro" + inserted[0].uuid, {
       name: "run.ai.intro",
       payload: {
         url: inserted[0].website,
