@@ -21,11 +21,21 @@ client.defineJob({
         where: eq(yc.objectID, company.objectID!)
       });
       if(!exist) {
-        const data = await db.insert(yc).values(company).returning();
+        const inserted = await db.insert(yc).values(company).returning();
+
+        await io.sendEvent("add intro", {
+          name: "run.ai.intro",
+          payload: {
+            url: inserted[0].website,
+            uuid: inserted[0].uuid,
+            type: "yc"
+          }
+        })
+
         await io.sendEvent(`take ${company.website} screenshot`, {
           name: "screenshot.yc",
           payload: {
-            id: data[0].id
+            id: inserted[0].id
           }
         })
       }

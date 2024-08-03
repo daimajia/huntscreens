@@ -157,7 +157,16 @@ client.defineJob({
         
         element.node.tags = element.node.topics?.nodes.flatMap(topic => topic.name) || [];
 
-        await db.insert(producthunt).values(element.node).onConflictDoNothing();
+        const inserted = await db.insert(producthunt).values(element.node).onConflictDoNothing().returning();
+        
+        await io.sendEvent("add intro", {
+          name: "run.ai.intro",
+          payload: {
+            url: inserted[0].website,
+            uuid: inserted[0].uuid,
+            type: "ph"
+          }
+        })
 
         if(element.node.website){
           await io.sendEvent("screenshot-"  + element.node.uuid, {

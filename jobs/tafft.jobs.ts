@@ -76,8 +76,19 @@ client.defineJob({
       where: eq(taaft.website, product.website)
     })
     if(exist) return "already exists";
-    const result = await db.insert(taaft).values(product).returning();
-    const uuid = result[0].uuid;
+    const inserted = await db.insert(taaft).values(product).returning();
+    const uuid = inserted[0].uuid;
+
+
+    await io.sendEvent("add intro", {
+      name: "run.ai.intro",
+      payload: {
+        url: inserted[0].website,
+        uuid: inserted[0].uuid,
+        type: "taaft"
+      }
+    })
+
     await io.sendEvent(uuid, {
       name: "take.taaft.screenshot",
       payload: {

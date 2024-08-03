@@ -21,12 +21,22 @@ client.defineJob({
         where: eq(indiehackers.objectId, product.objectId!)
       });
       if(!exist) {
-        const data = await db.insert(indiehackers).values(product).returning();
+        const inserted = await db.insert(indiehackers).values(product).returning();
+
+        await io.sendEvent("add intro", {
+          name: "run.ai.intro",
+          payload: {
+            url: inserted[0].website,
+            uuid: inserted[0].uuid,
+            type: "indiehackers"
+          }
+        })
+
         await io.sendEvent(`take ${product.website} screenshot`, {
           name: "screenshot.indiehackers",
           payload: {
-            uuid: data[0].uuid,
-            website: data[0].website
+            uuid: inserted[0].uuid,
+            website: inserted[0].website
           }
         })
       }
