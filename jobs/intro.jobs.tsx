@@ -34,7 +34,7 @@ client.defineJob({
       if(exist) continue;
 
       await io.logger.info(item.website + "");
-      await io.sendEvent(item.uuid + "", {
+      await io.sendEvent(item.uuid + " run all intro", {
         name: "run.ai.intro",
         payload: {
           url: item.website,
