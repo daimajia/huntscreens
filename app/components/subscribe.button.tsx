@@ -45,7 +45,6 @@ export default function SubscribeButton({ subscribed, isLogin }: SubscribeButton
   const handleUnsubscribe = async () => {
     setIsLoading(true);
     try {
-      // 这里应该是您的取消订阅 API 调用
       const response = await fetch('/api/user/subscribe', { method: 'DELETE' });
       if (!response.ok) {
         throw new Error('Failed to unsubscribe');
