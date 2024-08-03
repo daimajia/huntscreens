@@ -1,17 +1,51 @@
 import { db } from "@/db/db";
 
 import redis from "@/db/redis";
-import { intro } from "@/db/schema";
+import { intro, producthunt } from "@/db/schema";
 import { getWebsiteDescription } from "@/lib/ai/claude";
 import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
 import assert from "assert";
+import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 const aiConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ai-limit`,
   limit: 1,
 });
+
+client.defineJob({
+  id: "run all ai intro",
+  name: "run all ai intro",
+  version: "0.0.1",
+  trigger: eventTrigger({
+    name: "run.all.intro"
+  }),
+  run: async (payload, io, ctx) => {
+    const phs = await db.query.producthunt.findMany({
+      where: eq(producthunt.webp, true),
+      orderBy: desc(producthunt.added_at)
+    });
+
+    for (const item of phs) {
+      const exist = await db.query.intro.findFirst({
+        where: eq(intro.uuid, item.uuid!)
+      });
+      if(exist) continue;
+
+      await io.logger.info(item.website + "");
+      await io.sendEvent(item.uuid + "", {
+        name: "run.ai.intro",
+        payload: {
+          url: item.website,
+          uuid: item.uuid,
+          type: "ph"
+        }
+      })
+      await io.wait(item.uuid!, 5 * 60);
+    }
+  }
+})
 
 export const addIntroJob = client.defineJob({
   id: "add AI introduction",
@@ -46,7 +80,7 @@ export const addIntroJob = client.defineJob({
         return ret;
       } catch (e) {
         await redis.set(`AI:Error:${payload.url}`, (e as Error).message);
-        throw(e);
+        throw (e);
       }
 
     }
