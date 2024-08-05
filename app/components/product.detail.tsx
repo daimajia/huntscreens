@@ -8,7 +8,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { intro, YC } from "@/db/schema";
 import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
 import YCInfoBadge from "./yc.info.badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import AIIntro from "./ai.intro";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
@@ -29,13 +28,13 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   });
   return <>
     <div className="flex flex-row w-full">
-      <div className="w-full h-[calc(100vh-77px)] flex flex-col p-0 md:p-10">
+      <div className="w-full flex flex-col p-0 md:p-10">
         <div className="w-full h-11 rounded-t-lg bg-gray-200 dark:bg-gray-700  flex justify-start items-center space-x-1.5 px-3">
           <span className="w-3 h-3 rounded-full bg-red-400"></span>
           <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
           <span className="w-3 h-3 rounded-full bg-green-400"></span>
         </div>
-        <div className="bg-gray-100 dark:bg-gray-700 border-t-0 w-full h-screen overflow-auto  border-gray-200 dark:border-gray-600 border">
+        <div className="bg-gray-100 dark:bg-gray-700 border-t-0 w-full   border-gray-200 dark:border-gray-600 border">
           <img alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`}></img>
         </div>
       </div>
@@ -68,21 +67,20 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
         </>}
 
 
-        <div className="px-5">
-          <h2 className="text-slate-500 dark:text-white/80">
-            {product?.description}
-          </h2>
-        </div>
-        {productIntro && <div className="px-5">
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>More about {product.name}</AccordionTrigger>
-              <AccordionContent>
-                <AIIntro uuid={product.uuid!} />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>}
+        {!productIntro &&
+          <div className="px-5">
+            <h2 className="text-slate-500 dark:text-white/80">
+              {product?.description}
+            </h2>
+          </div>
+        }
+
+
+        {productIntro &&
+          <div className="px-5">
+            <AIIntro uuid={product.uuid!} />
+          </div>
+        }
 
 
         {product && props.productType === "ph" &&
