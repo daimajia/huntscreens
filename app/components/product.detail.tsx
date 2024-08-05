@@ -5,11 +5,15 @@ import { Button } from "@/components/ui/button";
 import GoBack from "./back.button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { YC } from "@/db/schema";
+import { intro, YC } from "@/db/schema";
 import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
 import YCInfoBadge from "./yc.info.badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import AIIntro from "./ai.intro";
+import { db } from "@/db/db";
+import { and, eq } from "drizzle-orm";
 
-export default function ProductDetailPage<T extends ProductTypes>(props: {
+export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
   product: ProductModel<T>,
   next?: ProductModel<T> | null,
@@ -17,6 +21,12 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
 }) {
   const product = props.product;
   const thumbnail = thumbailGetter(props.productType, props.product);
+  const productIntro = await db.query.intro.findFirst({
+    where: and(
+      eq(intro.uuid, product.uuid!),
+      eq(intro.deleted, false)
+    )
+  });
   return <>
     <div className="flex flex-row w-full">
       <div className="w-full h-[calc(100vh-77px)] flex flex-col p-0 md:p-10">
@@ -39,8 +49,12 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
           <div className="flex flex-row gap-4 items-center  p-5 mt-10">
             <img alt={`${product.name} thumbnail`} loading="lazy" src={thumbnail || ""} className=" w-20 rounded-lg" />
             <div className="flex flex-col gap-1 ">
-              <h1 className=" text-xl font-semibold">{product?.name}</h1>
-              <h2 className="  text-slate-600">
+              <Link href={product.website || ""} target="__blank" className="hover:underline">
+                <h1 className=" text-xl font-semibold">
+                  {product?.name}
+                </h1>
+              </Link>
+              <h2 className="  text-slate-600 dark:text-white/80">
                 {product?.tagline}
               </h2>
             </div>
@@ -55,10 +69,21 @@ export default function ProductDetailPage<T extends ProductTypes>(props: {
 
 
         <div className="px-5">
-          <h2 className="text-slate-500">
+          <h2 className="text-slate-500 dark:text-white/80">
             {product?.description}
           </h2>
         </div>
+        {productIntro && <div className="px-5">
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>More about {product.name}</AccordionTrigger>
+              <AccordionContent>
+                <AIIntro uuid={product.uuid!} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>}
+
 
         {product && props.productType === "ph" &&
           <div className="p-5 gap-2 flex flex-wrap">

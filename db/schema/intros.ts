@@ -1,4 +1,4 @@
-import { index, pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, index, pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const intro = pgTable("intros", {
   id: serial('id').primaryKey(),
@@ -8,6 +8,7 @@ export const intro = pgTable("intros", {
   description: text('description').notNull(),
   version: text('version').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
+  deleted: boolean("deleted").default(false)
 }, (table) => {
   return {
     introuuidIndex: index('intro_uuid').on(table.uuid)

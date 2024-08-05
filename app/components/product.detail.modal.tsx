@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, SquareArrowOutUpRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Link2Icon, SquareArrowOutUpRight } from "lucide-react";
 import useSWR from "swr";
 import { getCookie } from 'cookies-next';
 import { ProductDetailData } from "../types/api.types";
@@ -97,18 +97,29 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
               </Link>
             </div>
             {isLoading &&
-              <Spiner className="mr-5" />
+              <Spiner className="mr-5 dark:text-white/80 text-slate-500" />
             }
+            {!isLoading &&
+              <Link href={product.website!} target="__blank">
+                <Button size={"icon"} variant={"ghost"} className=" rounded-full">
+                  <Link2Icon strokeWidth={1.5} className=" w-6 h-6 dark:text-white/80 text-slate-500" />
+                </Button>
+              </Link>
+            }
+
+
             {prev &&
               <Button onClick={prevProduct} size={"icon"} variant={"ghost"} className=" rounded-full">
-                <ChevronLeft strokeWidth={1.5} color="gray" className=" w-6 h-6" />
+                <ChevronLeft strokeWidth={1.5} className=" w-6 h-6 dark:text-white/80 text-slate-500" />
               </Button>
             }
             {next &&
               <Button onClick={nextProduct} size={"icon"} variant={"ghost"} className=" rounded-full">
-                <ChevronRight strokeWidth={1.5} color="gray" className=" w-6 h-6" />
+                <ChevronRight strokeWidth={1.5}  className=" w-6 h-6 dark:text-white/80 text-slate-500" />
               </Button>
             }
+
+
           </div>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 border-t-0 w-full h-screen overflow-auto  border-gray-200 dark:border-gray-600 border">
@@ -130,8 +141,10 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
                 }
               </div>
               <div className="flex flex-col gap-1 ">
-                <h1 className=" text-xl font-semibold">{product?.name}</h1>
-                <h2 className="  text-slate-600">
+                <h1 className=" text-xl font-semibold">
+                  <Link className="hover:underline" href={product.website || ""}>{product?.name}</Link>
+                </h1>
+                <h2 className="  text-slate-600 dark:text-slate-200">
                   {product?.tagline}
                 </h2>
               </div>
@@ -146,7 +159,7 @@ export default function ProductDetailModal<T extends ProductTypes>(props: {
 
 
           <div className="px-5 overflow-auto min-h-10">
-            <h2 className="text-slate-500">
+            <h2 className="text-slate-600 dark:text-slate-300">
               {product?.description}
             </h2>
           </div>
