@@ -9,6 +9,14 @@ import assert from "assert";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
+const blackKeywords = [
+  'SEO-friendly',
+  'I apologize',
+  '[Product Name]',
+  'Unfortunately',
+  'Page Not Found'
+];
+
 const aiConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ai-limit`,
   limit: 1,
@@ -31,7 +39,7 @@ client.defineJob({
       const exist = await db.query.intro.findFirst({
         where: eq(intro.uuid, item.uuid!)
       });
-      if(exist) continue;
+      if (exist) continue;
 
       await io.logger.info(item.website + "");
       await io.sendEvent(item.uuid + " run all intro", {
@@ -69,12 +77,14 @@ export const addIntroJob = client.defineJob({
         const ret = await getWebsiteDescription(payload.url);
         assert(ret.data.content[0].type === "text");
         const desc = ret.data.content[0].text;
+        const deleted = blackKeywords.some(keyword => (desc as string).includes(keyword))
         await db.insert(intro).values({
           website: payload.url,
           uuid: payload.uuid,
           description: desc,
           type: payload.type,
-          version: "0.0.1"
+          version: "0.0.1",
+          deleted: deleted
         })
         await redis.set(`AI:Success:${payload.url}`, JSON.stringify(ret));
         return ret;
