@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 
 import redis from "@/db/redis";
-import { intro, producthunt } from "@/db/schema";
+import { indiehackers, intro, producthunt, yc } from "@/db/schema";
 import { getWebsiteDescription } from "@/lib/ai/claude";
 import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
@@ -48,6 +48,52 @@ client.defineJob({
           url: item.website,
           uuid: item.uuid,
           type: "ph"
+        }
+      })
+      await io.wait(item.uuid!, 5 * 60);
+    }
+
+    const ycs = await db.query.yc.findMany({
+      where: eq(yc.webp, true),
+      orderBy: desc(yc.launched_at)
+    });
+
+    for (const item of ycs) {
+      const exist = await db.query.intro.findFirst({
+        where: eq(intro.uuid, item.uuid!)
+      });
+      if (exist) continue;
+
+      await io.logger.info(item.website + "");
+      await io.sendEvent(item.uuid + " run all intro", {
+        name: "run.ai.intro",
+        payload: {
+          url: item.website,
+          uuid: item.uuid,
+          type: "yc"
+        }
+      })
+      await io.wait(item.uuid!, 5 * 60);
+    }
+
+    const ihs = await db.query.indiehackers.findMany({
+      where: eq(indiehackers.webp, true),
+      orderBy: desc(indiehackers.added_at)
+    });
+
+    for (const item of ihs) {
+      const exist = await db.query.intro.findFirst({
+        where: eq(intro.uuid, item.uuid!)
+      });
+      if (exist) continue;
+
+      await io.logger.info(item.website + "");
+      await io.sendEvent(item.uuid + " run all intro", {
+        name: "run.ai.intro",
+        payload: {
+          url: item.website,
+          uuid: item.uuid,
+          type: "indiehackers"
         }
       })
       await io.wait(item.uuid!, 5 * 60);
