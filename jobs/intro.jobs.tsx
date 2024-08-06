@@ -1,7 +1,8 @@
+import { ProductTypes } from "@/app/types/product.types";
 import { db } from "@/db/db";
 
 import redis from "@/db/redis";
-import { indiehackers, intro, producthunt, yc } from "@/db/schema";
+import { IndieHackers, indiehackers, intro, Producthunt, producthunt, YC, yc } from "@/db/schema";
 import { getURLAiIntro } from "@/lib/ai/intro";
 import { generateRandomString } from "@/lib/crypto/random";
 import { client } from "@/trigger";
@@ -22,6 +23,8 @@ const aiConcurrencyLimit = client.defineConcurrencyLimit({
   limit: 1,
 });
 
+
+
 client.defineJob({
   id: "run all ai intro",
   name: "run all ai intro",
@@ -30,74 +33,52 @@ client.defineJob({
     name: "run.all.intro"
   }),
   run: async (payload, io, ctx) => {
+
+    async function iterateRun(products: Producthunt[] | YC[] | IndieHackers[], productType: ProductTypes) {
+      for (const item of products) {
+        const wasError = await redis.get(`AI:Error:${payload.url}`);
+
+        if(wasError) continue;
+
+        const exist = await db.query.intro.findFirst({
+          where: eq(intro.uuid, item.uuid!)
+        });
+        
+        if (exist) continue;
+
+        await io.logger.info(item.website + "");
+        await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
+          name: "run.ai.intro",
+          payload: {
+            url: item.website,
+            uuid: item.uuid,
+            type: productType
+          }
+        })
+        await io.wait(item.uuid!, 20);
+      }
+    };
+
     const phs = await db.query.producthunt.findMany({
       where: eq(producthunt.webp, true),
       orderBy: desc(producthunt.added_at)
     });
 
-    for (const item of phs) {
-      const exist = await db.query.intro.findFirst({
-        where: eq(intro.uuid, item.uuid!)
-      });
-      if (exist) continue;
-
-      await io.logger.info(item.website + "");
-      await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
-        name: "run.ai.intro",
-        payload: {
-          url: item.website,
-          uuid: item.uuid,
-          type: "ph"
-        }
-      })
-      await io.wait(item.uuid!, 20);
-    }
+    await iterateRun(phs, "ph");
 
     const ycs = await db.query.yc.findMany({
       where: eq(yc.webp, true),
       orderBy: desc(yc.launched_at)
     });
 
-    for (const item of ycs) {
-      const exist = await db.query.intro.findFirst({
-        where: eq(intro.uuid, item.uuid!)
-      });
-      if (exist) continue;
-
-      await io.logger.info(item.website + "");
-      await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
-        name: "run.ai.intro",
-        payload: {
-          url: item.website,
-          uuid: item.uuid,
-          type: "yc"
-        }
-      })
-      await io.wait(item.uuid!, 20);
-    }
+    await iterateRun(ycs, "yc");
 
     const ihs = await db.query.indiehackers.findMany({
       where: eq(indiehackers.webp, true),
       orderBy: desc(indiehackers.added_at)
     });
 
-    for (const item of ihs) {
-      const exist = await db.query.intro.findFirst({
-        where: eq(intro.uuid, item.uuid!)
-      });
-      if (exist) continue;
-
-      await io.logger.info(item.website + "");
-      await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
-        name: "run.ai.intro",
-        payload: {
-          url: item.website,
-          uuid: item.uuid,
-          type: "indiehackers"
-        }
-      })
-      await io.wait(item.uuid!, 20);
-    }
+    await iterateRun(ihs, "indiehackers");
   }
 })
 
