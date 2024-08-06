@@ -1,3 +1,10 @@
+import parse from "node-html-parser";
+
+type PuppeteerResp = {
+  error: boolean,
+  source: string | null
+}
+
 export function removeUrlParams(url: string, params: string[] | string): string {
   const urlObject = new URL(url);
   const paramsArray = Array.isArray(params) ? params : [params];
@@ -15,4 +22,27 @@ export function addUtmParams(url: string, params: { [key: string]: string }): st
   });
 
   return urlObj.toString();
+}
+
+export async function getPuppeteerRenderSource(url: string) {
+  const resp = await fetch(`${process.env.PUPPETEER}/api/source?url=${url}`, {next: {revalidate: 3000}});
+  const json = await resp.json() as PuppeteerResp;
+  if(!json.error && json.source){
+    return json.source;
+  }else{
+    throw new Error("Puppeteer got error");
+  }
+}
+
+export async function url2text(url: string) {
+  const source = await getPuppeteerRenderSource(url);
+  const root = parse(source);
+  root.querySelectorAll('script, style').forEach(el => el.remove());
+  const text = root.textContent;
+  console.log(text);
+  if(text && text.length > 50) {
+    return text;
+  }else{
+    throw new Error("soruce text length is less than 50")
+  }
 }

@@ -16,7 +16,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.25.0",
+    "@ai-sdk/openai": "^0.0.40",
     "@logto/next": "^3.3.4",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-avatar": "^1.1.0",
@@ -39,6 +39,7 @@
     "@trigger.dev/react": "^2.3.19",
     "@trigger.dev/resend": "^2.3.19",
     "@trigger.dev/sdk": "^2.3.19",
+    "ai": "^3.3.0",
     "algoliasearch": "^4.24.0",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",

@@ -2,10 +2,9 @@ import { db } from "@/db/db";
 
 import redis from "@/db/redis";
 import { indiehackers, intro, producthunt, yc } from "@/db/schema";
-import { getWebsiteDescription } from "@/lib/ai/claude";
+import { getURLAiIntro } from "@/lib/ai/intro";
 import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
-import assert from "assert";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -25,7 +24,7 @@ const aiConcurrencyLimit = client.defineConcurrencyLimit({
 client.defineJob({
   id: "run all ai intro",
   name: "run all ai intro",
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: eventTrigger({
     name: "run.all.intro"
   }),
@@ -50,7 +49,7 @@ client.defineJob({
           type: "ph"
         }
       })
-      await io.wait(item.uuid!, 5 * 60);
+      await io.wait(item.uuid!, 20);
     }
 
     const ycs = await db.query.yc.findMany({
@@ -73,7 +72,7 @@ client.defineJob({
           type: "yc"
         }
       })
-      await io.wait(item.uuid!, 5 * 60);
+      await io.wait(item.uuid!, 20);
     }
 
     const ihs = await db.query.indiehackers.findMany({
@@ -96,7 +95,7 @@ client.defineJob({
           type: "indiehackers"
         }
       })
-      await io.wait(item.uuid!, 5 * 60);
+      await io.wait(item.uuid!, 20);
     }
   }
 })
@@ -120,25 +119,22 @@ export const addIntroJob = client.defineJob({
       return "Already Error:" + wasError;
     } else {
       try {
-        const ret = await getWebsiteDescription(payload.url);
-        assert(ret.data.content[0].type === "text");
-        const desc = ret.data.content[0].text;
-        const deleted = blackKeywords.some(keyword => (desc as string).includes(keyword))
+        const {aiintro, prompt} = await getURLAiIntro(payload.url);
+        const deleted = blackKeywords.some(keyword => aiintro.includes(keyword))
         await db.insert(intro).values({
           website: payload.url,
           uuid: payload.uuid,
-          description: desc,
+          description: aiintro,
           type: payload.type,
-          version: "0.0.1",
+          version: "0.0.2",
           deleted: deleted
         })
-        await redis.set(`AI:Success:${payload.url}`, JSON.stringify(ret));
-        return ret;
+        await redis.set(`AI:Success:${payload.url}`, `{aiintro: ${aiintro}, prompt: ${prompt}}`);
+        return {aiintro: aiintro, prompt: prompt};
       } catch (e) {
         await redis.set(`AI:Error:${payload.url}`, (e as Error).message);
         throw (e);
       }
-
     }
   }
 });
