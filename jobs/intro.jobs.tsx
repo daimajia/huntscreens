@@ -3,6 +3,7 @@ import { db } from "@/db/db";
 import redis from "@/db/redis";
 import { indiehackers, intro, producthunt, yc } from "@/db/schema";
 import { getURLAiIntro } from "@/lib/ai/intro";
+import { generateRandomString } from "@/lib/crypto/random";
 import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
 import { desc, eq } from "drizzle-orm";
