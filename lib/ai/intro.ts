@@ -1,6 +1,6 @@
 import { generateText } from 'ai';
 import { openai } from "@ai-sdk/openai";
-import { url2text } from "../utils/url";
+import { addUtmParams, url2text } from "../utils/url";
 
 async function generate(prompt: string) {
   const { text } = await generateText({
@@ -37,7 +37,9 @@ export async function getURLAiIntro(url: string) {
   # Teams
   [about product teams]
   `;
-  const rawText = await url2text(url);
+  const rawText = await url2text(addUtmParams(url, {
+    ref: "huntscreens.com"
+  }));
   const aiintro = await generate(`${prompt} """ ${rawText} """`);
   return {
     prompt: `${prompt} """ ${rawText} """`,
