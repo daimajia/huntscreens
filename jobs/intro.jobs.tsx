@@ -36,7 +36,7 @@ client.defineJob({
 
     async function iterateRun(products: Producthunt[] | YC[] | IndieHackers[], productType: ProductTypes) {
       for (const item of products) {
-        const wasError = await redis.get(`AI:Error:${payload.url}`);
+        const wasError = await redis.get(`AI:Error:${item.website}`);
 
         if(wasError) continue;
 
