@@ -43,7 +43,7 @@ client.defineJob({
         const exist = await db.query.intro.findFirst({
           where: eq(intro.uuid, item.uuid!)
         });
-        
+
         if (exist) continue;
 
         await io.logger.info(item.website + "");
@@ -115,7 +115,7 @@ export const addIntroJob = client.defineJob({
         return { aiintro: aiintro, prompt: prompt };
       } catch (e) {
         await redis.set(`AI:Error:${payload.url}`, (e as Error).message);
-        throw (e);
+        return `AI:Error:${payload.url} Error: ${(e as Error).message}`;
       }
     }
   }
