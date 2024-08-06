@@ -41,7 +41,7 @@ client.defineJob({
       if (exist) continue;
 
       await io.logger.info(item.website + "");
-      await io.sendEvent(item.uuid + " run all intro", {
+      await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
         name: "run.ai.intro",
         payload: {
           url: item.website,
@@ -64,7 +64,7 @@ client.defineJob({
       if (exist) continue;
 
       await io.logger.info(item.website + "");
-      await io.sendEvent(item.uuid + " run all intro", {
+      await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
         name: "run.ai.intro",
         payload: {
           url: item.website,
@@ -87,7 +87,7 @@ client.defineJob({
       if (exist) continue;
 
       await io.logger.info(item.website + "");
-      await io.sendEvent(item.uuid + " run all intro", {
+      await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
         name: "run.ai.intro",
         payload: {
           url: item.website,
@@ -119,7 +119,7 @@ export const addIntroJob = client.defineJob({
       return "Already Error:" + wasError;
     } else {
       try {
-        const {aiintro, prompt} = await getURLAiIntro(payload.url);
+        const { aiintro, prompt } = await getURLAiIntro(payload.url);
         const deleted = blackKeywords.some(keyword => aiintro.includes(keyword))
         await db.insert(intro).values({
           website: payload.url,
@@ -130,7 +130,7 @@ export const addIntroJob = client.defineJob({
           deleted: deleted
         })
         await redis.set(`AI:Success:${payload.url}`, `{aiintro: ${aiintro}, prompt: ${prompt}}`);
-        return {aiintro: aiintro, prompt: prompt};
+        return { aiintro: aiintro, prompt: prompt };
       } catch (e) {
         await redis.set(`AI:Error:${payload.url}`, (e as Error).message);
         throw (e);
