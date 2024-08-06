@@ -39,7 +39,6 @@ export async function url2text(url: string) {
   const root = parse(source);
   root.querySelectorAll('script, style').forEach(el => el.remove());
   const text = root.textContent;
-  console.log(text);
   if(text && text.length > 50) {
     return text;
   }else{
