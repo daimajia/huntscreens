@@ -33,7 +33,7 @@ function removeTAAFTQueryParams(url?: string | null) {
 }
 
 export async function fetchTAAFTLatest() {
-  const resp = await fetch(`${process.env.PUPPETEER}?url=https://theresanaiforthat.com/just-launched/`, {next: {revalidate: 3000}});
+  const resp = await fetch(`${process.env.PUPPETEER}?url=https://theresanaiforthat.com/just-launched/`);
   const json = await resp.json() as PuppeteerResp;
   if(!json.error && json.source){
     const root = parse(json.source);

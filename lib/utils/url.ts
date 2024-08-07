@@ -14,18 +14,8 @@ export function removeUrlParams(url: string, params: string[] | string): string 
   return urlObject.toString();
 }
 
-export function addUtmParams(url: string, params: { [key: string]: string }): string {
-  const urlObj = new URL(url);
-  
-  Object.entries(params).forEach(([key, value]) => {
-    urlObj.searchParams.append(key, value);
-  });
-
-  return urlObj.toString();
-}
-
 export async function getPuppeteerRenderSource(url: string) {
-  const resp = await fetch(`${process.env.PUPPETEER}?url=${url}`, {next: {revalidate: 3000}});
+  const resp = await fetch(`${process.env.PUPPETEER}?url=${url}`);
   const json = await resp.json() as PuppeteerResp;
   if(!json.error && json.source){
     return json.source;

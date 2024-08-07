@@ -1,7 +1,6 @@
 import { client } from "@/trigger";
 import assert from "assert";
 import * as screenshotone from "screenshotone-api-sdk";
-import { addUtmParams } from "./utils/url";
 
 export type ScreenshotResponse = {
   store: {
@@ -17,9 +16,7 @@ export const screenshotConcurrencyLimit = client.defineConcurrencyLimit({
 export function getScreenshotOneParams(website: string, uuid: string, webhook_url: string) {
   return {
     access_key: process.env.SCREENSHOTONE_ACCESS_KEY,
-    url: addUtmParams(website, {
-      ref: 'huntscreens.com'
-    }),
+    url: website,
     store: "true",
     storage_path: uuid,
     response_type: "json",
