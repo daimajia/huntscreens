@@ -25,7 +25,7 @@ export function addUtmParams(url: string, params: { [key: string]: string }): st
 }
 
 export async function getPuppeteerRenderSource(url: string) {
-  const resp = await fetch(`${process.env.PUPPETEER}/api/source?url=${url}`, {next: {revalidate: 3000}});
+  const resp = await fetch(`${process.env.PUPPETEER}?url=${url}`, {next: {revalidate: 3000}});
   const json = await resp.json() as PuppeteerResp;
   if(!json.error && json.source){
     return json.source;

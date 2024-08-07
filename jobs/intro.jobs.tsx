@@ -32,7 +32,7 @@ client.defineJob({
   trigger: eventTrigger({
     name: "run.all.intro"
   }),
-  run: async (payload, io, ctx) => {
+  run: async (_, io) => {
 
     async function iterateRun(products: Producthunt[] | YC[] | IndieHackers[], productType: ProductTypes) {
       for (const item of products) {
