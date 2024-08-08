@@ -28,6 +28,7 @@ export function getScreenshotOneParams(website: string, uuid: string, webhook_ur
     viewport_height: 1080,
     device_scale_factor: 1,
     format: "webp",
+    full_page_max_height: 10000,
     image_quality: 100,
     block_banners_by_heuristics: "true",
     delay: 5,

@@ -61,7 +61,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
         </Link>
       </div>
       <div className="flex flex-row gap-5 items-center">
-        <img alt={""} loading="lazy" className="h-10 rounded-md" src={product.thumbnail || ""}></img>
+        <img alt={""} loading="lazy" className="h-10 rounded-full border border-gray-300 dark:border-gray-800/80" src={product.thumbnail || ""}></img>
         <div className="flex flex-row w-full justify-between items-center">
           <div className="flex flex-col">
             <div className="flex flex-row gap-2 items-center">
@@ -70,7 +70,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
                 <span className="flex items-center justify-center gap-1 ms-0.5 bg-blue-50 border border-blue-300 text-blue-600 text-[.6125rem] leading-4 uppercase align-middle rounded-full py-0.3 px-2 dark:bg-blue-900/70 dark:border-blue-700 dark:text-blue-500 font-semibold">NEW</span>
               }
             </div>
-            <div className=" text-muted-foreground">
+            <div className="text-sm text-muted-foreground">
               {product.tagline}
             </div>
           </div>
