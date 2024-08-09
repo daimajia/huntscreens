@@ -38,7 +38,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
           <img alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`}></img>
         </div>
       </div>
-      <div className="md:w-[500px] hidden md:flex flex-col pb-10  border rounded-lg my-10 border-r-0 rounded-r-none shadow-sm">
+      <div className="md:w-[700px] hidden md:flex flex-col pb-10  border rounded-lg my-10 border-r-0 rounded-r-none shadow-sm">
 
         <div className="absolute top-15 right-5">
           <GoBack buttonAction="home" className=" border-t-0 rounded-t-none hover:border-t" />

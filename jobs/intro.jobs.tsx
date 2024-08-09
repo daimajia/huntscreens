@@ -20,7 +20,7 @@ const blackKeywords = [
 
 const aiConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ai-limit`,
-  limit: 1,
+  limit: 3,
 });
 
 
@@ -28,7 +28,7 @@ const aiConcurrencyLimit = client.defineConcurrencyLimit({
 client.defineJob({
   id: "run all ai intro",
   name: "run all ai intro",
-  version: "0.0.2",
+  version: "0.0.3",
   trigger: eventTrigger({
     name: "run.all.intro"
   }),
@@ -55,7 +55,6 @@ client.defineJob({
             type: productType
           }
         })
-        await io.wait(item.uuid!, 20);
       }
     };
 
