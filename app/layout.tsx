@@ -3,7 +3,6 @@ import './globals.css';
 import Umami from './thridparties/umami';
 import { ThemeProvider } from './components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import LoomFlowsWidget from '@/components/third/loomflow';
 
 export const metadata: Metadata = {
   title: 'Screenshots of Every New Product and Startup! - HuntScreens.com',
@@ -39,7 +38,6 @@ export default function RootLayout({
           {children}
           <Toaster />
           <Umami />
-          <LoomFlowsWidget accessToken="c1bacc70-40ad-4c40-97ac-295e6ac630f2" />
         </ThemeProvider>
       </body>
     </html>

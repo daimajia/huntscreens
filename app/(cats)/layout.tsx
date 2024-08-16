@@ -3,6 +3,7 @@ import Header from '../components/header';
 import SubscribeButton from '../components/subscribe.button';
 import underline from "/public/underline.svg";
 import { getCurrentUser } from '@/lib/user';
+import LoomFlowsWidget from '@/components/third/loomflow';
 
 export const revalidate = 0;
 
@@ -36,6 +37,7 @@ export default async function Home({
 
         {children}
       </main>
+      <LoomFlowsWidget accessToken="c1bacc70-40ad-4c40-97ac-295e6ac630f2" />
     </>
   )
 }
