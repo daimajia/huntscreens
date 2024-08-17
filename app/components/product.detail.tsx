@@ -1,13 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import { intro } from "@/db/schema";
+import { intro, Producthunt, YC } from "@/db/schema";
 import { ProductModel, ProductTypes, thumbailGetter } from "../types/product.types";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import SiteBreadcrumb from "./breadcrumb";
 import AIIntro from "./ai.intro";
 import Link from "next/link";
+import YCInfoBadge from "./yc.info.badge";
+import { Badge } from "@/components/ui/badge";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -60,10 +62,24 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                   </div>
                 </div>
               </div>
+
               <div>
                 <h3 className=" text">{product.description}</h3>
               </div>
+
+              <div className="flex w-full flex-row justify-end gap-3">
+                {(product as Producthunt).topics?.nodes.map((item) =>
+                  <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
+                )}
+              </div>
             </div>
+
+
+            {props.productType === "yc" && <>
+              <div className="bg-white dark:bg-gray-800 border rounded-lg">
+                <YCInfoBadge yc={(product as YC)} />
+              </div>
+            </>}
 
             <div className="md:hidden">
               <Link href={product.website || ""} target="_blank" className="w-full">
