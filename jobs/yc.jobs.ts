@@ -10,9 +10,9 @@ import { fethcYCLatestCompanies } from "@/lib/yc";
 client.defineJob({
   id: "Schedule YC Latest Portfolio",
   name: "Schedule YC Latest Portfolio",
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: intervalTrigger({
-    seconds: 7200
+    seconds: 600
   }),
   run: async (payload, io, ctx) => {
     const ycCompanies = await fethcYCLatestCompanies();

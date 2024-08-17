@@ -10,9 +10,9 @@ import { getIndiehackersProducts } from "@/lib/indiehackers";
 client.defineJob({
   id: "Schedule Indiehackers Latest products",
   name: "Schedule Indiehackers Latest products",
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: intervalTrigger({
-    seconds: 3600
+    seconds: 600
   }),
   run: async (payload, io, ctx) => {
     const ids = await getIndiehackersProducts();
