@@ -48,7 +48,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                         </h1>
                       </Link>
                       <Link href={product.website || ""} target="_blank">
-                        <Button variant={"outline"} className="hidden md:flex">
+                        <Button variant={"outline"} className="hidden md:flex bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
                           Visit the Website
                           <ExternalLink className="w-4 h-4 ml-2" />
                         </Button>
@@ -67,7 +67,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
             <div className="md:hidden">
               <Link href={product.website || ""} target="_blank" className="w-full">
-                <Button variant="outline" className="w-full">
+                <Button variant={"outline"} className="w-full flex md:hidden bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
                   Visit the Website
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </Button>
