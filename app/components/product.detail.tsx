@@ -99,15 +99,15 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
               <NextPrevCard productType={props.productType} next={props.next} prev={props.prev} />
             </div>
 
-            <div className="bg-white dark:bg-gray-800 border rounded-lg p-5">
-              {productIntro && <div>
+
+            {productIntro &&
+              <div className="bg-white dark:bg-gray-800 border rounded-lg p-5">
                 <div className=" text-2xl mb-5 font-bold">
                   More About {product.name}
                 </div>
                 <AIIntro uuid={product.uuid!} />
               </div>
-              }
-            </div>
+            }
           </div>
 
 
