@@ -10,6 +10,7 @@ import AIIntro from "./ai.intro";
 import Link from "next/link";
 import YCInfoBadge from "./yc.info.badge";
 import { Badge } from "@/components/ui/badge";
+import NextPrevCard from "./next.prev.card";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -92,6 +93,10 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
             <div>
               <img className="h-[500px] w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
+            </div>
+
+            <div>
+              <NextPrevCard productType={props.productType} next={props.next} prev={props.prev} />
             </div>
 
             <div className="bg-white dark:bg-gray-800 border rounded-lg p-5">
