@@ -27,11 +27,11 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
     <div className=" bg-gray-100 dark:bg-gray-900">
       <div className="flex-col max-w-5xl mx-auto gap-5 ">
 
-        <div className="flex flex-row gap-5 px-10 pt-10">
+        <div className="flex flex-row gap-5 px-5 md:px-10 pt-5 md:pt-10">
           <SiteBreadcrumb productType={props.productType} />
         </div>
 
-        <div className="flex md:flex-row flex-col gap-10 p-10">
+        <div className="flex md:flex-row flex-col gap-10 p-5 md:p-10">
 
           <div className="flex flex-col gap-5">
 
