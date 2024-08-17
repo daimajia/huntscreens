@@ -1,17 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { Producthunt } from "@/db/schema/ph";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import GoBack from "./back.button";
-import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { intro, YC } from "@/db/schema";
-import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
-import YCInfoBadge from "./yc.info.badge";
-import AIIntro from "./ai.intro";
+import { ExternalLink } from "lucide-react";
+import { intro } from "@/db/schema";
+import { ProductModel, ProductTypes, thumbailGetter } from "../types/product.types";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import SiteBreadcrumb from "./breadcrumb";
+import AIIntro from "./ai.intro";
+import Link from "next/link";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -28,111 +24,74 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
     )
   });
   return <>
-    <div className="flex-col gap-5">
+    <div className=" bg-gray-100 dark:bg-gray-900">
+      <div className="flex-col max-w-5xl mx-auto gap-5 ">
 
-      <div className="flex flex-row gap-5 px-10 pt-10">
-        <SiteBreadcrumb productType={props.productType}/>
-      </div>
-
-      <div className="flex flex-row w-full">
-        <div className="w-full flex flex-col p-0 md:p-10">
-          <div className="w-full h-11 rounded-t-lg bg-gray-200 dark:bg-gray-700  flex justify-start items-center space-x-1.5 px-3">
-            <span className="w-3 h-3 rounded-full bg-red-400"></span>
-            <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
-            <span className="w-3 h-3 rounded-full bg-green-400"></span>
-          </div>
-          <div className="bg-gray-100 dark:bg-gray-700 border-t-0 w-full   border-gray-200 dark:border-gray-600 border">
-            <img alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`}></img>
-          </div>
+        <div className="flex flex-row gap-5 px-10 pt-10">
+          <SiteBreadcrumb productType={props.productType} />
         </div>
-        <div className="md:w-[700px] hidden md:flex flex-col pb-10  border rounded-lg my-10 border-r-0 rounded-r-none shadow-sm">
 
-          <div className="absolute top-15 right-5">
-            <GoBack buttonAction="home" className=" border-t-0 rounded-t-none hover:border-t" />
-          </div>
+        <div className="flex md:flex-row flex-col gap-10 p-10">
 
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <div className="flex flex-row gap-4 items-center  p-5 mt-10">
-              <img alt={`${product.name} thumbnail`} loading="lazy" src={thumbnail || ""} className=" w-20 rounded-lg" />
-              <div className="flex flex-col gap-1 ">
-                <Link href={product.website || ""} target="__blank" className="hover:underline">
-                  <h1 className=" text-xl font-semibold">
-                    {product?.name}
-                  </h1>
-                </Link>
-                <h2 className="  text-slate-600 dark:text-white/80">
-                  {product?.tagline}
-                </h2>
+          <div className="flex flex-col gap-5">
+
+            <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border">
+              <div className="flex flex-row gap-5">
+                <img alt={`${product.name} thumbnail`} loading="lazy" src={thumbnail || ""} className="w-20 rounded-full border" />
+
+                <div className="flex flex-col w-full justify-between">
+                  <div className="flex flex-col gap-3 w-full">
+                    <div className="flex flex-row items-center justify-between gap-4">
+                      <Link href={product.website || ""} target="_blank">
+                        <h1 className="text-3xl md:text-5xl font-bold break-words hover:underline">
+                          {product.name}
+                        </h1>
+                      </Link>
+                      <Link href={product.website || ""} target="_blank">
+                        <Button variant={"outline"} className="hidden md:flex">
+                          Visit the Website
+                          <ExternalLink className="w-4 h-4 ml-2" />
+                        </Button>
+                      </Link>
+                    </div>
+                    <h2>
+                      {product.tagline}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 className=" text">{product.description}</h3>
               </div>
             </div>
-          </div>
-          <div>
-          </div>
 
-          {props.productType === "yc" && <>
-            <YCInfoBadge yc={(product as YC)} />
-          </>}
-
-
-          {!productIntro &&
-            <div className="px-5">
-              <h2 className="text-slate-500 dark:text-white/80">
-                {product?.description}
-              </h2>
-            </div>
-          }
-
-
-          {productIntro &&
-            <div className="px-5">
-              <AIIntro uuid={product.uuid!} />
-            </div>
-          }
-
-
-          {product && props.productType === "ph" &&
-            <div className="p-5 gap-2 flex flex-wrap">
-              {(product as Producthunt).topics?.nodes.map((item) =>
-                <Badge key={item.name} className="py-1 text-slate-500" variant="outline">{item.name}</Badge>
-              )}
-            </div>
-          }
-
-          <div className="p-5 flex flex-row gap-5">
-            <Link className="w-full h-full" href={product?.website || ""} target="__blank">
-              <Button className="w-full h-full" variant={"outline"}>
-                GET IT
-              </Button>
-            </Link>
-            {props.productType === "ph" &&
-              <Link className="w-full h-full" href={(props.product as Producthunt)?.url || ""} target="__blank">
-                <Button className="w-full border" variant={"outline"}>VOTE ({(props.product as Producthunt)?.votesCount || ""})</Button>
+            <div className="md:hidden">
+              <Link href={product.website || ""} target="_blank" className="w-full">
+                <Button variant="outline" className="w-full">
+                  Visit the Website
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </Button>
               </Link>
-            }
+            </div>
 
-          </div>
+            <div>
+              <img className="h-[500px] w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
+            </div>
 
-
-          <div className="flex h-full items-end px-5">
-            <div className="w-full flex flex-row justify-start gap-4">
-              {props.prev &&
-                <Link href={urlMapper[props.productType](props.prev.id)} shallow={true}>
-                  <Button variant={"outline"} size={"icon"} className="rounded-full" >
-                    <ChevronLeft strokeWidth={1.5} color="gray" className=" w-6 h-6" />
-                  </Button>
-                </Link>
+            <div className="bg-white dark:bg-gray-800 border rounded-lg p-5">
+              {productIntro && <div>
+                <div className=" text-2xl mb-5 font-bold">
+                  More About {product.name}
+                </div>
+                <AIIntro uuid={product.uuid!} />
+              </div>
               }
-
-              {props.next &&
-                <Link href={urlMapper[props.productType](props.next.id)} shallow={true}>
-                  <Button variant={"outline"} size={"icon"} className="rounded-full" >
-                    <ChevronRight strokeWidth={1.5} color="gray" className=" w-6 h-6" />
-                  </Button>
-                </Link>
-              }
-
             </div>
           </div>
+
+
+          {/* <div className="md:w-1/3 relative border">
+          </div> */}
         </div>
       </div>
     </div>
