@@ -22,7 +22,7 @@ export async function generateMetadata(
   });
   return {
     metadataBase: new URL("https://huntscreens.com"),
-    title: `${product?.name} - Visual Preview | HuntScreens`,
+    title: `${product?.name} | HuntScreens`,
     description: `${product?.name}: ${product?.description} - HuntScreens`,
     publisher: "huntscreens.com",
     openGraph: {
