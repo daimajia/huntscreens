@@ -22,12 +22,12 @@ export async function generateMetadata(
   });
   return {
     metadataBase: new URL("https://huntscreens.com"),
-    title: `${product?.name} - ${product?.tagline}`,
-    description: product?.description,
+    title: `${product?.name} - Visual Preview | HuntScreens`,
+    description: `${product?.name}: ${product?.description} - HuntScreens`,
     publisher: "huntscreens.com",
     openGraph: {
       title: `${product?.name}`,
-      description: `${product?.tagline} - ${product?.description}`,
+      description: `${product?.tagline}: ${product?.description}`,
       publishedTime: `${product?.added_at}`,
       images: `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`
     },
