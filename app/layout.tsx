@@ -3,6 +3,7 @@ import './globals.css';
 import Umami from './thridparties/umami';
 import { ThemeProvider } from './components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
+import Footer from './components/footer';
 
 export const metadata: Metadata = {
   title: 'Screenshots of Every New Product and Startup! - HuntScreens.com',
@@ -36,6 +37,7 @@ export default function RootLayout({
         >
           {modal}
           {children}
+          <Footer />
           <Toaster />
           <Umami />
         </ThemeProvider>
