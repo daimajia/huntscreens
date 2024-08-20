@@ -11,6 +11,7 @@ export const indiehackers = pgTable('indiehackers', {
   tags: text('tags').array(),
   thumbnail: text('thumbnail'),
   website: text("website").notNull(),
+  itemType: text('itemType').default("indiehackers"),
   tagline: text('tagline'),
   description: text('description'),
   objectId: text('objectId'),

@@ -11,6 +11,7 @@ export const yc = pgTable('yc', {
   name: text('name').notNull(),
   slug: text('slug'),
   tagline: text('tagline'),
+  itemType: text('itemType').default("yc"),
   thumb_url: text('thumb_url'),
   website: text('website').notNull(),
   batch: text('batch'),

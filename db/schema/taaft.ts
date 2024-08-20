@@ -7,6 +7,7 @@ export const taaft = pgTable('taaft', {
   id: serial('id').primaryKey(),
   name: text("name").notNull(),
   tagline: text('tagline'),
+  itemType: text('itemType').default("taaft"),
   website: text('website').notNull(),
   description: text('description'),
   added_at: date("added_at"),

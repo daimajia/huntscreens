@@ -2,12 +2,39 @@ import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
 import { z } from "zod";
 import { db } from "@/db/db";
-import { embeddings } from "@/db/schema";
+import { producthunt, yc, indiehackers, embeddings } from "@/db/schema";
 import { generateEmbedding } from "@/lib/ai/embeding";
-
+import { eq } from "drizzle-orm";
 const embeddingConcurrencyLimit = client.defineConcurrencyLimit({
   id: `embedding-limit`,
   limit: 3,
+});
+
+client.defineJob({
+  id: "index-all-embeddings",
+  name: "Index All Embeddings",
+  version: "0.0.1",
+  trigger: eventTrigger({
+    name: "index.all.embeddings"
+  }),
+  run: async (payload, io, ctx) => {
+    const phProducts = await db.select().from(producthunt).where(eq(producthunt.webp, true));
+    const ycProducts = await db.select().from(yc).where(eq(yc.webp, true));
+    const ihProducts = await db.select().from(indiehackers).where(eq(indiehackers.webp, true));
+
+    for (const product of [...phProducts, ...ycProducts, ...ihProducts]) {
+      await io.sendEvent(`create-embedding-${product.uuid}`, {
+        name: "create.embedding",
+        payload: {
+          itemId: product.uuid,
+          itemType: product.itemType,
+          name: product.name,
+          website: product.website,
+          description: product.description
+        }
+      });
+    }
+  }
 });
 
 client.defineJob({
@@ -29,6 +56,14 @@ client.defineJob({
     const { itemId, itemType, name, website, description } = payload;
 
     try {
+
+      const existingEmbedding = await db.select().from(embeddings).where(eq(embeddings.itemId, itemId)).limit(1);
+
+      if (existingEmbedding.length > 0) {
+        await io.logger.info(`Embedding already exists for ${itemType} item ${itemId}. Skipping.`);
+        return { success: true, itemId, itemType, skipped: true };
+      }
+      
       const embedding = await generateEmbedding(description);
 
       await db.insert(embeddings).values({

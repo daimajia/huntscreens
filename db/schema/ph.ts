@@ -25,6 +25,7 @@ export const producthunt = pgTable('producthunt', {
   url: text("url"),
   name: text('name'),
   tagline: text('tagline'),
+  itemType: text('itemType').default("ph"),
   description: text("description"),
   slug: text('slug'),
   votesCount: integer("votesCount"),
