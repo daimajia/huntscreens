@@ -41,7 +41,8 @@ function convertToIndieHackerModel(raw: RawIndieHackersJSON): IndieHackersJson {
     userIds: raw.userIds || [],
     startDate: raw.startDateStr,
     region: raw.region || null,
-    added_at: new Date(raw.approvedTimestamp)
+    added_at: new Date(raw.approvedTimestamp),
+    itemType: "indiehackers"
   }
 }
 

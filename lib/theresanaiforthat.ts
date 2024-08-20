@@ -115,6 +115,7 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
     pros: pros,
     cons: cons,
     tags: tags,
-    faqs: faqs
+    faqs: faqs,
+    itemType: "taaft"
   }
 }
