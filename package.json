@@ -13,7 +13,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:up": "drizzle-kit up"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.40",
@@ -39,6 +40,7 @@
     "@trigger.dev/react": "^2.3.19",
     "@trigger.dev/resend": "^2.3.19",
     "@trigger.dev/sdk": "^2.3.19",
+    "@xenova/transformers": "^2.17.2",
     "ai": "^3.3.0",
     "algoliasearch": "^4.24.0",
     "axios": "^1.7.2",
@@ -47,7 +49,7 @@
     "cookies-next": "^4.2.1",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.30.10",
+    "drizzle-orm": "^0.33.0",
     "ioredis": "^5.4.1",
     "jotai": "^2.8.3",
     "lucide-react": "^0.397.0",
@@ -85,7 +87,7 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10",
-    "drizzle-kit": "^0.21.4",
+    "drizzle-kit": "^0.24.0",
     "encoding": "^0.1.13",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
@@ -99,6 +101,5 @@
   },
   "trigger.dev": {
     "endpointId": "huntscreen2-Nd8p"
-  },
-  "packageManager": "pnpm@8.10.2"
+  }
 }
