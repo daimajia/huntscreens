@@ -39,6 +39,17 @@ client.defineJob({
             website: inserted[0].website
           }
         })
+
+        await io.sendEvent("create embedding" + inserted[0].uuid, {
+          name: "create.embedding",
+          payload: {
+            itemId: inserted[0].uuid,
+            itemType: "indiehackers",
+            name: inserted[0].name,
+            website: inserted[0].website,
+            description: inserted[0].description || inserted[0].tagline
+          }
+        })
       }
     }
   }

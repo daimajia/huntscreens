@@ -6,3 +6,4 @@ export * from "./email.jobs";
 export * from "./tafft.jobs";
 export * from "./indiehackers.jobs";
 export * from "./intro.jobs";
+export * from "./embedding.jobs";

@@ -96,6 +96,18 @@ client.defineJob({
         uuid: uuid
       }
     });
+    
+    await io.sendEvent("create embedding" + uuid, {
+      name: "create.embedding",
+      payload: {
+        itemId: uuid,
+        itemType: "taaft",
+        name: product.name,
+        website: product.website,
+        description: product.description || product.tagline || product.name
+      }
+    })
+
     await io.wait("avoid Cloudflare block", 60);
     return {
       uuid: uuid,

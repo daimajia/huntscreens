@@ -38,6 +38,18 @@ client.defineJob({
             id: inserted[0].id
           }
         })
+
+        await io.sendEvent("create embedding" + inserted[0].uuid, {
+          name: "create.embedding",
+          payload: {
+            itemId: inserted[0].uuid,
+            itemType: "yc",
+            website: inserted[0].website,
+            name: inserted[0].name,
+            description: inserted[0].description || inserted[0].tagline || inserted[0].name
+          }
+        })
+
       }
     }
   }

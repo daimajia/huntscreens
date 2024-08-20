@@ -9,6 +9,7 @@ export const embeddings = pgTable('embeddings', {
   id: serial('id').primaryKey(),
   itemId: uuid('item_id').notNull(),
   itemType: text('item_type').notNull(),
+  website: text('website').notNull(),
   name: text('name').notNull(),
   description: text('description').notNull(),
   embedding: vector('embedding', { dimensions: 384 }),

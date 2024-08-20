@@ -123,6 +123,17 @@ client.defineJob({
           uuid: item.uuid || ""
         }
       });
+
+      await io.sendEvent("create embedding" + item.uuid, {
+        name: "create.embedding",
+        payload: {
+          itemId: item.uuid,
+          itemType: "ph",
+          website: item.website,
+          name: item.name,
+          description: item.description || item.tagline
+        }
+      })
     }
   }
 });
