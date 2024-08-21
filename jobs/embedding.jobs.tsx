@@ -7,7 +7,7 @@ import { generateEmbedding } from "@/lib/ai/embeding";
 import { eq } from "drizzle-orm";
 const embeddingConcurrencyLimit = client.defineConcurrencyLimit({
   id: `embedding-limit`,
-  limit: 3,
+  limit: 10,
 });
 
 client.defineJob({
@@ -30,7 +30,9 @@ client.defineJob({
           itemType: product.itemType,
           name: product.name,
           website: product.website,
-          description: product.description
+          description: product.description,
+          tagline: product.tagline,
+          thumb_url: product.thumb_url
         }
       });
     }
