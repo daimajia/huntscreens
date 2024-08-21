@@ -9,6 +9,7 @@ export const indiehackers = pgTable('indiehackers', {
   id: serial('id').primaryKey(),
   name: text('name'),
   tags: text('tags').array(),
+  thumb_url: text('thumb_url'),
   thumbnail: text('thumbnail'),
   website: text("website").notNull(),
   itemType: text('itemType').default("indiehackers"),

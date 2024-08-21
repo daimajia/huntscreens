@@ -167,6 +167,7 @@ client.defineJob({
         }
         
         element.node.tags = element.node.topics?.nodes.flatMap(topic => topic.name) || [];
+        element.node.thumb_url = element.node.thumbnail?.url || "";
 
         const inserted = await db.insert(producthunt).values(element.node).onConflictDoNothing().returning();
         

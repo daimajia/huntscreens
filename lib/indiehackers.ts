@@ -42,7 +42,8 @@ function convertToIndieHackerModel(raw: RawIndieHackersJSON): IndieHackersJson {
     startDate: raw.startDateStr,
     region: raw.region || null,
     added_at: new Date(raw.approvedTimestamp),
-    itemType: "indiehackers"
+    itemType: "indiehackers",
+    thumb_url: raw.avatarUrl
   }
 }
 

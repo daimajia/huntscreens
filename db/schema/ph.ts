@@ -31,6 +31,7 @@ export const producthunt = pgTable('producthunt', {
   votesCount: integer("votesCount"),
   website: text('website'),
   productLinks: json('productLinks').$type<ProductLink[]>(),
+  thumb_url: text('thumb_url'),
   thumbnail: json('thumbnail').$type<Thumbnail>(),
   cursor: text('cursor'),
   topics: json('topics').$type<Topic>(),
@@ -55,6 +56,7 @@ export const producthunt = pgTable('producthunt', {
 });
 
 export type Producthunt = typeof producthunt.$inferSelect;
+export type ProducthuntInsert = typeof producthunt.$inferInsert;
 
 export const phViewQueryByTopic = (qb: QueryBuilder, sort: SortBy, topic: string) => {
   let window;
