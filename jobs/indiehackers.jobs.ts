@@ -39,17 +39,6 @@ client.defineJob({
             website: inserted[0].website
           }
         })
-
-        await io.sendEvent("create embedding" + inserted[0].uuid, {
-          name: "create.embedding",
-          payload: {
-            itemId: inserted[0].uuid,
-            itemType: "indiehackers",
-            name: inserted[0].name,
-            website: inserted[0].website,
-            description: inserted[0].description || inserted[0].tagline
-          }
-        })
       }
     }
   }
@@ -85,6 +74,15 @@ client.defineJob({
     )
     if(result.store.location) {
       await db.update(indiehackers).set({webp: true}).where(eq(indiehackers.uuid, payload.uuid));
+
+      await io.sendEvent(`create embedding for ${payload.website}`, {
+        name: "create.embedding.by.type",
+        payload: {
+          productType: "indiehackers",
+          uuid: payload.uuid,
+        }
+      });
+
       return {
         payload: payload,
         result: result.store

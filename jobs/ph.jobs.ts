@@ -6,7 +6,7 @@ import { db } from "@/db/db";
 import { v4 as uuidv4 } from 'uuid';
 import { removeUrlParams } from "@/lib/utils/url";
 import { z } from 'zod';
-import { desc, eq, gte } from "drizzle-orm";
+import { eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
 import { getScreenshotOneParams, getUsage, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
 
@@ -94,6 +94,15 @@ client.defineJob({
     if(result.store.location) {
       await io.logger.info('Screenshot successfully:', { payload });
       await db.update(producthunt).set({webp: true}).where(eq(producthunt.uuid, payload.uuid));
+      
+      await io.sendEvent(`create embedding for ${payload.url}`, {
+        name: "create.embedding.by.type",
+        payload: {
+          productType: "ph",
+          uuid: payload.uuid,
+        }
+      });
+
     }else{
       await io.logger.error('got screenshot error', result);
     }
@@ -101,40 +110,6 @@ client.defineJob({
       payload: payload,
       result: result.store
     };
-  }
-});
-
-client.defineJob({
-  id: "refresh-all-imgs",
-  name: "refresh images",
-  version: "0.0.3",
-  trigger: invokeTrigger(),
-  run: async (payload, io, ctx) => {
-    const res = await db.query.producthunt.findMany({
-      where: eq(producthunt.webp, false),
-      limit: 20,
-      orderBy: desc(producthunt.added_at)
-    });
-    for(const item of res){
-      await io.sendEvent(`refreshing-imgs-${item.uuid}`, {
-        name: "take.screenshot",
-        payload: {
-          url: item.website || "",
-          uuid: item.uuid || ""
-        }
-      });
-
-      await io.sendEvent("create embedding" + item.uuid, {
-        name: "create.embedding",
-        payload: {
-          itemId: item.uuid,
-          itemType: "ph",
-          website: item.website,
-          name: item.name,
-          description: item.description || item.tagline
-        }
-      })
-    }
   }
 });
 

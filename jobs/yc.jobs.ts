@@ -39,17 +39,6 @@ client.defineJob({
           }
         })
 
-        await io.sendEvent("create embedding" + inserted[0].uuid, {
-          name: "create.embedding",
-          payload: {
-            itemId: inserted[0].uuid,
-            itemType: "yc",
-            website: inserted[0].website,
-            name: inserted[0].name,
-            description: inserted[0].description || inserted[0].tagline || inserted[0].name
-          }
-        })
-
       }
     }
   }
@@ -110,6 +99,15 @@ client.defineJob({
       )
       if(result.store.location) {
         await db.update(yc).set({webp: true}).where(eq(yc.id, payload.id));
+
+        await io.sendEvent(`create embedding for ${company.website}`, {
+          name: "create.embedding.by.type",
+          payload: {
+            productType: "yc",
+            uuid: company.uuid,
+          }
+        })
+
         return {
           payload: payload,
           result: result.store
