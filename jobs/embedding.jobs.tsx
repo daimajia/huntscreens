@@ -13,7 +13,7 @@ const embeddingConcurrencyLimit = client.defineConcurrencyLimit({
 client.defineJob({
   id: "index-all-embeddings",
   name: "Index All Embeddings",
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: eventTrigger({
     name: "index.all.embeddings"
   }),
@@ -51,11 +51,13 @@ client.defineJob({
       name: z.string(),
       website: z.string(),
       description: z.string(),
+      thumb_url: z.string(),
+      tagline: z.string(),
     })
   }),
   concurrencyLimit: embeddingConcurrencyLimit,
   run: async (payload, io, ctx) => {
-    const { itemId, itemType, name, website, description } = payload;
+    const { itemId, itemType, name, website, description, thumb_url, tagline } = payload;
 
     try {
 
@@ -75,6 +77,8 @@ client.defineJob({
         website,
         description,
         embedding,
+        thumb_url: thumb_url,
+        tagline: tagline,
       });
 
       await io.logger.info(`Successfully created embedding for ${itemType} item ${itemId}`);
