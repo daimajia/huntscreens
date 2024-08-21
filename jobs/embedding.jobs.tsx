@@ -54,7 +54,7 @@ client.defineJob({
       description: z.string(),
       thumb_url: z.string(),
       tagline: z.string(),
-      itemPid: z.string(),
+      itemPid: z.number(),
     })
   }),
   concurrencyLimit: embeddingConcurrencyLimit,
@@ -73,7 +73,6 @@ client.defineJob({
       const embedding = await generateEmbedding(description);
 
       await db.insert(embeddings).values({
-        itemUUID: itemUUID,
         itemType,
         name,
         website,
@@ -82,6 +81,7 @@ client.defineJob({
         thumb_url: thumb_url,
         tagline: tagline,
         itemId: itemPid,
+        itemUUID: itemUUID,
       });
 
       await io.logger.info(`Successfully created embedding for ${itemType} item ${itemUUID}`);
