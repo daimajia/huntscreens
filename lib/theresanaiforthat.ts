@@ -33,7 +33,13 @@ function removeTAAFTQueryParams(url?: string | null) {
 }
 
 export async function fetchTAAFTLatest() {
-  const resp = await fetch(`${process.env.PUPPETEER}?url=https://theresanaiforthat.com/just-launched/`);
+  const resp = await fetch(`${process.env.PUPPETEER}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ url: 'https://theresanaiforthat.com/just-launched/' })
+  });
   const json = await resp.json() as PuppeteerResp;
   if(!json.error && json.source){
     const root = parse(json.source);
@@ -58,9 +64,15 @@ export async function fetchTAAFTLatest() {
 type TaaftApiType = Omit<Taaft, "id" | "webp" | "created_at" | "uuid">;
 
 export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiType> {
-  const resp = await fetch(`${process.env.PUPPETEER}?url=${url}`, {next: {revalidate: 3000}});
+  const resp = await fetch(`${process.env.PUPPETEER}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ url }),
+    next: { revalidate: 3000 }
+  });
   const json = await resp.json() as PuppeteerResp;
-  console.log(resp);
   if(json.error || !json.source) throw new Error('taaft puppeteer return error');
   const root = parse(json.source);
   root.querySelector('div.description')?.querySelector('div.method')?.remove();

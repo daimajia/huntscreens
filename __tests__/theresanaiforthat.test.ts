@@ -1,17 +1,46 @@
 import { fetchTAAFTProductDetails, fetchTAAFTLatest } from "@/lib/theresanaiforthat";
-import { expect, test } from "vitest";
+import { expect, test, beforeAll, describe } from "vitest";
 
-test("test theresanaiforthat fetch latest works", async ()=> {
-  const products = await fetchTAAFTLatest();
-  expect(products).length.greaterThan(0);
-});
+describe("TheresAnAIForThat API", () => {
+  let latestProducts: any[];
+  let productDetails: any[];
 
-test('test theresanaiforthat fetch detail works', async () => {
-  const product = await fetchTAAFTProductDetails("https://theresanaiforthat.com/ai/usemotion");
-  expect(product.name).eq("Usemotion");
-  expect(product.description).length.greaterThan(100);
-  expect(product.website).eq("https://www.usemotion.com/");
-  expect(product.tagline?.length).gt(0);
-  expect(product.savesCount).greaterThan(0);
-  console.log(product);
-})
+  beforeAll(async () => {
+    latestProducts = await fetchTAAFTLatest();
+    const productUrls = [
+      "https://theresanaiforthat.com/ai/usemotion",
+      "https://theresanaiforthat.com/ai/videotopage/?fid=1124",
+    ];
+    productDetails = await Promise.all(productUrls.map(url => fetchTAAFTProductDetails(url)));
+  }, 60000);
+
+  test("fetchTAAFTLatest returns non-empty array", () => {
+    expect(latestProducts).toBeInstanceOf(Array);
+    expect(latestProducts.length).toBeGreaterThan(0);
+    expect(latestProducts[0]).toHaveProperty('product_name');
+    expect(latestProducts[0]).toHaveProperty('product_link');
+    expect(latestProducts[0]).toHaveProperty('taaft_link');
+  });
+
+  test("fetchTAAFTProductDetails returns correct product information", () => {
+    productDetails.forEach(product => {
+      expect(product).toBeDefined();
+      expect(product.name).toBeDefined();
+      expect(product.description.length).toBeGreaterThan(100);
+      expect(product.website).toBeDefined();
+      expect(product.tagline).toBeDefined();
+      expect(product.tagline?.length).toBeGreaterThan(0);
+      expect(product.savesCount).toBeGreaterThan(0);
+    });
+
+    // Specific product assertions
+    const usemotion = productDetails.find(p => p.name === "Usemotion");
+    expect(usemotion).toBeDefined();
+    expect(usemotion?.website).toBe("https://www.usemotion.com/");
+  });
+
+  test("fetchTAAFTProductDetails handles errors", async () => {
+    await expect(fetchTAAFTProductDetails("https://theresanaiforthat.com/ai/nonexistent"))
+      .rejects.toThrow();
+  });
+}, {timeout: 1000000});

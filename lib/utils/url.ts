@@ -15,7 +15,15 @@ export function removeUrlParams(url: string, params: string[] | string): string 
 }
 
 export async function getPuppeteerRenderSource(url: string) {
-  const resp = await fetch(`${process.env.PUPPETEER}?url=${url}`);
+  const resp = await fetch(`${process.env.PUPPETEER}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      url: url
+    }),
+  });
   const json = await resp.json() as PuppeteerResp;
   if(!json.error && json.source){
     return json.source;
