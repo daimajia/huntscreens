@@ -13,7 +13,7 @@ const embeddingConcurrencyLimit = client.defineConcurrencyLimit({
 client.defineJob({
   id: "index-all-embeddings",
   name: "Index All Embeddings",
-  version: "0.0.2",
+  version: "0.0.3",
   trigger: eventTrigger({
     name: "index.all.embeddings"
   }),
@@ -26,13 +26,14 @@ client.defineJob({
       await io.sendEvent(`create-embedding-${product.uuid}`, {
         name: "create.embedding",
         payload: {
-          itemId: product.uuid,
+          itemPid: product.id,
+          itemUUID: product.uuid,
           itemType: product.itemType,
           name: product.name,
           website: product.website,
           description: product.description,
           tagline: product.tagline,
-          thumb_url: product.thumb_url
+          thumb_url: product.thumb_url,
         }
       });
     }
@@ -46,32 +47,33 @@ client.defineJob({
   trigger: eventTrigger({
     name: "create.embedding",
     schema: z.object({
-      itemId: z.string(),
+      itemUUID: z.string(),
       itemType: z.string(),
       name: z.string(),
       website: z.string(),
       description: z.string(),
       thumb_url: z.string(),
       tagline: z.string(),
+      itemPid: z.string(),
     })
   }),
   concurrencyLimit: embeddingConcurrencyLimit,
   run: async (payload, io, ctx) => {
-    const { itemId, itemType, name, website, description, thumb_url, tagline } = payload;
+    const { itemUUID, itemType, name, website, description, thumb_url, tagline, itemPid } = payload;
 
     try {
 
-      const existingEmbedding = await db.select().from(embeddings).where(eq(embeddings.itemId, itemId)).limit(1);
+      const existingEmbedding = await db.select().from(embeddings).where(eq(embeddings.itemUUID, itemUUID)).limit(1);
 
       if (existingEmbedding.length > 0) {
-        await io.logger.info(`Embedding already exists for ${itemType} item ${itemId}. Skipping.`);
-        return { success: true, itemId, itemType, skipped: true };
+        await io.logger.info(`Embedding already exists for ${itemType} item ${itemUUID}. Skipping.`);
+        return { success: true, itemUUID, itemType, skipped: true };
       }
       
       const embedding = await generateEmbedding(description);
 
       await db.insert(embeddings).values({
-        itemId,
+        itemUUID: itemUUID,
         itemType,
         name,
         website,
@@ -79,12 +81,13 @@ client.defineJob({
         embedding,
         thumb_url: thumb_url,
         tagline: tagline,
+        itemId: itemPid,
       });
 
-      await io.logger.info(`Successfully created embedding for ${itemType} item ${itemId}`);
-      return { success: true, itemId, itemType };
+      await io.logger.info(`Successfully created embedding for ${itemType} item ${itemUUID}`);
+      return { success: true, itemUUID, itemType };
     } catch (error) {
-      await io.logger.error(`Error creating embedding for ${itemType} item ${itemId}: ${error}`);
+      await io.logger.error(`Error creating embedding for ${itemType} item ${itemUUID}: ${error}`);
     }
   }
 });
