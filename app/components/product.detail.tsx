@@ -99,9 +99,6 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
               <img className="h-[500px] w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
             </div>
 
-            <div>
-              <NextPrevCard productType={props.productType} next={props.next} prev={props.prev} />
-            </div>
 
 
             {productIntro &&
@@ -112,6 +109,10 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                 <AIIntro uuid={product.uuid!} />
               </div>
             }
+
+            <div>
+              <NextPrevCard productType={props.productType} next={props.next} prev={props.prev} />
+            </div>
           </div>
 
 

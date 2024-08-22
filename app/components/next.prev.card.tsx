@@ -1,3 +1,4 @@
+import Logo from "@/components/logo";
 import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
 
 type NextPrevCardProps<T extends ProductTypes> = {
@@ -14,7 +15,9 @@ export default function NextPrevCard<T extends ProductTypes>(props: NextPrevCard
           <div className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
             <div className="text-sm text-gray-500 mb-2">← Previous</div>
             <div className="flex flex-row gap-2">
-              <img alt={`${props.prev.name} thumbnail`} loading="lazy" src={thumbailGetter(props.productType, props.prev) || ""} className="w-20 rounded-full border" />
+              <div className="w-20 h-20">
+                <Logo name={props.prev.name || ""} url={props.prev.thumb_url || ""} className="w-full h-full" />
+              </div>
               <div className="flex flex-col gap-2">
                 <h3 className="font-bold mb-1 text-2xl">{props.prev.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{props.prev.tagline}</p>
@@ -28,7 +31,9 @@ export default function NextPrevCard<T extends ProductTypes>(props: NextPrevCard
           <div className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
             <div className="text-sm text-gray-500 mb-2 text-right">Next →</div>
             <div className="flex flex-row gap-2">
-              <img alt={`${props.next.name} thumbnail`} loading="lazy" src={thumbailGetter(props.productType, props.next) || ""} className="w-20 rounded-full border" />
+              <div className="w-20 h-20">
+                <Logo name={props.next.name || ""} url={props.next.thumb_url || ""} className="w-full h-full" />
+              </div>
               <div className="flex flex-col gap-2">
                 <h3 className="font-bold mb-1 text-2xl">{props.next.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{props.next.tagline}</p>
