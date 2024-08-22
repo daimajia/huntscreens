@@ -12,6 +12,7 @@ import YCInfoBadge from "./yc.info.badge";
 import { Badge } from "@/components/ui/badge";
 import NextPrevCard from "./next.prev.card";
 import SimilarProducts from "./similar.products";
+import Logo from "@/components/logo";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -41,8 +42,10 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
             <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border">
               <div className="flex flex-row gap-5">
-                <img alt={`${product.name} thumbnail`} loading="lazy" src={thumbnail || ""} className="w-20 rounded-full border" />
-
+                <div className="w-20">
+                  <Logo name={product.name || ""} url={thumbnail || ""} className="w-20 h-20" />
+                </div>
+                
                 <div className="flex flex-col w-full justify-between">
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex flex-row items-center justify-between gap-4">

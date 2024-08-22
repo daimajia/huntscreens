@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Logo from "@/components/logo";
 import { ProductTypes, urlMapper } from "../types/product.types";
 import { ExternalLink } from "lucide-react"; // 导入外部链接图标
 
@@ -25,11 +24,7 @@ export default function SimilarProductCard({
   return (
     <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
       <div className="flex flex-row gap-5 items-center">
-        <img
-          src={thumb_url}
-          alt={`${name} thumbnail`}
-          className="w-12 h-12 rounded-full object-cover border dark:border-gray-500 border-gray-300"
-        />
+        <Logo name={name} url={thumb_url} />
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             <a href={urlMapper[itemType](itemId)} className="text-lg font-bold hover:underline">
