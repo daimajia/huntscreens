@@ -20,6 +20,11 @@ describe("TheresAnAIForThat API", () => {
     expect(latestProducts[0]).toHaveProperty('product_name');
     expect(latestProducts[0]).toHaveProperty('product_link');
     expect(latestProducts[0]).toHaveProperty('taaft_link');
+    
+    latestProducts.forEach(product => {
+      expect(() => new URL(product.product_link)).not.toThrow();
+      expect(() => new URL(product.taaft_link)).not.toThrow();
+    });
   });
 
   test("fetchTAAFTProductDetails returns correct product information", () => {

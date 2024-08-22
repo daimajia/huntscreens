@@ -28,7 +28,13 @@ function convertToDate(dateString: string): Date {
 }
 
 function removeTAAFTQueryParams(url?: string | null) {
-  if(!url) throw new Error('not a valid url');
+  if (!url) throw new Error('URL is null or undefined');
+  
+  try {
+    new URL(url);
+  } catch (error) {
+    throw new Error(`Invalid URL: ${url}`);
+  }
   return removeUrlParams(url, ['ref', 'term', 'utm_medium', 'utm_source', 'utm_source']);
 }
 
@@ -43,19 +49,27 @@ export async function fetchTAAFTLatest() {
   const json = await resp.json() as PuppeteerResp;
   if(!json.error && json.source){
     const root = parse(json.source);
-    const ais = root.querySelectorAll("div.li_row");
+    const ais = root.querySelectorAll("li.li");
     const results = ais.flatMap((item) => {
       const icon = item.querySelector('.li_left img');
-      const taaft_link = item.querySelector('.ai_link');
-      const product_name = taaft_link?.innerText;
+      const taaft_link = item.querySelector('a.stats');
+      const product_name = item.querySelector('.ai_link span')?.innerText;
       const product_link = item.querySelector('a.external_ai_link')?.attributes['href'];
+      const saves = item.querySelector('.saves')?.innerText;
+      const rating = item.querySelector('.average_rating')?.innerText;
+      const pricing = item.querySelector('.ai_launch_date')?.innerText;
+      const category = item.querySelector('.task_label')?.innerText;
       return {
         icon: icon?.attributes['src'],
         product_name: product_name,
         product_link: removeTAAFTQueryParams(product_link),
-        taaft_link: removeTAAFTQueryParams('https://theresanaiforthat.com' + taaft_link?.attributes['href'])
+        taaft_link: removeTAAFTQueryParams('https://theresanaiforthat.com' + taaft_link?.attributes['href']),
+        saves: parseInt(saves || '0'),
+        rating: parseFloat(rating || '0'),
+        pricing: pricing,
+        category: category
       }
-    })
+    });
     return results;
   }else{
     throw new Error('taaft puppeteer return error');
