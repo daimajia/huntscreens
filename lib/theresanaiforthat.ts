@@ -111,7 +111,8 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
   const related_products = related?.querySelectorAll('div.li_row').flatMap((item) => {
       const icon = item.querySelector('.li_left img');
       const taaft_link = item.querySelector('.ai_link');
-      const product_name = taaft_link?.innerText;
+      const taaft_title = item.querySelector('.title_inner');
+      const product_name = taaft_title?.innerText;
       const product_link = item.querySelector('a.external_ai_link')?.attributes['href'];
       return {
         icon: icon?.attributes['src'] || null,
