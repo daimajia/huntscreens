@@ -1,0 +1,34 @@
+import { findSimilarProducts } from "@/lib/ai/embeding";
+import { ProductTypes } from "../types/product.types";
+import SimilarProductCard from "./similar.product.card";
+
+type SimilarProductProps = {
+  name: string;
+  description: string;
+  uuid: string;
+}
+
+export default async function SimilarProducts({uuid, name, description }: SimilarProductProps) {
+  const similarProducts = await findSimilarProducts(uuid, description);
+  return (
+    <div className="grid gap-4">
+      {similarProducts.length > 0 && (
+        <h2 className="text-2xl font-bold">
+          {name} Alternatives
+        </h2>
+      )}
+      {similarProducts.map((product) => (
+        <SimilarProductCard
+          tagline={product.tagline || ""}
+          key={product.itemId}
+          itemId={product.itemId.toString()}
+          itemType={product.itemType as ProductTypes}
+          name={product.name}
+          website={product.website}
+          description={product.description}
+          thumb_url={product.thumb_url || ""}
+        />
+      ))}
+    </div>
+  );
+}

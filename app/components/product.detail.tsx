@@ -11,6 +11,7 @@ import Link from "next/link";
 import YCInfoBadge from "./yc.info.badge";
 import { Badge } from "@/components/ui/badge";
 import NextPrevCard from "./next.prev.card";
+import SimilarProducts from "./similar.products";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -28,15 +29,15 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   });
   return <>
     <div className=" bg-gray-100 dark:bg-gray-900">
-      <div className="flex-col max-w-5xl mx-auto gap-5 ">
+      <div className="flex-col max-w-7xl mx-auto gap-5">
 
         <div className="flex flex-row gap-5 px-5 md:px-10 pt-5 md:pt-10">
           <SiteBreadcrumb productType={props.productType} />
         </div>
 
-        <div className="flex md:flex-row flex-col gap-10 p-5 md:p-10">
+        <div className="flex md:flex-row w-full flex-col gap-10 p-5 md:p-10">
 
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 w-full">
 
             <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border">
               <div className="flex flex-row gap-5">
@@ -111,8 +112,9 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
           </div>
 
 
-          {/* <div className="md:w-1/3 relative border">
-          </div> */}
+          <div className=" w-full md:w-[400px]">
+            <SimilarProducts uuid={product.uuid!} description={product.description || ""} name={product.name || ""} />
+          </div>
         </div>
       </div>
     </div>

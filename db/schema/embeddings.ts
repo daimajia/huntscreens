@@ -21,10 +21,12 @@ export const embeddings = pgTable('embeddings', {
   embeddingIndex: index('embeddingIndex').using('hnsw', table.embedding.op('vector_cosine_ops'))
 }));
 
-export type Products = typeof embeddings.$inferSelect;
-export type NewProducts = typeof embeddings.$inferInsert;
+export type Embedding = typeof embeddings.$inferSelect;
+export type EmbeddingWithSimilarity = Embedding & { similarity: number };
 
-export const productsRelations = relations(embeddings, ({ one }) => ({
+export type NewEmbedding = typeof embeddings.$inferInsert;
+
+export const embeddingsRelations = relations(embeddings, ({ one }) => ({
   ph: one(producthunt, {
     fields: [embeddings.itemUUID],
     references: [producthunt.uuid],
