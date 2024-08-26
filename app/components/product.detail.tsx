@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import NextPrevCard from "./next.prev.card";
 import SimilarProducts from "./similar.products";
 import Logo from "@/components/logo";
+import WeeklyTop from "./weekly.top";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -116,8 +117,9 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
           </div>
 
 
-          <div className=" w-full md:w-[400px]">
+          <div className=" w-full md:w-[400px] gap-5 flex flex-col">
             <SimilarProducts uuid={product.uuid!} description={product.description || ""} name={product.name || ""} />
+            <WeeklyTop />
           </div>
         </div>
       </div>
