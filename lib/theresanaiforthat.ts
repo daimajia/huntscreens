@@ -90,10 +90,13 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
   if(json.error || !json.source) throw new Error('taaft puppeteer return error');
   const root = parse(json.source);
   root.querySelector('div.description')?.querySelector('div.method')?.remove();
+  root.querySelector('div#sidebar_right')?.remove();
+  root.querySelector('div#box in_content_featured')?.remove();
+  
   const description = root.querySelector('div.description')?.innerText.trim();
   const product_name = root.querySelector('h1.title_inner')?.innerText;
   const product_tagline = root.querySelector('div#use_case')?.innerText;
-  const product_icon = root.querySelector('img.taaft_icon')?.attributes['src'];
+  const product_icon = root.querySelector('div.icon_wrap>img.taaft_icon')?.attributes['src'];
   const product_link = root.querySelector('a#ai_top_link')?.attributes['href'];
   const product_saves = root.querySelector('div.saves')?.innerText;
   const main_category = root.querySelector('a.task_label')?.innerText.trim();
