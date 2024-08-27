@@ -8,6 +8,7 @@ import DailyDigestEmail from "@/emails/daily.digest";
 import { Resend } from "resend";
 import { Resend as TriggerResend } from "@trigger.dev/resend"; // trigger.resend is out of date.
 import { z } from "zod";
+import { yc } from "@/db/schema";
 
 const triggerResend = new TriggerResend({
   id: "resend",
@@ -47,11 +48,20 @@ client.defineJob({
     if (phs.length < 10) {
       return "no enough phs";
     }
+    const yc_count = await db.query.yc.findMany({
+      where: and(
+        gte(yc.launched_at, subHours(new Date(), 24).toISOString())
+      )
+    })
+    let subject = 'HuntScreens Daily Digest';
+    if (yc_count.length > 0) {
+      subject = '🚀 YC Launched ' + yc_count.length + ' Companies Today!';
+    }
     await io.triggerResend.emails.send(`send-digest-email-${payload.email}`, {
       to: payload.email,
-      subject: 'HuntScreens',
+      subject: subject,
       from: `HuntScreens Daily Digest <hello@huntscreens.com>`,
-      react: <DailyDigestEmail producthunts={phs} contactId={payload.contactId} />
+      react: <DailyDigestEmail producthunts={phs} contactId={payload.contactId} yc_count={yc_count.length} />
     });
     await io.wait("waitting-" + payload.email, 3);
   }

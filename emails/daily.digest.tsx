@@ -1,9 +1,11 @@
+import { yc, YC } from "@/db/schema";
 import { Producthunt } from "@/db/schema/ph";
 import { Body, Column, Container, Hr, Html, Img, Link, Row, Section, Tailwind, Text } from "@react-email/components";
 import * as React from "react";
 
 type DigestProps = {
   producthunts: Producthunt[],
+  yc_count: number,
   contactId: string
 }
 
@@ -13,8 +15,12 @@ export default function DailyDigestEmail(props: DigestProps) {
       <Tailwind>
         <Body>
           <Container className="mb-10">
-            {/* <Text className="text-xl">HuntScreens Daily Digest</Text> */}
-
+            {props.yc_count > 0 && (
+              <>
+                <Text className="text-xl">🚀 YC invested {props.yc_count} companies today</Text>
+                <Link className="text-xl" href="https://huntscreens.com/startup/yc">Check out the latest YC companies on HuntScreens</Link>
+              </>
+            )}
           </Container>
           {props.producthunts.map((ph) => {
             return <Container key={ph.uuid}>
@@ -25,10 +31,22 @@ export default function DailyDigestEmail(props: DigestProps) {
                   </Link>
                 </Row>
                 <Row className="mt-5">
-                  <Column><Img className=" rounded-lg" width={50} height={50} src={ph.thumbnail?.url}></Img></Column>
                   <Column>
-                    <Row><Link className="pl-5 m-0 text-lg font-bold text-black hover:underline" href={ph.website || ""}>{ph.name}</Link></Row>
-                    <Row><Text className="pl-5 m-0">{ph.tagline}</Text></Row>
+                    <Img className=" rounded-lg" width={50} height={50} src={ph.thumbnail?.url}></Img>
+                  </Column>
+
+                  <Column>
+                    <Row className="flex flex-row items-center justify-between">
+                      <Column>
+                        <Link className="m-0 text-lg font-bold text-black hover:underline" href={ph.website || ""}>
+                          {ph.name}
+                        </Link>
+                      </Column>
+                      <Column>
+                        <Text className="m-0 text-sm text-gray-500">(🔥 {ph.votesCount} votes)</Text>
+                      </Column>
+                    </Row>
+                    <Row><Text className="m-0">{ph.tagline}</Text></Row>
                   </Column>
                 </Row>
               </Section>
@@ -59,6 +77,7 @@ export default function DailyDigestEmail(props: DigestProps) {
 
 DailyDigestEmail.PreviewProps = {
   contactId: "11",
+  yc_count: 10,
   producthunts: [
     {
       "id": 468047,
