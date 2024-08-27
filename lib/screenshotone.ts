@@ -14,6 +14,10 @@ export const screenshotConcurrencyLimit = client.defineConcurrencyLimit({
 });
 
 export function getScreenshotOneParams(website: string, uuid: string, webhook_url: string) {
+  let delay = 8;
+  if(website.includes("apps.apple.com")) {
+    delay = 20;
+  }
   return {
     access_key: process.env.SCREENSHOTONE_ACCESS_KEY,
     url: website,
@@ -31,7 +35,7 @@ export function getScreenshotOneParams(website: string, uuid: string, webhook_ur
     full_page_max_height: 10000,
     image_quality: 100,
     block_banners_by_heuristics: "true",
-    delay: 5,
+    delay: delay,
     block_ads: "true",
     block_chats: "true",
     block_cookie_banners: "true",
