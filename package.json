@@ -15,7 +15,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:up": "drizzle-kit up",
-    "index:all:embeddings": "tsx scripts/index.all.embeddings.ts"
+    "index:all:embeddings": "tsx scripts/index.all.embeddings.ts",
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.40",
