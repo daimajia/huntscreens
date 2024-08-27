@@ -49,6 +49,15 @@ client.defineJob({
     if(result.store.location) {
       await io.logger.info('Screenshot successfully:', { payload });
       await db.update(taaft).set({webp: true}).where(eq(taaft.uuid, payload.uuid));
+
+      await io.sendEvent(`create embedding for ${payload.website}`, {
+        name: "create.embedding.by.type",
+        payload: {
+          productType: "taaft",
+          uuid: payload.uuid,
+        }
+      });
+      
     }else{
       await io.logger.error('got screenshot error', result);
     }

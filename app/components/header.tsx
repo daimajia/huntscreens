@@ -29,7 +29,7 @@ export default async function Header() {
 
         <div className="flex flex-row justify-center items-center gap-1">
           <Link href="/" title="ProductHunt" className="relative flex flex-row gap-1 justify-center items-center">
-            <img src="/phlogo.png" alt="" className=" h-10" />
+            <img src="/phlogo.png" alt="ProductHunt logo" className=" h-10" />
             <span className="hidden 2xl:flex hover:underline">ProductHunt</span>
             {updateCns.PH > 0 && <span title={`${updateCns.PH} new product today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.PH}</span>}
           </Link>
@@ -38,7 +38,7 @@ export default async function Header() {
 
         <div className="flex flex-row justify-center items-center gap-1">
           <Link href="/indiehackers" title="IndieHackers" className="relative flex flex-row gap-1 justify-center items-center">
-            <img src="/indiehackers.jpg" alt="" className=" h-7 rounded-full" />
+            <img src="/indiehackers.jpg" alt="IndieHackers logo" className=" h-7 rounded-full" />
             <span className="hidden 2xl:flex hover:underline">IndieHackers</span>
             {updateCns.Indiehackers > 0 && <span title={`${updateCns.Indiehackers} new hackers today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.Indiehackers}</span>}
           </Link>
@@ -46,11 +46,16 @@ export default async function Header() {
 
         <div className="flex flex-row items-center justify-center gap-1">
           <Link href="/startup/yc" title="Y Combinator" className="relative flex flex-row gap-1 justify-center items-center">
-            <img src="/yc.png" alt="" className="h-7 rounded-full" />
+            <img src="/yc.png" alt="YC logo" className="h-7 rounded-full" />
             <span className="hidden 2xl:flex hover:underline">YCombinator</span>
             {updateCns.YC > 0 && <span title={`${updateCns.YC} new company today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.YC}</span>}
           </Link>
 
+          <Link href="/taaft" title="Theresanaiforthat" className="relative flex flex-row gap-1 justify-center items-center">
+            <img src="/taaft.png" alt="TAAFT logo" className="h-7 rounded-full" />
+            <span className="hidden 2xl:flex hover:underline">TAAFT</span>
+            {updateCns.TAAFT > 0 && <span title={`${updateCns.TAAFT} new company today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.TAAFT}</span>}
+          </Link>
         </div>
       </div>
 
@@ -63,13 +68,16 @@ export default async function Header() {
 
       <div className="lg:hidden flex flex-row gap-3 justify-end">
         <Link href="/" className="hover:underline flex flex-row gap-1 justify-center items-center">
-          <img src="/phlogo.png" alt="" className=" h-8" />
+          <img src="/phlogo.png" alt="ProductHunt logo" className=" h-8" />
         </Link>
         <Link href="/indiehackers" className="hover:underline flex flex-row gap-1 justify-center items-center">
-          <img src="/indiehackers.jpg" alt="" className=" h-7 rounded-full" />
+          <img src="/indiehackers.jpg" alt="IndieHackers logo" className=" h-7 rounded-full" />
         </Link>
         <Link href="/startup/yc" className="hover:underline flex flex-row gap-1 justify-center items-center">
-          <img src="/yc.png" alt="" className="h-7 rounded-full" />
+          <img src="/yc.png" alt="YC logo" className="h-7 rounded-full" />
+        </Link>
+        <Link href="/taaft" className="hover:underline flex flex-row gap-1 justify-center items-center">
+          <img src="/taaft.png" alt="TAAFT logo" className="h-7 rounded-full" />
         </Link>
       </div>
 

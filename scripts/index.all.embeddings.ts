@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { producthunt, yc, indiehackers, embeddings } from "@/db/schema";
+import { producthunt, yc, indiehackers, embeddings, taaft } from "@/db/schema";
 import { generateEmbedding } from "@/lib/ai/embeding";
 import { eq } from "drizzle-orm";
 
@@ -43,6 +43,9 @@ async function generateAllEmbeddings() {
 
   console.log("Generating embeddings for IndieHackers items...");
   await generateEmbeddingsForTable(indiehackers, "indiehackers");
+
+  console.log("Generating embeddings for TAAFT items...");
+  await generateEmbeddingsForTable(taaft, "taaft");
 
   console.log("All embeddings generated successfully!");
 }
