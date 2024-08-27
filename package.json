@@ -15,7 +15,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:up": "drizzle-kit up",
-    "index:all:embeddings": "tsx scripts/index.all.embeddings.ts"
+    "index:all:embeddings": "tsx scripts/index.all.embeddings.ts",
+    "db:trgm": "tsx scripts/add.trgm.extension.and.index.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.40",
@@ -47,6 +48,7 @@
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
     "cookies-next": "^4.2.1",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
@@ -71,6 +73,7 @@
     "swr": "^2.2.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.3",
     "usehooks-ts": "^3.1.0",
     "uuid": "^9.0.1",
     "vaul": "^0.9.1",

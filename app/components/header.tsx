@@ -8,6 +8,7 @@ import UserMenu from "./user.menu";
 import { Button } from "@/components/ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import getUpdateCounts from "@/lib/api/query.updatecount";
+import SearchBox from "./search.box";
 
 export default async function Header() {
   const updateCns = await getUpdateCounts();
@@ -82,6 +83,7 @@ export default async function Header() {
       </div>
 
       <div className="hidden md:flex flex-row gap-4 items-center justify-end">
+        <SearchBox />
         {response.isAuthenticated &&
           <UserMenu picture={response.claims?.picture} name={response.claims?.name} />}
 
