@@ -1,6 +1,6 @@
 "use client"
-import { useState, useEffect, useCallback } from 'react';
-import { useDebounce } from 'use-debounce';
+import { useState, useCallback } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { ProductTypes, urlMapper } from '../types/product.types';
 import Link from 'next/link';
 import Logo from '@/components/logo';
@@ -20,12 +20,11 @@ type SearchResult = {
 export default function SearchBox() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [debouncedQuery] = useDebounce(query, 300);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchResults = useCallback(async () => {
-    if (!debouncedQuery) {
+  const debouncedFetchResults = useDebouncedCallback(async (searchQuery: string) => {
+    if (!searchQuery || searchQuery.length === 0) {
       setResults([]);
       setIsLoading(false);
       return;
@@ -33,7 +32,7 @@ export default function SearchBox() {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}`);
+      const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setResults(data);
@@ -43,11 +42,8 @@ export default function SearchBox() {
     } finally {
       setIsLoading(false);
     }
-  }, [debouncedQuery]);
+  }, 300);
 
-  useEffect(() => {
-    fetchResults();
-  }, [fetchResults]);
 
   const handleOpenChange = useCallback((newOpen: boolean) => {
     setOpen(newOpen);
@@ -72,7 +68,10 @@ export default function SearchBox() {
         <CommandInput
           placeholder="Search products..."
           value={query}
-          onValueChange={setQuery}
+          onValueChange={(newQuery) => {
+            setQuery(newQuery);
+            debouncedFetchResults(newQuery);
+          }}
         />
         <CommandList>
           {isLoading ? (
@@ -82,8 +81,10 @@ export default function SearchBox() {
                 <span className="ml-2 text-sm text-muted-foreground">Loading...</span>
               </div>
             </CommandGroup>
-          ) : debouncedQuery && results.length === 0 ? (
-            <CommandEmpty>No results found.</CommandEmpty>
+          ) : results.length === 0 ? (
+            <CommandEmpty>
+              {query.length > 0 ? "No results found." : "Search for a product"}
+            </CommandEmpty>
           ) : results.length > 0 ? (
             <CommandGroup heading="Search Results">
               {results.map((result) => (
