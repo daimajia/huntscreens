@@ -51,8 +51,10 @@ export default async function Header() {
             <span className="hidden 2xl:flex hover:underline">YCombinator</span>
             {updateCns.YC > 0 && <span title={`${updateCns.YC} new company today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.YC}</span>}
           </Link>
+        </div>
 
-          <Link href="/taaft" title="Theresanaiforthat" className="relative flex flex-row gap-1 justify-center items-center">
+        <div className="flex flex-row items-center justify-center gap-1">
+          <Link href="/taaft" title="TAAFT" className="relative flex flex-row gap-1 justify-center items-center">
             <img src="/taaft.png" alt="TAAFT logo" className="h-7 rounded-full" />
             <span className="hidden 2xl:flex hover:underline">TAAFT</span>
             {updateCns.TAAFT > 0 && <span title={`${updateCns.TAAFT} new company today`} className=" bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">+{updateCns.TAAFT}</span>}
