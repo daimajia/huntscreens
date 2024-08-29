@@ -9,6 +9,7 @@ export default async function SearchPage({ params }: { params: { query: string }
 
   return (
     <>
+      <title>{query}</title>
       <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="md:hidden mb-6">
