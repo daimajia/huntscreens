@@ -26,11 +26,6 @@ export default async function Home({
             <div className='flex flex-row gap-4 items-center mt-8'>
               <SubscribeButton subscribed={user?.subscribed} isLogin={user !== null} />
             </div>
-            <div className='mt-8'>
-              <a href="https://www.producthunt.com/posts/huntscreens?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-huntscreens" target="_blank" rel="noopener noreferrer">
-                <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=478742&theme=light" alt="HuntScreens - Visually&#0032;Discover&#0032;Latest&#0032;Products&#0032;and&#0032;Startups&#0046; | Product Hunt" style={{width: '250px', height: '54px'}} width="250" height="54" />
-              </a>
-            </div>
           </div>
 
         </div>

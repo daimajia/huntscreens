@@ -13,6 +13,11 @@ export default function Footer() {
             <span className=" text-gray-500 dark:text-gray-400">
               Explore products and startups through visual snapshots
             </span>
+            <div className="mt-5">
+              <a href="https://www.producthunt.com/posts/huntscreens?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-huntscreens" target="_blank" rel="noopener noreferrer">
+                <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=478742&theme=light" alt="HuntScreens - Visually&#0032;Discover&#0032;Latest&#0032;Products&#0032;and&#0032;Startups&#0046; | Product Hunt" style={{ width: '250px', height: '54px' }} width="250" height="54" />
+              </a>
+            </div>
           </div>
           <div className="flex gap-20">
             <ul className="flex flex-col items-start mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400 gap-5">

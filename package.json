@@ -73,7 +73,6 @@
     "swr": "^2.2.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "use-debounce": "^10.0.3",
     "usehooks-ts": "^3.1.0",
     "uuid": "^9.0.1",
     "vaul": "^0.9.1",

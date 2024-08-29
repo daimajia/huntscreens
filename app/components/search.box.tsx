@@ -1,107 +1,47 @@
 "use client"
-import { useState, useCallback } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
-import { ProductTypes, urlMapper } from '../types/product.types';
-import Link from 'next/link';
-import Logo from '@/components/logo';
-import { Button } from "@/components/ui/button";
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { Input } from "@/components/ui/input";
 import { Search, Loader2 } from "lucide-react";
 
-type SearchResult = {
-  id: number;
-  name: string;
-  tagline: string;
-  thumb_url: string;
-  itemType: ProductTypes;
-  uuid: string;
-};
-
 export default function SearchBox() {
-  const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const debouncedFetchResults = useDebouncedCallback(async (searchQuery: string) => {
-    if (!searchQuery || searchQuery.length === 0) {
-      setResults([]);
-      setIsLoading(false);
-      return;
+  useEffect(() => {
+    if (pathname.startsWith('/search/')) {
+      const searchQuery = decodeURIComponent(pathname.split('/')[2]);
+      setQuery(searchQuery);
     }
+    setIsLoading(false);
+  }, [pathname]);
 
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      setResults(data);
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      setResults([]);
-    } finally {
-      setIsLoading(false);
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (query.trim()) {
+      setIsLoading(true);
+      router.push(`/search/${encodeURIComponent(query.trim())}`);
     }
-  }, 300);
-
-
-  const handleOpenChange = useCallback((newOpen: boolean) => {
-    setOpen(newOpen);
-    if (!newOpen) {
-      setQuery('');
-      setResults([]);
-      setIsLoading(false);
-    }
-  }, []);
+  };
 
   return (
-    <>
-      <Button
-        variant="outline"
-        className="w-[300px] justify-start text-left font-normal"
-        onClick={() => handleOpenChange(true)}
-      >
-        <Search className="mr-2 h-4 w-4" />
-        <span>Search products...</span>
-      </Button>
-      <CommandDialog open={open} onOpenChange={handleOpenChange}>
-        <CommandInput
-          placeholder="Search products..."
-          value={query}
-          onValueChange={(newQuery) => {
-            setQuery(newQuery);
-            debouncedFetchResults(newQuery);
-          }}
-        />
-        <CommandList>
-          {isLoading ? (
-            <CommandGroup heading="Searching...">
-              <div className="p-4 flex justify-center items-center">
-                <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                <span className="ml-2 text-sm text-muted-foreground">Loading...</span>
-              </div>
-            </CommandGroup>
-          ) : results.length === 0 ? (
-            <CommandEmpty>
-              {query.length > 0 ? "No results found." : "Search for a product"}
-            </CommandEmpty>
-          ) : results.length > 0 ? (
-            <CommandGroup heading="Search Results">
-              {results.map((result) => (
-                <CommandItem key={result.uuid} value={result.name}>
-                  <Link href={urlMapper[result.itemType](result.id)} className="flex items-center w-full" onClick={() => handleOpenChange(false)}>
-                    <Logo name={result.name} url={result.thumb_url} className="w-10 h-10 mr-3" />
-                    <div>
-                      <div className="font-semibold">{result.name}</div>
-                      <div className="text-sm text-gray-600">{result.tagline}</div>
-                    </div>
-                  </Link>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          ) : null}
-        </CommandList>
-      </CommandDialog>
-    </>
+    <form onSubmit={handleSearch} className="relative w-full md:w-[300px]">
+      <div className="absolute left-2 top-1/2 -translate-y-1/2">
+        {isLoading ? (
+          <Loader2 className="h-4 w-4 text-muted-foreground animate-spin" />
+        ) : (
+          <Search className="h-4 w-4 text-muted-foreground" />
+        )}
+      </div>
+      <Input
+        className="pl-8"
+        placeholder="Search products..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        disabled={isLoading}
+      />
+    </form>
   );
 }
