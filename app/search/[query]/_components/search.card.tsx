@@ -12,7 +12,7 @@ type SearchCardProps = {
 export default function SearchCard({ result }: SearchCardProps) {
   return (
     <div className="group bg-white dark:bg-gray-800 rounded-lg border hover:shadow-lg transition-all duration-300 overflow-hidden">
-      <Link href={urlMapper[result.itemType](result.id)} className="block">
+      <Link href={urlMapper[result.itemType](result.id)} className="block" target="_blank">
         <div className="relative h-48 w-full overflow-hidden">
           <img
             src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${result.uuid}.webp`}
