@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db/db";
-import { sql } from "drizzle-orm";
-import { producthunt, yc, indiehackers, taaft } from "@/db/schema";
+import { search } from "@/lib/api/search";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,29 +12,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Query parameter 'q' is required" }, { status: 400 });
   }
 
-  const searchResults = await db.execute(sql`
-    SELECT id, name, tagline, description, website, thumb_url, uuid, "itemType",
-           similarity(name, ${query}) AS similarity
-    FROM ${producthunt}
-    WHERE name % ${query} OR tagline % ${query} OR description % ${query}
-    UNION ALL
-    SELECT id, name, tagline, description, website, thumb_url, uuid, "itemType",
-           similarity(name, ${query}) AS similarity
-    FROM ${yc}
-    WHERE name % ${query} OR tagline % ${query} OR description % ${query}
-    UNION ALL
-    SELECT id, name, tagline, description, website, thumb_url, uuid, "itemType",
-           similarity(name, ${query}) AS similarity
-    FROM ${indiehackers}
-    WHERE name % ${query} OR tagline % ${query} OR description % ${query}
-    UNION ALL
-    SELECT id, name, tagline, description, website, thumb_url, uuid, "itemType",
-           similarity(name, ${query}) AS similarity
-    FROM ${taaft}
-    WHERE name % ${query} OR tagline % ${query} OR description % ${query}
-    ORDER BY similarity DESC
-    LIMIT ${limit} OFFSET ${offset}
-  `);
+  const searchResults = await search(query);
 
   return NextResponse.json(searchResults);
 }
