@@ -1,8 +1,8 @@
-import Loading from "@/app/components/list.loading";
 import { Suspense } from "react";
 import ProductList from "../components/product.list";
 import PHTopics from "./components/ph.topic";
 import SortDropdown from "./components/ph.sort";
+import Loading from "@/app/components/ui/skeleton/list.loading";
 
 export default function PHPage({ searchParams }: {
   searchParams: {

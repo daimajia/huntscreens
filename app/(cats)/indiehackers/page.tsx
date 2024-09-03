@@ -1,8 +1,7 @@
 "use client";
-import Loading from "@/app/components/list.loading";
 import { Suspense } from "react";
 import ProductList from "../components/product.list";
-
+import Loading from "@/app/components/ui/skeleton/list.loading";
 
 export default function IndiehackersPage() {
   return <>

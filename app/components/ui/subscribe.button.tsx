@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
-import { handleLoginAction } from "./subscribe.action";
+import { handleLoginAction } from "../subscribe.action";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { MailCheck } from "lucide-react";

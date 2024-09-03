@@ -3,9 +3,8 @@ import { Suspense } from "react";
 import YCSorter from "./components/startup.sort";
 import YCFilter from "./components/startup.filter";
 import { YCSearchParams } from "@/types/yc.types";
-import Loading from "@/app/components/list.loading";
 import ProductList from "../../components/product.list";
-
+import Loading from "@/app/components/ui/skeleton/list.loading";
 
 export default function YCPage({ searchParams }: {
   searchParams: YCSearchParams

@@ -1,9 +1,8 @@
 "use client";
-import Loading from "@/app/components/list.loading";
 import { Suspense } from "react";
 import { YCSortBy } from "../../../types/yc.types";
 import ProductList from "../components/product.list";
-
+import Loading from "@/app/components/ui/skeleton/list.loading";
 
 export default function TaaftPage({ searchParams }: {
   searchParams: {

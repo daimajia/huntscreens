@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "@logto/next/server-actions";
-import { logtoConfig } from "../logto";
-import SignOut from "./sign-out";
+import { logtoConfig } from "../../logto";
+import SignOut from "../auth/sign-out";
 import Link from "next/link";
 import { BookmarkCheck } from "lucide-react";
 

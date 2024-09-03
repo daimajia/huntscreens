@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import Header from '../components/header';
-import SubscribeButton from '../components/subscribe.button';
+import Header from '../components/layout/header';
+import SubscribeButton from '../components/ui/subscribe.button';
 import underline from "/public/underline.svg";
 import { getCurrentUser } from '@/lib/user';
 import LoomFlowsWidget from '@/components/thirdparties/loomflow';

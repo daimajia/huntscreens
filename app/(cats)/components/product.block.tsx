@@ -1,7 +1,7 @@
 "use client";
 import useSWR from "swr";
-import Loading from "../../components/list.loading";
-import MiniScreenshotCard from "../../components/screenshot.card";
+import Loading from "../../components/ui/skeleton/list.loading";
+import MiniScreenshotCard from "../../components/product/card/screenshot.card";
 import { ApiReturnDataType, generatedata, JustLaunchedProduct, ProductTypes } from "@/types/product.types";
 import { FavoritesWithDetail } from "@/db/schema";
 import { useEffect } from "react";

@@ -1,13 +1,13 @@
-import ProductDetailPage from "@/app/components/product.detail";
 import { cookies } from "next/headers";
 import type { Metadata, ResolvingMetadata } from 'next';
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 import { producthunt } from "@/db/schema/ph";
 import { notFound } from "next/navigation";
-import Header from "@/app/components/header";
 import query_yc from "@/lib/api/query.yc";
 import { YCSortBy } from "@/types/yc.types";
+import ProductDetailPage from "@/app/components/product/product.detail";
+import Header from "@/app/components/layout/header";
 
 type Props = {
   params: { id: number }

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import Loading from "@/app/components/list.loading";
 import ProductList from "./components/product.list";
+import Loading from "@/app/components/ui/skeleton/list.loading";
 
 export default function JustLaunchedPage() {
   return (

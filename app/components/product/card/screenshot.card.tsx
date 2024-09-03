@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 import Link from "next/link";
-import UpVote from "./upvote";
+import UpVote from "../upvote";
 import { useMediaQuery } from 'usehooks-ts';
 import { Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToggleFavorite } from "@/stores/favorites.provider";
 import { useState } from "react";
-import Spiner from "../skeletons/loading.spin";
+import Spiner from "../../../skeletons/loading.spin";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductTypes, urlMapper } from "@/types/product.types";
 

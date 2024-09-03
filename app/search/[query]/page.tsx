@@ -1,7 +1,7 @@
-import Header from "@/app/components/header";
 import SearchCard from "./_components/search.card";
 import { search } from "@/lib/api/search";
-import SearchBox from "@/app/components/search.box";
+import SearchBox from "@/app/components/search/search.box";
+import Header from "@/app/components/layout/header";
 
 export default async function SearchPage({ params }: { params: { query: string } }) {
   const query = decodeURIComponent(params.query);

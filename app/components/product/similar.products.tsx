@@ -1,5 +1,5 @@
 import { findSimilarProducts } from "@/lib/ai/embeding";
-import SimilarProductCard from "./similar.product.card";
+import SimilarProductCard from "./card/similar.product.card";
 import { ProductTypes } from "@/types/product.types";
 
 type SimilarProductProps = {

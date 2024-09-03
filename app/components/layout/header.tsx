@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { ModeToggle } from "./theme-button";
-import { logtoConfig } from "../logto";
+import { ModeToggle } from "../theme/theme-button";
+import { logtoConfig } from "../../logto";
 import { getLogtoContext, LogtoContext, signIn } from "@logto/next/server-actions";
-import SignIn from "./sign-in";
-import UserMenu from "./user.menu";
+import SignIn from "../auth/sign-in";
+import UserMenu from "../ui/user.menu";
 import { Button } from "@/components/ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import getUpdateCounts from "@/lib/api/query.updatecount";
-import SearchBox from "./search.box";
+import SearchBox from "../search/search.box";
 
 export default async function Header() {
   const updateCns = await getUpdateCounts();

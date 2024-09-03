@@ -5,15 +5,15 @@ import { intro, Producthunt, YC } from "@/db/schema";
 import { ProductModel, ProductTypes, thumbailGetter } from "@/types/product.types";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
-import SiteBreadcrumb from "./breadcrumb";
+import SiteBreadcrumb from "../ui/breadcrumb";
 import AIIntro from "./ai.intro";
 import Link from "next/link";
-import YCInfoBadge from "./yc.info.badge";
+import YCInfoBadge from "./yc/yc.info.badge";
 import { Badge } from "@/components/ui/badge";
 import NextPrevCard from "./next.prev.card";
 import SimilarProducts from "./similar.products";
 import Logo from "@/components/logo";
-import WeeklyTop from "./weekly.top";
+import WeeklyTop from "./common/weekly.top";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,

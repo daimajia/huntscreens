@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Umami from '@/components/thirdparties/umami';
-import { ThemeProvider } from './components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import Footer from './components/footer';
+import Footer from './components/layout/footer';
+import { ThemeProvider } from './components/theme/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Screenshots of Every New Product and Startup! - HuntScreens.com',
