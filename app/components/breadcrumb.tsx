@@ -5,8 +5,8 @@ import {
   BreadcrumbList, BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
-import { ProductTypes } from "../types/product.types";
 import Link from "next/link";
+import { ProductTypes } from "@/types/product.types";
 
 export default function SiteBreadcrumb({productType}: {productType: ProductTypes}) {
   let rootPath;

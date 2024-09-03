@@ -6,15 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Link2Icon, SquareArrowOutUpRight } from "lucide-react";
 import useSWR from "swr";
 import { getCookie } from 'cookies-next';
-import { ProductDetailData } from "../types/api.types";
 import DetailSkeleton from "../skeletons/detail.skeleton";
 import { useEffect, useState } from "react";
 import { Producthunt } from "@/db/schema/ph";
 import GoBack from "./back.button";
 import Spiner from "../skeletons/loading.spin";
 import { YC } from "@/db/schema";
-import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
 import YCInfoBadge from "./yc.info.badge";
+import { ProductDetailData } from "@/types/api.types";
+import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "@/types/product.types";
 
 
 export default function ProductDetailModal<T extends ProductTypes>(props: {

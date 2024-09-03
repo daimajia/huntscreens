@@ -3,7 +3,7 @@ import { getCurrentUser } from "../user";
 import { favorites } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { ProductTypes } from "@/app/types/product.types";
+import { ProductTypes } from "@/types/product.types";
 import assert from "assert";
 
 export async function add_favorite(itemId: string, itemType: ProductTypes) {

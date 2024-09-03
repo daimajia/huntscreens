@@ -1,4 +1,4 @@
-import { ProductDetailData, SortBy } from "@/app/types/api.types";
+import { ProductDetailData, SortBy } from "@/types/api.types";
 import { db } from "@/db/db";
 import { phViewQueryByTopic, producthunt, Producthunt, sortedphbytime, sortedphbyvote } from "@/db/schema/ph";
 import { eq, inArray } from "drizzle-orm";

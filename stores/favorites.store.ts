@@ -1,4 +1,4 @@
-import { ProductTypes } from '@/app/types/product.types'
+import { ProductTypes } from '@/types/product.types'
 import { createStore } from 'zustand/vanilla'
 
 export type FavoritesState = {

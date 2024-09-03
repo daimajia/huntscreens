@@ -1,4 +1,4 @@
-import { ProductTypes } from "@/app/types/product.types";
+import { ProductTypes } from "@/types/product.types";
 import { db } from "@/db/db";
 
 import redis from "@/db/redis";

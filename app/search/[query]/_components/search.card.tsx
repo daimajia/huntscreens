@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import { urlMapper } from '@/app/types/product.types';
+import { urlMapper } from '@/types/product.types';
 import Logo from '@/components/logo';
 import { ExternalLink } from 'lucide-react';
 import { SearchResult } from '../_types/search.type';

@@ -1,5 +1,5 @@
 import Logo from "@/components/logo";
-import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "../types/product.types";
+import { ProductModel, ProductTypes, thumbailGetter, urlMapper } from "@/types/product.types";
 
 type NextPrevCardProps<T extends ProductTypes> = {
   productType: T

@@ -1,4 +1,4 @@
-import { ProductTypes } from "@/app/types/product.types";
+import { ProductTypes } from "@/types/product.types";
 
 export type SearchResult = {
   id: number;

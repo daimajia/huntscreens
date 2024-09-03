@@ -2,10 +2,10 @@ import { db } from "@/db/db";
 import { Producthunt, producthunt } from "@/db/schema";
 import { gt } from "drizzle-orm";
 import Logo from "@/components/logo";
-import { urlMapper } from "../types/product.types";
 import Link from "next/link";
 import { ThumbsUpIcon } from "lucide-react";
 import redis from "@/db/redis";
+import { urlMapper } from "@/types/product.types";
 
 const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
   return <>

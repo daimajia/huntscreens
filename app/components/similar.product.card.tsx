@@ -1,7 +1,6 @@
 import Logo from "@/components/logo";
-import { ProductTypes, urlMapper } from "../types/product.types";
-import { ExternalLink } from "lucide-react"; // 导入外部链接图标
 import Link from "next/link";
+import { ProductTypes, urlMapper } from "@/types/product.types";
 
 type SimilarProductCardProps = {
   itemId: string;

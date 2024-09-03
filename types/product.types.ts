@@ -1,6 +1,6 @@
 import { IndieHackers, Producthunt, Taaft, YC } from "@/db/schema";
 import { differenceInHours } from "date-fns";
-import { MiniCardMetadata } from "../components/screenshot.card";
+import { MiniCardMetadata } from "../app/components/screenshot.card";
 
 export type ProductTypes = "ph" | "yc" | "taaft" | "indiehackers";
 

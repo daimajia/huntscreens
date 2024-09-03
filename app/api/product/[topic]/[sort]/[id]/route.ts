@@ -1,4 +1,4 @@
-import { SortBy } from "@/app/types/api.types";
+import { SortBy } from "@/types/api.types";
 import queryProduct from "@/lib/api/query.product";
 import { NextResponse } from "next/server";
 

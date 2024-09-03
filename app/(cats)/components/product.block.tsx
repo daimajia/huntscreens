@@ -2,7 +2,7 @@
 import useSWR from "swr";
 import Loading from "../../components/list.loading";
 import MiniScreenshotCard from "../../components/screenshot.card";
-import { ApiReturnDataType, generatedata, JustLaunchedProduct, ProductTypes } from "@/app/types/product.types";
+import { ApiReturnDataType, generatedata, JustLaunchedProduct, ProductTypes } from "@/types/product.types";
 import { FavoritesWithDetail } from "@/db/schema";
 import { useEffect } from "react";
 import { useFavoriteStore } from "@/stores/favorites.provider";

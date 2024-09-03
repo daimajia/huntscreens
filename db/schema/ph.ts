@@ -1,4 +1,4 @@
-import { SortBy } from '@/app/types/api.types';
+import { SortBy } from '@/types/api.types';
 import { and, arrayContains, eq, SQL, sql } from 'drizzle-orm';
 import { boolean, index, integer, json, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 

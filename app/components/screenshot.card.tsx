@@ -2,7 +2,6 @@
 'use client';
 import Link from "next/link";
 import UpVote from "./upvote";
-import { ProductTypes, urlMapper } from "../types/product.types";
 import { useMediaQuery } from 'usehooks-ts';
 import { Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import { useToggleFavorite } from "@/stores/favorites.provider";
 import { useState } from "react";
 import Spiner from "../skeletons/loading.spin";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ProductTypes, urlMapper } from "@/types/product.types";
 
 export type BaseMiniCardMetadata = {
   id: number,

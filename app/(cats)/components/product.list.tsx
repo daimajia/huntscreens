@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { SWRConfig } from "swr";
 import ProductBlock from "./product.block";
-import { ProductTypes } from "@/app/types/product.types";
+import { ProductTypes } from "@/types/product.types";
 import { Button } from "@/components/ui/button";
 import { FavoriteStoreProvider } from "@/stores/favorites.provider";
 

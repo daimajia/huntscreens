@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { intro, Producthunt, YC } from "@/db/schema";
-import { ProductModel, ProductTypes, thumbailGetter } from "../types/product.types";
+import { ProductModel, ProductTypes, thumbailGetter } from "@/types/product.types";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import SiteBreadcrumb from "./breadcrumb";

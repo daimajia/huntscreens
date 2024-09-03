@@ -1,4 +1,4 @@
-import { ProductTypes } from "@/app/types/product.types";
+import { ProductTypes } from "@/types/product.types";
 import { add_favorite, delete_favorite } from "@/lib/api/favorites";
 import { NextRequest } from "next/server";
 
