@@ -1,4 +1,4 @@
-import UpVote from "@/app/components/product/upvote";
+import UpVote from "@/components/product/upvote";
 import { Producthunt } from "@/db/schema/ph";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

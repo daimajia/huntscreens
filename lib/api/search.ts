@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { producthunt, yc, indiehackers, taaft } from "@/db/schema";
-import { SearchResult } from "@/app/search/[query]/_types/search.type";
+import { SearchResult } from "@/types/search.type";
 import { sql } from "drizzle-orm";
 
 export async function search(query: string): Promise<SearchResult[]> {
