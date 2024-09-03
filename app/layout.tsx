@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Umami from './thridparties/umami';
+import Umami from '@/components/thirdparties/umami';
 import { ThemeProvider } from './components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import Footer from './components/footer';

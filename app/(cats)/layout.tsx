@@ -3,7 +3,7 @@ import Header from '../components/header';
 import SubscribeButton from '../components/subscribe.button';
 import underline from "/public/underline.svg";
 import { getCurrentUser } from '@/lib/user';
-import LoomFlowsWidget from '@/components/third/loomflow';
+import LoomFlowsWidget from '@/components/thirdparties/loomflow';
 import SiteNav from './components/site.nav';
 import getUpdateCounts from '@/lib/api/query.updatecount';
 
