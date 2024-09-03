@@ -14,6 +14,7 @@ import NextPrevCard from "./next.prev.card";
 import SimilarProducts from "./similar.products";
 import Logo from "@/components/logo";
 import WeeklyTop from "./common/weekly.top";
+import ImageLoader from "@/components/ui-custom/ImageLoader";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -97,7 +98,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
             </div>
 
             <div>
-              <img className="h-[500px] w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} loading="lazy" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
+              <ImageLoader className="h-[500px] w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
             </div>
 
 
