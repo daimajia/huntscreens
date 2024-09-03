@@ -20,7 +20,7 @@ export default function YCPage({ searchParams }: {
       </div>
 
       <Suspense fallback={<Loading />}>
-        <ProductList cardType="yc" genRequestUrl={(page) => `/api/startups/yc/${status}/${sort}/${page}`} />
+        <ProductList cardType="yc" baseUrl={`/api/startups/yc/${status}/${sort}/{page}`} />
       </Suspense>
     </div>
   </>

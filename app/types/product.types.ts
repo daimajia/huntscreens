@@ -4,6 +4,19 @@ import { MiniCardMetadata } from "../components/screenshot.card";
 
 export type ProductTypes = "ph" | "yc" | "taaft" | "indiehackers";
 
+
+export type JustLaunchedProduct = {
+  id: number;
+  name: string;
+  tagline: string;
+  description: string;
+  website: string;
+  thumb_url: string;
+  uuid: string;
+  item_type: 'ph' | 'yc' | 'indiehackers' | 'taaft';
+  launch_date: string;
+};
+
 export type ApiReturnDataType<T extends ProductTypes> =
   T extends "ph" ? Producthunt :
   T extends "yc" ? YC :

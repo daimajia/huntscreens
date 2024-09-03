@@ -11,7 +11,7 @@ export default function IndiehackersPage() {
       </div>
 
       <Suspense fallback={<Loading />}>
-        <ProductList cardType="indiehackers" genRequestUrl={(page) => `/api/indiehackers/time/${page}`}/>
+        <ProductList cardType="indiehackers" baseUrl="/api/indiehackers/time/{page}"/>
       </Suspense>
     </div>
   </>

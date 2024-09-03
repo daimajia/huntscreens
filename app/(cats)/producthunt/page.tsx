@@ -1,4 +1,3 @@
-"use client";
 import Loading from "@/app/components/list.loading";
 import { Suspense } from "react";
 import ProductList from "../components/product.list";
@@ -23,7 +22,7 @@ export default function PHPage({ searchParams }: {
       <Suspense fallback={<Loading />}>
         <ProductList
           cardType="ph"
-          genRequestUrl={(page) => `/api/products/${topic}/${sort}/${page}`}
+          baseUrl={`/api/products/${topic}/${sort}/{page}`}
         />
       </Suspense>
     </div>

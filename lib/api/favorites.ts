@@ -54,8 +54,8 @@ export default async function query_favorites({page} : QueryFavoriteProps) {
       indiehackers: true,
     },
     orderBy: desc(favorites.createdAt),
-    limit: 30,
-    offset: (page - 1) * 30
+    limit: 20,
+    offset: (page - 1) * 20
   })
   return favs;
 }

@@ -1,3 +1,4 @@
+"use client"
 import { useState, useCallback, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { SWRConfig } from "swr";
@@ -7,14 +8,13 @@ import { Button } from "@/components/ui/button";
 import { FavoriteStoreProvider } from "@/stores/favorites.provider";
 
 type ProductListProps<T extends ProductTypes> = {
-  cardType: T | "favorites",
+  cardType: T | "favorites" | "just-launched",
   fallbackData?: any,
-  genRequestUrl: (page: number) => string
+  baseUrl: string,
 }
 
-
 export default function ProductList<T extends ProductTypes>(
-  { cardType, fallbackData, genRequestUrl }: ProductListProps<T>
+  { cardType, fallbackData, baseUrl }: ProductListProps<T>
 ) {
   const [page, setPage] = useState(1);
   const [isEnded, setIsEnded] = useState(false);
@@ -32,6 +32,10 @@ export default function ProductList<T extends ProductTypes>(
       loadMore();
     }
   }, [inView, isEnded, loadMore]);
+
+  const genRequestUrl = useCallback((page: number) => {
+    return baseUrl.replace('{page}', page.toString());
+  }, [baseUrl]);
 
   return (
     <SWRConfig value={{ fallbackData: fallbackData }}>

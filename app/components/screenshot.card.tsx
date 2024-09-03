@@ -31,16 +31,21 @@ export type MiniCardMetadata<T extends ProductTypes> = T extends 'ph' ? BaseMini
 interface MiniCardProps<T extends ProductTypes> {
   isFavorite: boolean,
   cardType: T,
-  product: MiniCardMetadata<T>
+  product: MiniCardMetadata<T>,
+  showExtra?: boolean
 }
 
-export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite, cardType, product }: MiniCardProps<T>) {
+export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite, cardType, product, showExtra }: MiniCardProps<T>) {
   const matches = useMediaQuery("(min-width: 768px)", { defaultValue: true });
   const [favLoading, setFavLoading] = useState(false);
   const router = useRouter();
   const toggleFavorite = useToggleFavorite();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const getOptimizedImage = (uuid: string) => {
+    return `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/cdn-cgi/image/width=990,height=500,fit=crop,gravity=0x0,format=webp/${uuid}.webp`
+  }
   const toggleFavoriteAction = async (itemId: string, itemType: ProductTypes) => {
     setFavLoading(true);
     const resp = await fetch(`/api/user/check-auth?time=${new Date().getTime()}`);
@@ -57,7 +62,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
         <Link target="_blank" passHref key={product.id} href={urlMapper[cardType](product.id)}>
-          <img alt="" loading="lazy" className=" h-[40vh] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product.uuid}.webp` || ""}></img>
+          <img alt="" loading="lazy" className=" h-[250px] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={getOptimizedImage(product.uuid)}></img>
         </Link>
       </div>
       <div className="flex flex-row gap-5 items-center">
@@ -85,7 +90,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
 
             </Button>
             {
-              cardType === "ph" &&
+              cardType === "ph" && showExtra &&
               <div>
                 <Link target="__blank" href={(product as MiniCardMetadata<"ph">).producthunt_url || ""}>
                   <UpVote voteCount={(product as MiniCardMetadata<"ph">).votesCount} />

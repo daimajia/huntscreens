@@ -2,13 +2,14 @@
 import useSWR from "swr";
 import Loading from "../../components/list.loading";
 import MiniScreenshotCard from "../../components/screenshot.card";
-import { ApiReturnDataType, generatedata, ProductTypes } from "@/app/types/product.types";
+import { ApiReturnDataType, generatedata, JustLaunchedProduct, ProductTypes } from "@/app/types/product.types";
 import { FavoritesWithDetail } from "@/db/schema";
 import { useEffect } from "react";
 import { useFavoriteStore } from "@/stores/favorites.provider";
+import { differenceInHours } from "date-fns";
 
 type PageBlockProps<T extends ProductTypes> = {
-  cardType: T | 'favorites',
+  cardType: T | 'favorites' | "just-launched",
   endpoint_url: string,
   onEnd: () => void;
 }
@@ -37,14 +38,28 @@ export default function ProductBlock<T extends ProductTypes>({ cardType, endpoin
       queryFavorite(itemIds);
     }
   }, [data, cardType, queryFavorite, pushFavorites]);
-  if (error || (data && data?.length < 30)) {
+  if (error || (data && data?.length < 20)) {
     onEnd()
   }
 
   return <>
     {isLoading && <Loading />}
-    <div className="grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full">
-      {!isLoading && data && cardType !== "favorites" && <>
+    <div className="grid grid-flow-row-dense grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10 xl:gap-5 w-full">
+
+      {!isLoading && data && cardType === "just-launched" && <>
+        {data.map((item: JustLaunchedProduct) => <MiniScreenshotCard showExtra={false} isFavorite={favoriteIds.includes(item.uuid || "")} key={item.id} cardType={item.item_type} product={
+          {
+            id: item.id,
+            name: item.name,
+            uuid: item.uuid,
+            thumbnail: item.thumb_url,
+            tagline: item.tagline,
+            website: item.website || "",
+            new: differenceInHours(new Date(), new Date(item.launch_date || new Date())) <= 24
+          }
+        } />)}
+      </>}
+      {!isLoading && data && cardType !== "favorites" && cardType !== "just-launched" && <>
         {data.map((item: ApiReturnDataType<T>) => <MiniScreenshotCard isFavorite={favoriteIds.includes(item.uuid || "")} key={item.id} cardType={cardType} product={generatedata(cardType, item)} />)}
       </>}
 

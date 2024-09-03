@@ -10,7 +10,7 @@ export default function UserFavoritesPage() {
       </div>
 
       <Suspense fallback={<Loading />}>
-        <ProductList cardType="favorites" genRequestUrl={(page) => `/api/favorites/${page}`} />
+        <ProductList cardType="favorites" baseUrl="/api/favorites/{page}"/>
       </Suspense>
     </div>
   </>

@@ -4,6 +4,8 @@ import SubscribeButton from '../components/subscribe.button';
 import underline from "/public/underline.svg";
 import { getCurrentUser } from '@/lib/user';
 import LoomFlowsWidget from '@/components/third/loomflow';
+import SiteNav from './components/site.nav';
+import getUpdateCounts from '@/lib/api/query.updatecount';
 
 export const revalidate = 0;
 
@@ -13,6 +15,7 @@ export default async function Home({
   children: React.ReactNode
 }) {
   const user = await getCurrentUser();
+  const updateCounts = await getUpdateCounts();
   return (
     <>
       <Header />
@@ -29,7 +32,7 @@ export default async function Home({
           </div>
 
         </div>
-
+        <SiteNav updateCounts={updateCounts} />
         {children}
       </main>
       <LoomFlowsWidget accessToken="c1bacc70-40ad-4c40-97ac-295e6ac630f2" />

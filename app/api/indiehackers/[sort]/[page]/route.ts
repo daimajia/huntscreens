@@ -18,8 +18,8 @@ export async function GET(request: Request, context: {params: Params}) {
   const data = await db.query.indiehackers.findMany({
     where: and(...where),
     orderBy: order,
-    limit: 30,
-    offset: (context.params.page - 1) * 30
+    limit: 20,
+    offset: (context.params.page - 1) * 20
   });
   cookies().set('ih.sort', context.params.sort);
   return NextResponse.json(data);

@@ -3,7 +3,7 @@ import { indiehackers, producthunt, taaft, yc } from "@/db/schema";
 import { startOfDay, subDays } from "date-fns";
 import { count, gt } from "drizzle-orm";
 
-type UpdateCount = {
+export type UpdateCount = {
   YC: number,
   PH: number,
   TAAFT: number,

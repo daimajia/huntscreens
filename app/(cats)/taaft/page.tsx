@@ -17,7 +17,7 @@ export default function TaaftPage({ searchParams }: {
       </div>
 
       <Suspense fallback={<Loading />}>
-        <ProductList cardType="taaft" genRequestUrl={(page) => `/api/taafts/${page}`} />
+        <ProductList cardType="taaft" baseUrl={`/api/taafts/{page}`} />
       </Suspense>
     </div>
   </>

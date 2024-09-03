@@ -12,9 +12,9 @@ export async function GET(request: Request, context: { params: Params }){
   assert(context.params.page > 0);
   const data = await db.query.taaft.findMany({
     where: eq(taaft.webp, true),
-    limit: 30,
+    limit: 20,
     orderBy: desc(taaft.added_at),
-    offset: (context.params.page - 1) * 30
+    offset: (context.params.page - 1) * 20
   })
   return NextResponse.json(data);
 }

@@ -29,8 +29,8 @@ export async function GET(request: Request, context: {params: Params}) {
   const data = await db.query.yc.findMany({
     where: and(...where),
     orderBy: order,
-    limit: 30,
-    offset: (context.params.page - 1) * 30
+    limit: 20,
+    offset: (context.params.page - 1) * 20
   });
   cookies().set("vc", context.params.vc);
   cookies().set('yc.sort', context.params.sort);

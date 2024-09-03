@@ -30,7 +30,7 @@ export async function GET(request: Request, context: { params: Params }) {
   .where(query)
   .orderBy(
     ...orderBy
-  ).limit(30).offset((context.params.page - 1) * 30);
+  ).limit(20).offset((context.params.page - 1) * 20);
 
   cookies().set('sort', context.params.sort);
   cookies().set('topic', context.params.topic);
