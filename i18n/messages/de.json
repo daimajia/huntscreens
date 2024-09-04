@@ -1,0 +1,55 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "Entdecken Sie visuell die neuesten Produkte und Startups",
+      "visual": "Visuell",
+      "discover": "Entdecken Sie",
+      "productsandstartups": "Produkte und Startups"
+    },
+    "description": "Erkunden Sie Produkte und Startups durch visuelle Schnappschüsse",
+    "login": "Anmelden",
+    "search": "Produkte suchen...",
+    "just-launched": "Gerade gestartet",
+    "favorites": "Meine Favoriten",
+    "signout": "Abmelden",
+    "subscribe": {
+      "receive": "Tägliche Updates erhalten",
+      "unsubscribe": "Abmelden",
+      "subscribed": "Abonniert",
+      "subscribedToUpdates": "Updates abonniert",
+      "unsubscribeConfirm": "Sind Sie sicher, dass Sie sich von unseren Updates abmelden möchten?",
+      "success": "Erfolgreich abonniert",
+      "failed": "Abonnement fehlgeschlagen",
+      "subscribeDescription": "Sie erhalten jetzt tägliche E-Mail-Updates.",
+      "unsubscribeSuccess": "Erfolgreich abgemeldet",
+      "unsubscribeFailed": "Abmeldung fehlgeschlagen",
+      "unsubscribeDescription": "Sie erhalten keine Updates mehr von uns.",
+      "error": "Beim Versuch zu abonnieren ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "cancel": "Abbrechen",
+      "unsubscribing": "Abmeldung läuft..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "Alternativen zu {name}",
+    "WeeklyTop": "Top 10 Produkte der Woche"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "Startzeit",
+      "TeamSize": "Teamgröße",
+      "Public": "Öffentlich",
+      "Acquired": "Übernommen",
+      "All": "Alle"
+    },
+    "ProductHunt": {
+      "SortByTime": "Nach Zeit sortieren",
+      "SortByVotes": "Nach Stimmen sortieren",
+      "All": "Alle",
+      "DesignTools": "Design-Tools",
+      "ArtificialIntelligence": "Künstliche Intelligenz",
+      "OpenSource": "Open Source",
+      "DeveloperTools": "Entwickler-Tools",
+      "SaaS": "SaaS"
+    }
+  }
+}

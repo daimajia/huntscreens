@@ -1,0 +1,55 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "直观发现最新产品和创业项目",
+      "visual": "视觉化的",
+      "discover": "发现最新",
+      "productsandstartups": "产品和创业项目"
+    },
+    "description": "通过视觉快照探索产品和创业项目",
+    "login": "登录",
+    "search": "搜索产品...",
+    "just-launched": "刚刚发布",
+    "favorites": "我的收藏",
+    "signout": "退出登录",
+    "subscribe": {
+      "receive": "接收每日更新",
+      "unsubscribe": "取消订阅",
+      "subscribed": "已订阅",
+      "subscribedToUpdates": "已订阅更新",
+      "unsubscribeConfirm": "您确定要取消订阅我们的更新吗？",
+      "success": "订阅成功",
+      "failed": "订阅失败",
+      "subscribeDescription": "您现在将收到每日电子邮件更新。",
+      "unsubscribeSuccess": "取消订阅成功",
+      "unsubscribeFailed": "取消订阅失败",
+      "unsubscribeDescription": "您将不再收到我们的更新。",
+      "error": "尝试订阅时发生错误。请重试。",
+      "cancel": "取消",
+      "unsubscribing": "正在取消订阅..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "{name}的替代品",
+    "WeeklyTop": "每周十大热门产品"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "发布时间",
+      "TeamSize": "团队规模",
+      "Public": "公开",
+      "Aquired": "已被收购",
+      "All": "全部"
+    },
+    "ProductHunt": {
+      "SortByTime": "按时间排序",
+      "SortByVotes": "按投票排序",
+      "All": "全部",
+      "DesignTools": "设计工具",
+      "ArtificialIntelligence": "人工智能",
+      "OpenSource": "开源",
+      "DeveloperTools": "开发者工具",
+      "SaaS": "SaaS"
+    }
+  }
+}

@@ -1,4 +1,7 @@
+import { useTranslations } from "next-intl";
+
 export default function Footer() {
+  const t = useTranslations("Home");
   return (
     <footer className="bg-white rounded-lg dark:bg-gray-900 m-4">
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
@@ -11,7 +14,7 @@ export default function Footer() {
               </picture>
             </a>
             <span className=" text-gray-500 dark:text-gray-400">
-              Explore products and startups through visual snapshots
+                {t('description')}
             </span>
             <div className="mt-5">
               <a href="https://www.producthunt.com/posts/huntscreens?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-huntscreens" target="_blank" rel="noopener noreferrer">

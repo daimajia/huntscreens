@@ -1,0 +1,55 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "En Yeni Ürünleri ve Girişimleri Görsel Olarak Keşfedin",
+      "visual": "Görsel Olarak",
+      "discover": "En Yeni",
+      "productsandstartups": "Ürünleri ve Girişimleri Keşfedin"
+    },
+    "description": "Görsel anlık görüntüler aracılığıyla ürünleri ve girişimleri keşfedin",
+    "login": "Giriş Yap",
+    "search": "Ürün Ara...",
+    "just-launched": "Yeni Çıkanlar",
+    "favorites": "Favorilerim",
+    "signout": "Çıkış Yap",
+    "subscribe": {
+      "receive": "Günlük Güncellemeleri Al",
+      "unsubscribe": "Abonelikten Çık",
+      "subscribed": "Abone Olundu",
+      "subscribedToUpdates": "Güncellemelere Abone Olundu",
+      "unsubscribeConfirm": "Güncellemelerimizden çıkmak istediğinizden emin misiniz?",
+      "success": "Başarıyla Abone Olundu",
+      "failed": "Abonelik Başarısız Oldu",
+      "subscribeDescription": "Artık günlük e-posta güncellemeleri alacaksınız.",
+      "unsubscribeSuccess": "Abonelikten Başarıyla Çıkıldı",
+      "unsubscribeFailed": "Abonelikten Çıkma Başarısız Oldu",
+      "unsubscribeDescription": "Artık güncellemelerimizi almayacaksınız.",
+      "error": "Abone olmaya çalışırken bir hata oluştu. Lütfen tekrar deneyin.",
+      "cancel": "İptal",
+      "unsubscribing": "Abonelikten çıkılıyor..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "{name} Alternatifleri",
+    "WeeklyTop": "Haftanın En İyi 10 Ürünü"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "Lansman Zamanı",
+      "TeamSize": "Ekip Büyüklüğü",
+      "Public": "Halka Açık",
+      "Acquired": "Satın Alınmış",
+      "All": "Tümü"
+    },
+    "ProductHunt": {
+      "SortByTime": "Zamana Göre Sırala",
+      "SortByVotes": "Oylara Göre Sırala",
+      "All": "Tümü",
+      "DesignTools": "Tasarım Araçları",
+      "ArtificialIntelligence": "Yapay Zeka",
+      "OpenSource": "Açık Kaynak",
+      "DeveloperTools": "Geliştirici Araçları",
+      "SaaS": "SaaS"
+    }
+  }
+}

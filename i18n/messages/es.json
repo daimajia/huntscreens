@@ -1,0 +1,55 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "Descubre visualmente los últimos productos y startups",
+      "visual": "Visualmente",
+      "discover": "Descubre los últimos",
+      "productsandstartups": "productos y startups"
+    },
+    "description": "Explora productos y startups a través de instantáneas visuales",
+    "login": "Iniciar sesión",
+    "search": "Buscar productos...",
+    "just-launched": "Recién lanzados",
+    "favorites": "Mis favoritos",
+    "signout": "Cerrar sesión",
+    "subscribe": {
+      "receive": "Recibir actualizaciones diarias",
+      "unsubscribe": "Cancelar suscripción",
+      "subscribed": "Suscrito",
+      "subscribedToUpdates": "Suscrito a actualizaciones",
+      "unsubscribeConfirm": "¿Estás seguro de que quieres cancelar la suscripción a nuestras actualizaciones?",
+      "success": "Suscripción exitosa",
+      "failed": "Suscripción fallida",
+      "subscribeDescription": "Ahora recibirás actualizaciones diarias por correo electrónico.",
+      "unsubscribeSuccess": "Cancelación de suscripción exitosa",
+      "unsubscribeFailed": "Cancelación de suscripción fallida",
+      "unsubscribeDescription": "Ya no recibirás nuestras actualizaciones.",
+      "error": "Ocurrió un error al intentar suscribirse. Por favor, inténtalo de nuevo.",
+      "cancel": "Cancelar",
+      "unsubscribing": "Cancelando suscripción..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "Alternativas a {name}",
+    "WeeklyTop": "Top 10 productos de la semana"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "Tiempo de lanzamiento",
+      "TeamSize": "Tamaño del equipo",
+      "Public": "Público",
+      "Acquired": "Adquirido",
+      "All": "Todos"
+    },
+    "ProductHunt": {
+      "SortByTime": "Ordenar por tiempo",
+      "SortByVotes": "Ordenar por votos",
+      "All": "Todos",
+      "DesignTools": "Herramientas de diseño",
+      "ArtificialIntelligence": "Inteligencia artificial",
+      "OpenSource": "Código abierto",
+      "DeveloperTools": "Herramientas para desarrolladores",
+      "SaaS": "SaaS"
+    }
+  }
+}

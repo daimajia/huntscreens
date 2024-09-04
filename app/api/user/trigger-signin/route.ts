@@ -1,4 +1,4 @@
-import { logtoConfig } from "@/app/logto";
+import { logtoConfig } from "@/lib/auth/logto";
 import { signIn } from "@logto/next/server-actions";
 import { NextRequest } from "next/server";
 

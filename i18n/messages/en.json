@@ -1,0 +1,60 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "Visually Discover Latest Products and Startups",
+      "visual": "Visually",
+      "discover": "Discover Latest",
+      "productsandstartups": "Products and Startups"
+    },
+    "description": "Explore products and startups through visual snapshots",
+    "login": "Log in",
+    "search": "Search Products...",
+    "just-launched": "Just Launched",
+    "favorites": "My Favorites",
+    "signout": "Sign out",
+    "subscribe": {
+      "receive": "Receive Daily Updates",
+      "unsubscribe": "Unsubscribe",
+      "subscribed": "Subscribed",
+      "subscribedToUpdates": "Subscribed to Updates",
+      "unsubscribeConfirm": "Are you sure you want to unsubscribe from our updates?",
+      "success": "Subscribed Successfully",
+      "failed": "Subscription Failed",
+      "subscribeDescription": "You will now receive daily email updates.",
+      "unsubscribeSuccess": "Unsubscribed Successfully",
+      "unsubscribeFailed": "Unsubscribe Failed",
+      "unsubscribeDescription": "You will no longer receive our updates.",
+      "error": "An error occurred while trying to subscribe. Please try again.",
+      "cancel": "Cancel",
+      "unsubscribing": "Unsubscribing..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "{name} Alternatives",
+    "WeeklyTop": "Weekly Top 10 Products"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "Launch Time",
+      "TeamSize": "Team Size",
+      "Public": "Public",
+      "Acquired": "Aquired",
+      "All": "All"
+    },
+    "ProductHunt": {
+      "SortByTime" : "Sort by Time",
+      "SortByVotes":  "Sort by Votes",
+      "All" :"All",
+      "DesignTools": "Design Tools",
+      "ArtificialIntelligence": "Artificial Intelligence",
+      "OpenSource": "Open Source",
+      "DeveloperTools": "Developer Tools",
+      "SaaS": "SaaS"
+    }
+  },
+  "Search": {
+    "NoResults": "No results found.",
+    "TryDifferentKeywords": "Try searching with different keywords.",
+    "SearchResultsFor": "Search Results for {query}"
+  }
+}

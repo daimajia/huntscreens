@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ThumbsUpIcon } from "lucide-react";
 import redis from "@/db/redis";
 import { urlMapper } from "@/types/product.types";
+import { getTranslations } from "next-intl/server";
 
 const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
   return <>
@@ -53,8 +54,9 @@ async function getWeeklyTop() {
 
 export default async function WeeklyTop() {
   const weeklyTops = await getWeeklyTop();
+  const t = await getTranslations('Showcase');
   return <div>
-    <h1 className="text-2xl font-bold mb-5">Weekly Top 10 Products</h1>
+    <h1 className="text-2xl font-bold mb-5">{t("WeeklyTop")}</h1>
     <ul className="flex flex-col gap-5">
       {weeklyTops.map((weeklyTop) => (
         <li key={weeklyTop.id}>

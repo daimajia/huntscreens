@@ -1,6 +1,7 @@
 import { findSimilarProducts } from "@/lib/ai/embeding";
 import SimilarProductCard from "./card/similar.product.card";
 import { ProductTypes } from "@/types/product.types";
+import { getTranslations } from "next-intl/server";
 
 type SimilarProductProps = {
   name: string;
@@ -10,11 +11,14 @@ type SimilarProductProps = {
 
 export default async function SimilarProducts({uuid, name, description }: SimilarProductProps) {
   const similarProducts = await findSimilarProducts(uuid, description);
+  const t = await getTranslations("Showcase");
   return (
     <div className="grid gap-4">
       {similarProducts.length > 0 && (
         <h2 className="text-2xl font-bold">
-          {name} Alternatives
+          {t("Alternatives", {
+            name: name
+          })}
         </h2>
       )}
       {similarProducts.map((product) => (

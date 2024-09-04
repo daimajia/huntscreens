@@ -1,0 +1,55 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "नवीनतम उत्पादों और स्टार्टअप्स को दृश्य रूप से खोजें",
+      "visual": "दृश्य रूप से",
+      "discover": "नवीनतम खोजें",
+      "productsandstartups": "उत्पाद और स्टार्टअप्स"
+    },
+    "description": "दृश्य स्नैपशॉट के माध्यम से उत्पादों और स्टार्टअप्स का अन्वेषण करें",
+    "login": "लॉग इन करें",
+    "search": "उत्पाद खोजें...",
+    "just-launched": "अभी लॉन्च हुआ",
+    "favorites": "मेरे पसंदीदा",
+    "signout": "साइन आउट करें",
+    "subscribe": {
+      "receive": "दैनिक अपडेट प्राप्त करें",
+      "unsubscribe": "सदस्यता रद्द करें",
+      "subscribed": "सदस्यता ली गई",
+      "subscribedToUpdates": "अपडेट की सदस्यता ली गई",
+      "unsubscribeConfirm": "क्या आप वाकई हमारे अपडेट की सदस्यता रद्द करना चाहते हैं?",
+      "success": "सफलतापूर्वक सदस्यता ली गई",
+      "failed": "सदस्यता विफल रही",
+      "subscribeDescription": "अब आपको दैनिक ईमेल अपडेट प्राप्त होंगे।",
+      "unsubscribeSuccess": "सदस्यता सफलतापूर्वक रद्द की गई",
+      "unsubscribeFailed": "सदस्यता रद्द करना विफल रहा",
+      "unsubscribeDescription": "अब आपको हमारे अपडेट प्राप्त नहीं होंगे।",
+      "error": "सदस्यता लेने का प्रयास करते समय एक त्रुटि हुई। कृपया पुनः प्रयास करें।",
+      "cancel": "रद्द करें",
+      "unsubscribing": "सदस्यता रद्द की जा रही है..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "{name} के विकल्प",
+    "WeeklyTop": "साप्ताहिक शीर्ष 10 उत्पाद"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "लॉन्च समय",
+      "TeamSize": "टीम का आकार",
+      "Public": "सार्वजनिक",
+      "Acquired": "अधिग्रहित",
+      "All": "सभी"
+    },
+    "ProductHunt": {
+      "SortByTime": "समय के अनुसार क्रमबद्ध करें",
+      "SortByVotes": "वोट के अनुसार क्रमबद्ध करें",
+      "All": "सभी",
+      "DesignTools": "डिज़ाइन टूल्स",
+      "ArtificialIntelligence": "कृत्रिम बुद्धिमत्ता",
+      "OpenSource": "ओपन सोर्स",
+      "DeveloperTools": "डेवलपर टूल्स",
+      "SaaS": "SaaS"
+    }
+  }
+}

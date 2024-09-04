@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Search, Loader2 } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 export default function SearchBox() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("Home");
 
   useEffect(() => {
     if (pathname.startsWith('/search/')) {
@@ -37,7 +39,7 @@ export default function SearchBox() {
       </div>
       <Input
         className="pl-8"
-        placeholder="Search products..."
+        placeholder={t('search')}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         disabled={isLoading}
