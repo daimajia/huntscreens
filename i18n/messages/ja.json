@@ -51,5 +51,10 @@
       "DeveloperTools": "開発者ツール",
       "SaaS": "SaaS"
     }
+  },
+  "Search": {
+    "NoResults": "結果が見つかりません。",
+    "TryDifferentKeywords": "別のキーワードで検索してみてください。",
+    "SearchResultsFor": "「{query}」の検索結果"
   }
 }

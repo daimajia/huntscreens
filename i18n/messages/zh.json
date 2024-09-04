@@ -51,5 +51,10 @@
       "DeveloperTools": "开发者工具",
       "SaaS": "SaaS"
     }
+  },
+  "Search": {
+    "NoResults": "未找到结果。",
+    "TryDifferentKeywords": "请尝试使用不同的关键词搜索。",
+    "SearchResultsFor": "{query} 的搜索结果"
   }
 }

@@ -51,5 +51,10 @@
       "DeveloperTools": "أدوات المطورين",
       "SaaS": "البرمجيات كخدمة"
     }
+  },
+  "Search": {
+    "NoResults": "لم يتم العثور على نتائج.",
+    "TryDifferentKeywords": "حاول البحث باستخدام كلمات مفتاحية مختلفة.",
+    "SearchResultsFor": "نتائج البحث عن {query}"
   }
 }

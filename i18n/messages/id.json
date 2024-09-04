@@ -51,5 +51,10 @@
       "DeveloperTools": "Alat Pengembang",
       "SaaS": "SaaS"
     }
+  },
+  "Search": {
+    "NoResults": "Tidak ada hasil ditemukan.",
+    "TryDifferentKeywords": "Coba cari dengan kata kunci yang berbeda.",
+    "SearchResultsFor": "Hasil Pencarian untuk {query}"
   }
 }

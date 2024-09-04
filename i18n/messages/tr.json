@@ -51,5 +51,10 @@
       "DeveloperTools": "Geliştirici Araçları",
       "SaaS": "SaaS"
     }
+  },
+  "Search": {
+    "NoResults": "Sonuç bulunamadı.",
+    "TryDifferentKeywords": "Farklı anahtar kelimelerle aramayı deneyin.",
+    "SearchResultsFor": "{query} için Arama Sonuçları"
   }
 }

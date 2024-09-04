@@ -51,5 +51,10 @@
       "DeveloperTools": "개발자 도구",
       "SaaS": "SaaS"
     }
+  },
+  "Search": {
+    "NoResults": "결과를 찾을 수 없습니다.",
+    "TryDifferentKeywords": "다른 키워드로 검색해 보세요.",
+    "SearchResultsFor": "{query}에 대한 검색 결과"
   }
 }
