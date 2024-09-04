@@ -1,5 +1,7 @@
+import { SupportedLangs } from "@/i18n/routing";
 import { sql } from "drizzle-orm";
 import { boolean, date, index, integer, jsonb, pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { TranslationContent } from "./types";
 
 export type Taaft = typeof taaft.$inferSelect;
 
@@ -29,6 +31,7 @@ export const taaft = pgTable('taaft', {
   uuid: uuid('uuid').defaultRandom().notNull(),
   webp: boolean('webp').default(false),
   created_at: timestamp('created_at', {withTimezone: true}).defaultNow(),
+  translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`)
 }, (table) => {
   return {
     taaftuuidIndex: index('taaft_uuid_index').on(table.uuid),
