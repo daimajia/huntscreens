@@ -31,7 +31,9 @@
   },
   "Showcase": {
     "Alternatives": "{name} Alternatifleri",
-    "WeeklyTop": "Haftanın En İyi 10 Ürünü"
+    "WeeklyTop": "Haftanın En İyi 10 Ürünü",
+    "MoreAbout": "{name} Hakkında Daha Fazla",
+    "VisitWebsite": "Web Sitesini Ziyaret Et"
   },
   "Catalog": {
     "YC": {

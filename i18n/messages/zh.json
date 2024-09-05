@@ -31,7 +31,9 @@
   },
   "Showcase": {
     "Alternatives": "{name}的替代品",
-    "WeeklyTop": "每周十大热门产品"
+    "WeeklyTop": "每周十大热门产品",
+    "MoreAbout": "更多关于{name}的信息",
+    "VisitWebsite": "访问网站"
   },
   "Catalog": {
     "YC": {

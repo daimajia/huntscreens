@@ -31,7 +31,9 @@
   },
   "Showcase": {
     "Alternatives": "{name} के विकल्प",
-    "WeeklyTop": "साप्ताहिक शीर्ष 10 उत्पाद"
+    "WeeklyTop": "साप्ताहिक शीर्ष 10 उत्पाद",
+    "MoreAbout": "{name} के बारे में अधिक जानकारी",
+    "VisitWebsite": "वेबसाइट पर जाएं"
   },
   "Catalog": {
     "YC": {

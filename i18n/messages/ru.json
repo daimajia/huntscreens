@@ -31,7 +31,9 @@
   },
   "Showcase": {
     "Alternatives": "Альтернативы {name}",
-    "WeeklyTop": "Топ-10 продуктов недели"
+    "WeeklyTop": "Топ-10 продуктов недели",
+    "MoreAbout": "Подробнее о {name}",
+    "VisitWebsite": "Посетить сайт"
   },
   "Catalog": {
     "YC": {

@@ -31,7 +31,9 @@
   },
   "Showcase": {
     "Alternatives": "{name}の代替品",
-    "WeeklyTop": "週間トップ10製品"
+    "WeeklyTop": "週間トップ10製品",
+    "MoreAbout": "{name}についてもっと知る",
+    "VisitWebsite": "ウェブサイトを訪問"
   },
   "Catalog": {
     "YC": {

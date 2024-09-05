@@ -31,7 +31,9 @@
   },
   "Showcase": {
     "Alternatives": "Alternativas a {name}",
-    "WeeklyTop": "Top 10 productos de la semana"
+    "WeeklyTop": "Top 10 productos de la semana",
+    "MoreAbout": "Más sobre {name}",
+    "VisitWebsite": "Visitar sitio web"
   },
   "Catalog": {
     "YC": {

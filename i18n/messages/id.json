@@ -31,7 +31,9 @@
   },
   "Showcase": {
     "Alternatives": "Alternatif {name}",
-    "WeeklyTop": "10 Produk Teratas Mingguan"
+    "WeeklyTop": "10 Produk Teratas Mingguan",
+    "MoreAbout": "Lebih Lanjut Tentang {name}",
+    "VisitWebsite": "Kunjungi Situs Web"
   },
   "Catalog": {
     "YC": {
