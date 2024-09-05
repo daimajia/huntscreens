@@ -18,7 +18,7 @@ export default async function AIIntro({ uuid, overwrite }: { uuid: string, overw
   prose-h1:font-bold prose-h1:text-lg prose-h2:text-lg
   prose-p:mt-2 prose-h2:mt-0
   prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xl">
-      <Markdown>{markdown.replace("\n", '')}</Markdown>
+      <Markdown>{markdown.replace(/\\n/g, '\n')}</Markdown>
     </div>
   </>
 }
