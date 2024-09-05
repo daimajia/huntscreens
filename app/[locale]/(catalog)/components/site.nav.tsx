@@ -10,8 +10,8 @@ export default function SiteNav({ updateCounts }: { updateCounts: UpdateCount })
   const t = useTranslations("Home");
   const navItems = [
     { name: t("just-launched"), href: '/', emoji: '🚀' },
-    { name: 'Product Hunt', href: '/producthunt', icon: '/phlogo.png', emoji: '😺', countKey: 'PH' },
-    { name: 'Indie Hackers', href: '/indiehackers', icon: '/indiehackers.jpg', emoji: '💻', countKey: 'Indiehackers' },
+    { name: 'ProductHunt', href: '/producthunt', icon: '/phlogo.png', emoji: '😺', countKey: 'PH' },
+    { name: 'IndieHackers', href: '/indiehackers', icon: '/indiehackers.jpg', emoji: '💻', countKey: 'Indiehackers' },
     { name: 'YC', href: '/startup/yc', icon: '/yc.png', emoji: '🦄', countKey: 'YC' },
     { name: 'Taaft', href: '/taaft', icon: '/taaft.png', emoji: '🚀', countKey: 'TAAFT' },
   ];

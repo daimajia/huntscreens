@@ -23,7 +23,7 @@ export default function NextPrevCard<T extends ProductTypes>(props: NextPrevCard
               </div>
               <div className="flex flex-col gap-2">
                 <h3 className="font-bold mb-1 text-2xl">{props.prev.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{props.prev.tagline}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{props.prev.translations?.[locale]?.tagline || props.prev.tagline}</p>
               </div>
             </div>
           </div>
@@ -39,7 +39,7 @@ export default function NextPrevCard<T extends ProductTypes>(props: NextPrevCard
               </div>
               <div className="flex flex-col gap-2">
                 <h3 className="font-bold mb-1 text-2xl">{props.next.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{props.next.tagline}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{props.next.translations?.[locale]?.tagline || props.next.tagline}</p>
               </div>
             </div>
           </div>

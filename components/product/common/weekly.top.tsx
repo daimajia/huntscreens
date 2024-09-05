@@ -25,13 +25,13 @@ const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
                 <h3 className="text-lg font-bold hover:underline">{product.name}</h3>
               </div>
               <div className="flex items-center gap-1">
-                <ThumbsUpIcon size={16} />
-                <span>{product.votesCount}</span>
+                <ThumbsUpIcon size={16} className="text-muted-foreground" />
+                <span className="text-muted-foreground">{product.votesCount}</span>
               </div>
             </div>
             <div className="w-full">
               <p className="text-sm text-muted-foreground line-clamp-2 hover:line-clamp-none transition-all duration-300 ease-in-out">
-                {product.tagline}
+                {product.translations?.[locale]?.tagline || product.tagline}
               </p>
             </div>
           </div>
