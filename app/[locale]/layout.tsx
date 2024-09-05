@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Footer from '@/components/layout/footer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { getMessages } from 'next-intl/server';
+import HrefLangs from '@/components/seo/hreflangs';
 
 export const metadata: Metadata = {
   title: 'Screenshots of Every New Product and Startup! - HuntScreens.com',
@@ -31,7 +32,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head></head>
-      <body >
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

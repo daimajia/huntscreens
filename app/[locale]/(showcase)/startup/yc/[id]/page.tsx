@@ -1,48 +1,21 @@
 import { cookies } from "next/headers";
 import type { Metadata, ResolvingMetadata } from 'next';
-import { db } from "@/db/db";
-import { eq } from "drizzle-orm";
-import { producthunt } from "@/db/schema/ph";
 import { notFound } from "next/navigation";
 import query_yc from "@/lib/api/query.yc";
 import { YCSortBy } from "@/types/yc.types";
 import ProductDetailPage from "@/components/product/product.detail";
-import Header from "@/components/layout/header";
-
+import { SupportedLangs } from "@/i18n/routing";
+import { generateUniversalMetadata } from "@/lib/seo/metadata";
 type Props = {
-  params: { id: number }
+  params: { id: number, locale: SupportedLangs }
 }
 
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const product = await db.query.yc.findFirst({
-    where: eq(producthunt.id, params.id)
-  });
-  return {
-    metadataBase: new URL("https://huntscreens.com"),
-    title: `${product?.name} | HuntScreens`,
-    description: `${product?.name}: ${product?.description} - HuntScreens`,
-    publisher: "huntscreens.com",
-    openGraph: {
-      title: `${product?.name}`,
-      description: `${product?.tagline} - ${product?.description}`,
-      publishedTime: `${product?.launched_at}`,
-      images: `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`
-    },
-    keywords: product?.industries?.flatMap(item => item),
-    twitter: {
-      title: `${product?.name} - from huntscreens.com`,
-      description: `${product?.tagline}`,
-      images: {
-        url: `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`,
-        alt: `${product?.name} screenshot`
-      }
-    }
-  }
+  return generateUniversalMetadata(params.id, "yc", params.locale);
 }
-
 
 export default async function YCPage({ params }: Props) {
   const sort = cookies().get('yc.sort')?.value || 'time';
@@ -51,7 +24,6 @@ export default async function YCPage({ params }: Props) {
     return notFound();
   }
   return <>
-    <Header />
     {data && data.product && <ProductDetailPage productType="yc" product={data.product} next={data.next} prev={data.prev} />}
   </>
 }
