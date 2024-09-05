@@ -55,6 +55,7 @@ export default function ProductBlock<T extends ProductTypes>({ cardType, endpoin
             thumbnail: item.thumb_url,
             tagline: item.tagline,
             website: item.website || "",
+            translations: item.translations,
             new: differenceInHours(new Date(), new Date(item.launch_date || new Date())) <= 24
           }
         } />)}

@@ -7,3 +7,4 @@ export * from "./tafft.jobs";
 export * from "./indiehackers.jobs";
 export * from "./intro.jobs";
 export * from "./embedding.jobs";
+export * from "./translate.jobs";
