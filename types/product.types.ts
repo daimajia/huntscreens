@@ -36,11 +36,11 @@ export type ApiReturnDataType<T extends ProductTypes> =
   T extends "taaft" ? Taaft :
   never;
 
-export const urlMapper: Record<ProductTypes, (id: string | number) => string> = {
-  "ph" : (id) => `/p/${id}`,
-  "yc" : (id) => `/startup/yc/${id}`,
-  "indiehackers": (id) => `/indiehackers/${id}`,
-  "taaft" : (id) => `/taaft/${id}`
+export const urlMapper: Record<ProductTypes, (id: string | number, locale?: SupportedLangs) => string> = {
+  "ph" : (id, locale = "en") => `/${locale}/p/${id}`,
+  "yc" : (id, locale = "en") => `/${locale}/startup/yc/${id}`,
+  "indiehackers": (id, locale = "en") => `/${locale}/indiehackers/${id}`,
+  "taaft" : (id, locale = "en") => `/${locale}/taaft/${id}`
 }
 
 export type ProductModel<T extends ProductTypes> = ApiReturnDataType<T>;

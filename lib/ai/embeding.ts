@@ -1,8 +1,10 @@
 import { pipeline } from '@xenova/transformers';
 import { db } from "@/db/db";
 import { embeddings, EmbeddingWithSimilarity } from "@/db/schema/embeddings";
-import { cosineDistance, desc, gt, sql } from "drizzle-orm";
+import { cosineDistance, desc, gt, sql, eq } from "drizzle-orm";
 import redis from '@/db/redis';
+import { allProducts } from '@/db/schema';
+import { SupportedLangs } from '@/i18n/routing';
 
 
 let embeddingPipeline: any = null;
@@ -17,7 +19,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 }
 
 export async function findSimilarProducts(uuid: string, description: string, limit: number = 10) {
-  const cacheKey = `similar:${uuid}`;
+  const cacheKey = `alternatives:${uuid}`;
   const cachedResult = await redis.get(cacheKey);
   if (cachedResult) {
     return JSON.parse(cachedResult) as EmbeddingWithSimilarity[];
@@ -38,22 +40,26 @@ export async function findSimilarProducts(uuid: string, description: string, lim
   const similarity = sql<number>`1 - (${cosineDistance(embeddings.embedding, inputEmbedding)})`;
   const similarProducts = await db
     .select({ 
-        itemId: embeddings.itemId,
-        itemType: embeddings.itemType,
-        name: embeddings.name,
-        website: embeddings.website,
-        description: embeddings.description,
-        thumb_url: embeddings.thumb_url,
-        tagline: embeddings.tagline,
-        similarity: similarity,
+      itemId: embeddings.itemId,
+      itemType: embeddings.itemType,
+      name: allProducts.name,
+      website: allProducts.website,
+      description: allProducts.description,
+      thumb_url: allProducts.thumb_url,
+      tagline: allProducts.tagline,
+      uuid: allProducts.uuid,
+      launch_date: allProducts.launch_date,
+      translations: allProducts.translations,
+      similarity: similarity,
     })
     .from(embeddings)
+    .innerJoin(allProducts, eq(embeddings.itemUUID, allProducts.uuid))
     .where(gt(similarity, 0.5))
     .orderBy((t) => desc(t.similarity))
     .offset(1)
     .limit(limit);
   
   const result = similarProducts as unknown as EmbeddingWithSimilarity[];
-  await redis.set(cacheKey, JSON.stringify(result), 'EX', 7 * 24 * 60 * 60);
+  await redis.set(cacheKey, JSON.stringify(result), 'EX', 3 * 24 * 60 * 60);
   return result;
 }

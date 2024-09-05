@@ -23,6 +23,7 @@ export default async function SimilarProducts({uuid, name, description }: Simila
       )}
       {similarProducts.map((product) => (
         <SimilarProductCard
+          translations={product.translations}
           tagline={product.tagline || ""}
           key={product.itemId}
           itemId={product.itemId.toString()}

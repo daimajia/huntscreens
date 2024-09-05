@@ -4,15 +4,18 @@ import { urlMapper } from '@/types/product.types';
 import Logo from '@/components/logo';
 import { ExternalLink } from 'lucide-react';
 import { SearchResult } from '../../types/search.type';
+import { useLocale } from 'next-intl';
+import { SupportedLangs } from '@/i18n/routing';
 
 type SearchCardProps = {
   result: SearchResult;
 };
 
 export default function SearchCard({ result }: SearchCardProps) {
+  const locale = useLocale() as SupportedLangs;
   return (
     <div className="group bg-white dark:bg-gray-800 rounded-lg border hover:shadow-lg transition-all duration-300 overflow-hidden">
-      <Link href={urlMapper[result.itemType](result.id)} className="block" target="_blank">
+      <Link href={urlMapper[result.itemType](result.id, locale)} className="block" target="_blank">
         <div className="relative h-48 w-full overflow-hidden">
           <img
             src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${result.uuid}.webp`}

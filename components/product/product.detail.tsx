@@ -16,8 +16,8 @@ import Logo from "@/components/logo";
 import WeeklyTop from "./common/weekly.top";
 import ImageLoader from "@/components/ui-custom/ImageLoader";
 import { SupportedLangs } from "@/i18n/routing";
-import { useLocale, useTranslations } from 'next-intl';
 import { TranslationContent } from "@/db/schema/types";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
@@ -26,8 +26,8 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   prev?: ProductModel<T> | null,
   lang?: SupportedLangs
 }) {
-  const t = useTranslations('Showcase');
-  const locale = useLocale() as SupportedLangs;
+  const t = await getTranslations('Showcase');
+  const locale = await getLocale() as SupportedLangs;
   const currentLang = props.lang || locale;
   const product = props.product;
   const thumbnail = thumbailGetter(props.productType, props.product);
