@@ -45,6 +45,7 @@ function convertToIndieHackerModel(raw: RawIndieHackersJSON): IndieHackersJson {
     itemType: "indiehackers",
     thumb_url: raw.avatarUrl,
     translations: {},
+    seo: {}
   }
 }
 

@@ -2,7 +2,7 @@ import { SupportedLangs } from '@/i18n/routing';
 import { SortBy } from '@/types/api.types';
 import { and, arrayContains, eq, SQL, sql } from 'drizzle-orm';
 import { boolean, index, integer, json, jsonb, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
-import { TranslationContent } from './types';
+import { SEOContent, TranslationContent } from './types';
 
 type Thumbnail = {
   type: string,
@@ -45,7 +45,8 @@ export const producthunt = pgTable('producthunt', {
   webp: boolean('webp').default(false),
   added_at: timestamp('added_at').defaultNow(),
   commentCount: integer("comment_count").default(0),
-  translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`)
+  translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`),
+  seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`)
 }, (table) => {
   return {
     addedAtIndex: index('added_at_index').on(table.added_at),

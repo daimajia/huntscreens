@@ -2,7 +2,7 @@ import { SupportedLangs } from "@/i18n/routing";
 import { YCSortBy, YCStatus } from "@/types/yc.types";
 import { sql, eq, SQL, and, gte } from "drizzle-orm";
 import { boolean, date, index, integer, jsonb, pgTable, pgView, QueryBuilder, serial, text, uuid } from "drizzle-orm/pg-core";
-import { TranslationContent } from "./types";
+import { SEOContent, TranslationContent } from "./types";
 
 export type YC  = typeof yc.$inferSelect;
 
@@ -34,7 +34,8 @@ export const yc = pgTable('yc', {
   objectID: text('objectID'),
   uuid: uuid('uuid').defaultRandom().notNull(),
   webp: boolean('webp').default(false),
-  translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`)
+  translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`),
+  seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`)
 }, (table) => {
   return {
     ycuuidIndex: index('yc_uuid_idx').on(table.uuid),

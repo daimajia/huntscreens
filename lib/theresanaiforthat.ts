@@ -147,6 +147,7 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
     tags: tags,
     faqs: faqs,
     itemType: "taaft",
-    translations: {}
+    translations: {},
+    seo: {}
   }
 }

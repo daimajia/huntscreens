@@ -1,7 +1,7 @@
 import { SupportedLangs } from "@/i18n/routing";
 import { eq, SQL, sql } from "drizzle-orm";
 import { boolean, index, integer, jsonb, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { TranslationContent } from "./types";
+import { SEOContent, TranslationContent } from "./types";
 
 export type IndieHackersJson = Omit<IndieHackers, 'webp' | 'id' | 'uuid'>;
 
@@ -28,7 +28,8 @@ export const indiehackers = pgTable('indiehackers', {
   added_at: timestamp('added_at'),
   uuid: uuid('uuid').defaultRandom(),
   webp: boolean('webp').default(false),
-  translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`)
+  translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`),
+  seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`)
 }, (table) => {
   return {
     ihuuidIndex: index('ih_uuid_index').on(table.uuid)
