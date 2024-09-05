@@ -1,4 +1,4 @@
-import {NextIntlClientProvider} from 'next-intl';
+import { NextIntlClientProvider } from 'next-intl';
 import type { Metadata } from 'next';
 import '../globals.css';
 import Umami from '@/components/thirdparties/umami';
@@ -6,7 +6,6 @@ import { Toaster } from '@/components/ui/toaster';
 import Footer from '@/components/layout/footer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { getMessages } from 'next-intl/server';
-import HrefLangs from '@/components/seo/hreflangs';
 
 export const metadata: Metadata = {
   title: 'Screenshots of Every New Product and Startup! - HuntScreens.com',
