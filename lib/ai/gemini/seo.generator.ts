@@ -1,3 +1,4 @@
+import { localeNames, SupportedLangs } from "@/i18n/routing";
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY';
@@ -9,7 +10,7 @@ interface SEOContent {
   keywords: string[];
 }
 
-async function generateSEOContent(name: string, tagline: string, description: string): Promise<SEOContent> {
+async function generateSEOContent(name: string, tagline: string, description: string, locale: SupportedLangs): Promise<SEOContent> {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", generationConfig: {
     responseMimeType: "application/json",
     responseSchema: {
@@ -32,7 +33,7 @@ async function generateSEOContent(name: string, tagline: string, description: st
   1. A concise and engaging title (max 60 characters)
   2. A compelling meta description (max 160 characters)
   3. A list of relevant keywords (max 20 keywords, total no more than 100 characters)
-  4. Output the the Content in the language of the input language.
+  4. Output the the Content in ${localeNames[locale]}(${locale}).
 
   Ensure the content is optimized for search engines while accurately representing the product.`;
 

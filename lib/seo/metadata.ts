@@ -106,7 +106,7 @@ export async function getAISEOContent(id: number, productType: ProductTypes, loc
   }
 
   try {
-    const seoContent = await generateSEOContent(product.name || '', tagline || '', description || '');
+    const seoContent = await generateSEOContent(product.name || '', tagline || '', description || '', locale);
     
     await db.update(table).set({
       seo: {
