@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date()
       },
       {
-        url: `https://huntscreens.com/${lang}/sitemaps/${category}`,
+        url: `https://huntscreens.com/sitemaps/${lang}/${category}`,
         lastModified: new Date()
       }
     ])
