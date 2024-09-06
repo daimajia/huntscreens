@@ -4,16 +4,17 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { UpdateCount } from '@/lib/api/query.updatecount';
 import { usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function SiteNav({ updateCounts }: { updateCounts: UpdateCount }) {
   const t = useTranslations("Home");
+  const locale = useLocale();
   const navItems = [
-    { name: t("just-launched"), href: '/', emoji: '🚀' },
-    { name: 'ProductHunt', href: '/producthunt', icon: '/phlogo.png', emoji: '😺', countKey: 'PH' },
-    { name: 'IndieHackers', href: '/indiehackers', icon: '/indiehackers.jpg', emoji: '💻', countKey: 'Indiehackers' },
-    { name: 'YC', href: '/startup/yc', icon: '/yc.png', emoji: '🦄', countKey: 'YC' },
-    { name: 'Taaft', href: '/taaft', icon: '/taaft.png', emoji: '🚀', countKey: 'TAAFT' },
+    { name: t("just-launched"), href: `/${locale}`, emoji: '🚀' },
+    { name: 'ProductHunt', href: `/${locale}/producthunt`, icon: '/phlogo.png', emoji: '😺', countKey: 'PH' },
+    { name: 'IndieHackers', href: `/${locale}/indiehackers`, icon: '/indiehackers.jpg', emoji: '💻', countKey: 'Indiehackers' },
+    { name: 'YC', href: `/${locale}/startup/yc`, icon: '/yc.png', emoji: '🦄', countKey: 'YC' },
+    { name: 'Taaft', href: `/${locale}/taaft`, icon: '/taaft.png', emoji: '🚀', countKey: 'TAAFT' },
   ];
   const currentPath = usePathname();
   

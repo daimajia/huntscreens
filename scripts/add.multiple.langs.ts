@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { producthunt, yc, indiehackers, taaft, intro } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, is } from "drizzle-orm";
 import { locales, SupportedLangs } from "@/i18n/routing";
 import { ProductTypes } from "@/types/product.types";
 import { translateByGemini } from "@/lib/ai/gemini";
@@ -18,8 +18,8 @@ async function translateWithoutRetry(text: string, targetLanguages: SupportedLan
 }
 
 async function translateAndUpdateProduct(table: any, itemType: ProductTypes) {
-  const items = await db.select().from(table);
-  const limit = pLimit(4); 
+  const items = await db.select().from(table).where(eq(table.translations, {}));
+  const limit = pLimit(10); 
   let consecutiveFailures = 0;
   
   const updateTasks = items.map(item => limit(async () => {
