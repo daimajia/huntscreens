@@ -1,4 +1,4 @@
-import { logtoConfig } from "@/app/logto";
+import { logtoConfig } from "@/lib/auth/logto";
 import { db } from "@/db/db";
 import { users } from "@/db/schema";
 import { getLogtoContext } from "@logto/next/server-actions";

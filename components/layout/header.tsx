@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import getUpdateCounts from "@/lib/api/query.updatecount";
 import SearchBox from "@/components/search/search.box";
-import { logtoConfig } from "@/app/logto";
+import { logtoConfig } from "@/lib/auth/logto";
+import { getTranslations } from "next-intl/server";
+import LanguageDropdown from "../ui-custom/language.dropdown";
 
 export default async function Header() {
   const updateCns = await getUpdateCounts();
@@ -64,6 +66,7 @@ export default async function Header() {
           </Button>
         </Link>
         <ModeToggle />
+        <LanguageDropdown />
       </div>
     </div>
   </>

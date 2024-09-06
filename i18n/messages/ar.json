@@ -1,0 +1,62 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "اكتشف بصريًا أحدث المنتجات والشركات الناشئة",
+      "visual": "بصريًا",
+      "discover": "اكتشف أحدث",
+      "productsandstartups": "المنتجات والشركات الناشئة"
+    },
+    "description": "استكشف المنتجات والشركات الناشئة من خلال لقطات بصرية",
+    "login": "تسجيل الدخول",
+    "search": "البحث عن المنتجات...",
+    "just-launched": "أطلق للتو",
+    "favorites": "المفضلة",
+    "signout": "تسجيل الخروج",
+    "subscribe": {
+      "receive": "استلام التحديثات اليومية",
+      "unsubscribe": "إلغاء الاشتراك",
+      "subscribed": "مشترك",
+      "subscribedToUpdates": "مشترك في التحديثات",
+      "unsubscribeConfirm": "هل أنت متأكد أنك تريد إلغاء الاشتراك في تحديثاتنا؟",
+      "success": "تم الاشتراك بنجاح",
+      "failed": "فشل الاشتراك",
+      "subscribeDescription": "ستتلقى الآن تحديثات يومية عبر البريد الإلكتروني.",
+      "unsubscribeSuccess": "تم إلغاء الاشتراك بنجاح",
+      "unsubscribeFailed": "فشل إلغاء الاشتراك",
+      "unsubscribeDescription": "لن تتلقى تحديثاتنا بعد الآن.",
+      "error": "حدث خطأ أثناء محاولة الاشتراك. يرجى المحاولة مرة أخرى.",
+      "cancel": "إلغاء",
+      "unsubscribing": "جاري إلغاء الاشتراك..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "بدائل {name}",
+    "WeeklyTop": "أفضل 10 منتجات أسبوعيًا",
+    "MoreAbout": "المزيد عن {name}",
+    "VisitWebsite": "زيارة الموقع"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "وقت الإطلاق",
+      "TeamSize": "حجم الفريق",
+      "Public": "عام",
+      "Acquired": "تم الاستحواذ عليه",
+      "All": "الكل"
+    },
+    "ProductHunt": {
+      "SortByTime": "ترتيب حسب الوقت",
+      "SortByVotes": "ترتيب حسب الأصوات",
+      "All": "الكل",
+      "DesignTools": "أدوات التصميم",
+      "ArtificialIntelligence": "الذكاء الاصطناعي",
+      "OpenSource": "مفتوح المصدر",
+      "DeveloperTools": "أدوات المطورين",
+      "SaaS": "البرمجيات كخدمة"
+    }
+  },
+  "Search": {
+    "NoResults": "لم يتم العثور على نتائج.",
+    "TryDifferentKeywords": "حاول البحث باستخدام كلمات مفتاحية مختلفة.",
+    "SearchResultsFor": "نتائج البحث عن {query}"
+  }
+}

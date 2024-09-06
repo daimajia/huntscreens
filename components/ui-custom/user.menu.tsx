@@ -1,16 +1,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "@logto/next/server-actions";
-import { logtoConfig } from "../../app/logto";
-import SignOut from "../auth/sign-out";
+import { logtoConfig } from "@/lib/auth/logto";
 import Link from "next/link";
 import { BookmarkCheck } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import SignOut from "@/components/auth/sign-out";
 
 
 export default async function UserMenu(props: {
   name?: string | null,
   picture?: string | null
 }) {
+  const t = await getTranslations("Home");
   return <>
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -21,8 +23,9 @@ export default async function UserMenu(props: {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem asChild>
-          <Link href={'/favorites'}>My Favorites
-          <BookmarkCheck strokeWidth={1.2} className=" text-gray-400 ml-5"/>
+          <Link href={'/favorites'}>
+            {t('favorites')}
+            <BookmarkCheck strokeWidth={1.2} className=" text-gray-400 ml-5"/>
           </Link>
         </DropdownMenuItem>
         

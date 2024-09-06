@@ -4,6 +4,8 @@ import { producthunt } from "./ph";
 import { yc } from "./yc";
 import { indiehackers } from "./indiehackers";
 import { taaft } from "./taaft";
+import { TranslationContent } from "./types";
+import { SupportedLangs } from "@/i18n/routing";
 
 export const embeddings = pgTable('embeddings', {
   id: serial('id').primaryKey(),
@@ -22,7 +24,10 @@ export const embeddings = pgTable('embeddings', {
 }));
 
 export type Embedding = typeof embeddings.$inferSelect;
-export type EmbeddingWithSimilarity = Embedding & { similarity: number };
+export type EmbeddingWithSimilarity = Embedding & { 
+  similarity: number, 
+  launch_date: string,
+  translations: Partial<Record<SupportedLangs, TranslationContent>> };
 
 export type NewEmbedding = typeof embeddings.$inferInsert;
 

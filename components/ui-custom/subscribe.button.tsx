@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { MailCheck } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { PopoverClose } from "@radix-ui/react-popover";
+import { useTranslations } from "next-intl";
 
 type SubscribeButtonProps = {
   subscribed: boolean | null | undefined,
@@ -17,6 +18,7 @@ export default function SubscribeButton({ subscribed, isLogin }: SubscribeButton
   const [isSubscribed, setIsSubscribed] = useState(subscribed);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const t = useTranslations("Home");
 
   const onSubscribeClick = async () => {
     setIsLoading(true);
@@ -26,14 +28,14 @@ export default function SubscribeButton({ subscribed, isLogin }: SubscribeButton
       if (!data['error']) {
         setIsSubscribed(true);
         toast({
-          title: "Subscribed Successfully",
-          description: "You will now receive daily email updates.",
+          title: t("subscribe.success"),
+          description: t("subscribe.subscribeDescription"),
           variant: "default",
         });
       }
     } catch (error) {
       toast({
-        title: "Subscription Failed",
+        title: t("subscribe.failed"),
         description: error instanceof Error ? error.message : "An unexpected error occurred",
         variant: "destructive",
       });
@@ -51,14 +53,14 @@ export default function SubscribeButton({ subscribed, isLogin }: SubscribeButton
       }
       setIsSubscribed(false);
       toast({
-        title: "Unsubscribed Successfully",
-        description: "You will no longer receive our updates.",
+        title: t("subscribe.unsubscribeSuccess"),
+        description: t("subscribe.unsubscribeDescription"),
         variant: "default",
       });
     } catch (error) {
       toast({
-        title: "Unsubscribe Failed",
-        description: "An error occurred while trying to unsubscribe. Please try again.",
+        title: t("subscribe.unsubscribeFailed"),
+        description: t("subscribe.error"),
         variant: "destructive",
       });
     } finally {
@@ -75,22 +77,22 @@ export default function SubscribeButton({ subscribed, isLogin }: SubscribeButton
           <PopoverTrigger asChild>
             <Button variant={"outline"}>
               <MailCheck className="mr-2 h-4 w-4" />
-              Subscribed to Updates</Button>
+              {t("subscribe.subscribedToUpdates")}</Button>
           </PopoverTrigger>
           <PopoverContent className="w-80">
             <div className="grid gap-4">
               <div className="space-y-2">
-                <h4 className="font-medium leading-none">Unsubscribe</h4>
+                <h4 className="font-medium leading-none">{t("subscribe.unsubscribe")}</h4>
                 <p className="text-sm text-muted-foreground">
-                  Are you sure you want to unsubscribe from our updates?
+                  {t("subscribe.unsubscribeConfirm")}
                 </p>
               </div>
               <div className="flex justify-end space-x-2">
                 <PopoverClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button variant="outline">{t("subscribe.cancel")}</Button>
                 </PopoverClose>
                 <Button onClick={handleUnsubscribe} disabled={isLoading}>
-                  {isLoading ? "Unsubscribing..." : "Unsubscribe"}
+                  {isLoading ? t("subscribe.unsubscribing") : t("subscribe.unsubscribe")}
                 </Button>
               </div>
             </div>
@@ -101,7 +103,7 @@ export default function SubscribeButton({ subscribed, isLogin }: SubscribeButton
       <form action={!isLogin ? handleLoginAction : () => { }}>
         <Button disabled={isLoading} variant={"default"} onClick={isLogin ? onSubscribeClick : () => { }}>
           <EnvelopeOpenIcon className="mr-2 h-4 w-4" />
-          Receive Daily Email
+          {t("subscribe.receive")}
         </Button>
       </form>
     </>}

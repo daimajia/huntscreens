@@ -67,6 +67,8 @@ export function convertToYCModel(company: RawYCJSON): YCJson {
     regions: company.regions,
     stage: company.stage,
     objectID: company.objectID,
-    itemType: "yc"
+    itemType: "yc",
+    translations: {},
+    seo: {}
   }
 }

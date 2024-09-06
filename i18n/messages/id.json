@@ -1,0 +1,62 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "Temukan Produk dan Startup Terbaru secara Visual",
+      "visual": "Secara Visual",
+      "discover": "Temukan Terbaru",
+      "productsandstartups": "Produk dan Startup"
+    },
+    "description": "Jelajahi produk dan startup melalui snapshot visual",
+    "login": "Masuk",
+    "search": "Cari Produk...",
+    "just-launched": "Baru Diluncurkan",
+    "favorites": "Favorit Saya",
+    "signout": "Keluar",
+    "subscribe": {
+      "receive": "Terima Pembaruan Harian",
+      "unsubscribe": "Berhenti Berlangganan",
+      "subscribed": "Berlangganan",
+      "subscribedToUpdates": "Berlangganan Pembaruan",
+      "unsubscribeConfirm": "Apakah Anda yakin ingin berhenti berlangganan pembaruan kami?",
+      "success": "Berhasil Berlangganan",
+      "failed": "Gagal Berlangganan",
+      "subscribeDescription": "Anda akan menerima pembaruan email harian.",
+      "unsubscribeSuccess": "Berhasil Berhenti Berlangganan",
+      "unsubscribeFailed": "Gagal Berhenti Berlangganan",
+      "unsubscribeDescription": "Anda tidak akan lagi menerima pembaruan kami.",
+      "error": "Terjadi kesalahan saat mencoba berlangganan. Silakan coba lagi.",
+      "cancel": "Batal",
+      "unsubscribing": "Sedang berhenti berlangganan..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "Alternatif {name}",
+    "WeeklyTop": "10 Produk Teratas Mingguan",
+    "MoreAbout": "Lebih Lanjut Tentang {name}",
+    "VisitWebsite": "Kunjungi Situs Web"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "Waktu Peluncuran",
+      "TeamSize": "Ukuran Tim",
+      "Public": "Publik",
+      "Acquired": "Diakuisisi",
+      "All": "Semua"
+    },
+    "ProductHunt": {
+      "SortByTime": "Urutkan berdasarkan Waktu",
+      "SortByVotes": "Urutkan berdasarkan Suara",
+      "All": "Semua",
+      "DesignTools": "Alat Desain",
+      "ArtificialIntelligence": "Kecerdasan Buatan",
+      "OpenSource": "Sumber Terbuka",
+      "DeveloperTools": "Alat Pengembang",
+      "SaaS": "SaaS"
+    }
+  },
+  "Search": {
+    "NoResults": "Tidak ada hasil ditemukan.",
+    "TryDifferentKeywords": "Coba cari dengan kata kunci yang berbeda.",
+    "SearchResultsFor": "Hasil Pencarian untuk {query}"
+  }
+}

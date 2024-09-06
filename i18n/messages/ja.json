@@ -1,0 +1,62 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "最新の製品とスタートアップを視覚的に発見",
+      "visual": "視覚的に",
+      "discover": "最新の",
+      "productsandstartups": "製品とスタートアップを発見"
+    },
+    "description": "ビジュアルスナップショットで製品とスタートアップを探索",
+    "login": "ログイン",
+    "search": "製品を検索...",
+    "just-launched": "新登場",
+    "favorites": "お気に入り",
+    "signout": "ログアウト",
+    "subscribe": {
+      "receive": "日次更新を受け取る",
+      "unsubscribe": "購読解除",
+      "subscribed": "購読中",
+      "subscribedToUpdates": "更新情報を購読中",
+      "unsubscribeConfirm": "更新情報の購読を解除してもよろしいですか？",
+      "success": "購読に成功しました",
+      "failed": "購読に失敗しました",
+      "subscribeDescription": "これより毎日のメール更新を受け取ります。",
+      "unsubscribeSuccess": "購読解除に成功しました",
+      "unsubscribeFailed": "購読解除に失敗しました",
+      "unsubscribeDescription": "今後更新情報を受け取れません。",
+      "error": "購読中にエラーが発生しました。もう一度お試しください。",
+      "cancel": "キャンセル",
+      "unsubscribing": "購読解除中..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "{name}の代替品",
+    "WeeklyTop": "週間トップ10製品",
+    "MoreAbout": "{name}についてもっと知る",
+    "VisitWebsite": "ウェブサイトを訪問"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "ローンチ時期",
+      "TeamSize": "チームサイズ",
+      "Public": "公開",
+      "Acquired": "買収済み",
+      "All": "すべて"
+    },
+    "ProductHunt": {
+      "SortByTime": "時間順に並べ替え",
+      "SortByVotes": "投票順に並べ替え",
+      "All": "すべて",
+      "DesignTools": "デザインツール",
+      "ArtificialIntelligence": "人工知能",
+      "OpenSource": "オープンソース",
+      "DeveloperTools": "開発者ツール",
+      "SaaS": "SaaS"
+    }
+  },
+  "Search": {
+    "NoResults": "結果が見つかりません。",
+    "TryDifferentKeywords": "別のキーワードで検索してみてください。",
+    "SearchResultsFor": "「{query}」の検索結果"
+  }
+}

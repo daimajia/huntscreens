@@ -6,10 +6,14 @@ import Link from "next/link";
 import { ThumbsUpIcon } from "lucide-react";
 import redis from "@/db/redis";
 import { urlMapper } from "@/types/product.types";
+import { getTranslations } from "next-intl/server";
+import { SupportedLangs } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 
 const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
+  const locale = useLocale() as SupportedLangs;
   return <>
-    <Link href={urlMapper["ph"](product.id)}>
+    <Link href={urlMapper["ph"](product.id, locale)}>
       <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
         <div className="flex flex-row gap-5 items-center w-full">
           <div className="w-10 h-10">
@@ -21,13 +25,13 @@ const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
                 <h3 className="text-lg font-bold hover:underline">{product.name}</h3>
               </div>
               <div className="flex items-center gap-1">
-                <ThumbsUpIcon size={16} />
-                <span>{product.votesCount}</span>
+                <ThumbsUpIcon size={16} className="text-muted-foreground" />
+                <span className="text-muted-foreground">{product.votesCount}</span>
               </div>
             </div>
             <div className="w-full">
               <p className="text-sm text-muted-foreground line-clamp-2 hover:line-clamp-none transition-all duration-300 ease-in-out">
-                {product.tagline}
+                {product.translations?.[locale]?.tagline || product.tagline}
               </p>
             </div>
           </div>
@@ -53,8 +57,9 @@ async function getWeeklyTop() {
 
 export default async function WeeklyTop() {
   const weeklyTops = await getWeeklyTop();
+  const t = await getTranslations('Showcase');
   return <div>
-    <h1 className="text-2xl font-bold mb-5">Weekly Top 10 Products</h1>
+    <h1 className="text-2xl font-bold mb-5">{t("WeeklyTop")}</h1>
     <ul className="flex flex-col gap-5">
       {weeklyTops.map((weeklyTop) => (
         <li key={weeklyTop.id}>

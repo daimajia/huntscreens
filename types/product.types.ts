@@ -1,9 +1,20 @@
-import { IndieHackers, Producthunt, Taaft, YC } from "@/db/schema";
+import { indiehackers, IndieHackers, producthunt, Producthunt, taaft, Taaft, yc, YC } from "@/db/schema";
 import { differenceInHours } from "date-fns";
 import { MiniCardMetadata } from "../components/product/card/screenshot.card";
+import { TranslationContent } from "@/db/schema/types";
+import { SupportedLangs } from "@/i18n/routing";
 
-export type ProductTypes = "ph" | "yc" | "taaft" | "indiehackers";
+export const productTypes = ["ph", "yc", "taaft", "indiehackers"] as const;
+export type ProductTypes = (typeof productTypes)[number];
 
+export function getProductTable(productType: ProductTypes) {
+  switch (productType) {
+    case "ph": return producthunt;
+    case "yc": return yc;
+    case "taaft": return taaft;
+    case "indiehackers": return indiehackers;
+  }
+}
 
 export type JustLaunchedProduct = {
   id: number;
@@ -15,6 +26,7 @@ export type JustLaunchedProduct = {
   uuid: string;
   item_type: 'ph' | 'yc' | 'indiehackers' | 'taaft';
   launch_date: string;
+  translations: Record<SupportedLangs, TranslationContent>
 };
 
 export type ApiReturnDataType<T extends ProductTypes> =
@@ -24,11 +36,11 @@ export type ApiReturnDataType<T extends ProductTypes> =
   T extends "taaft" ? Taaft :
   never;
 
-export const urlMapper: Record<ProductTypes, (id: string | number) => string> = {
-  "ph" : (id) => `/p/${id}`,
-  "yc" : (id) => `/startup/yc/${id}`,
-  "indiehackers": (id) => `/indiehackers/${id}`,
-  "taaft" : (id) => `/taaft/${id}`
+export const urlMapper: Record<ProductTypes, (id: string | number, locale?: SupportedLangs) => string> = {
+  "ph" : (id, locale = "en") => `/${locale}/p/${id}`,
+  "yc" : (id, locale = "en") => `/${locale}/startup/yc/${id}`,
+  "indiehackers": (id, locale = "en") => `/${locale}/indiehackers/${id}`,
+  "taaft" : (id, locale = "en") => `/${locale}/taaft/${id}`
 }
 
 export type ProductModel<T extends ProductTypes> = ApiReturnDataType<T>;
@@ -68,6 +80,7 @@ export function generatedata<T extends ProductTypes>(cardType: T, item: ApiRetur
       thumbnail: ph.thumbnail?.url || "",
       votesCount: ph.votesCount || 0,
       producthunt_url: ph.url || "",
+      translations: ph.translations,
       new: differenceInHours(new Date(), new Date(ph.added_at || new Date())) <= 24
     } as MiniCardMetadata<T>
   } else if (cardType === "yc") {

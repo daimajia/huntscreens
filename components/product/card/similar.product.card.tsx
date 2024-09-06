@@ -1,6 +1,9 @@
 import Logo from "@/components/logo";
 import Link from "next/link";
 import { ProductTypes, urlMapper } from "@/types/product.types";
+import { useLocale } from "next-intl";
+import { SupportedLangs } from "@/i18n/routing";
+import { TranslationContent } from "@/db/schema/types";
 
 type SimilarProductCardProps = {
   itemId: string;
@@ -10,6 +13,7 @@ type SimilarProductCardProps = {
   description: string;
   thumb_url: string;
   tagline: string;
+  translations: Partial<Record<SupportedLangs, TranslationContent>>;
 };
 
 export default function SimilarProductCard({
@@ -20,9 +24,11 @@ export default function SimilarProductCard({
   description,
   tagline,
   thumb_url,
+  translations,
 }: SimilarProductCardProps) {
+  const locale = useLocale() as SupportedLangs;
   return (
-    <Link href={urlMapper[itemType](itemId)}>
+    <Link href={urlMapper[itemType](itemId, locale)}>
       <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
         <div className="flex flex-row gap-5 items-center">
           <div className="w-10 h-10">
@@ -34,7 +40,7 @@ export default function SimilarProductCard({
             </div>
             <div>
               <p className="text-sm text-muted-foreground line-clamp-4 hover:line-clamp-none transition-all duration-300 ease-in-out">
-                {tagline}
+                {translations[locale]?.tagline || tagline}
               </p>
             </div>
           </div>

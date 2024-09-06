@@ -110,6 +110,13 @@ export const addIntroJob = client.defineJob({
           version: "0.0.2",
           deleted: deleted
         })
+        await io.sendEvent(payload.uuid + " run translate " + generateRandomString(5), {
+          name: "translate.new.entry",
+          payload: {
+            uuid: payload.uuid,
+            productType: payload.type
+          }
+        })
         await redis.set(`AI:Success:${payload.url}`, `{aiintro: ${aiintro}, prompt: ${prompt}}`);
         return { aiintro: aiintro, prompt: prompt };
       } catch (e) {

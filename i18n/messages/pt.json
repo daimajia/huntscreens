@@ -1,0 +1,62 @@
+{
+  "Home": {
+    "slogan": {
+      "full": "Descubra visualmente os mais recentes produtos e startups",
+      "visual": "Visualmente",
+      "discover": "Descubra os mais recentes",
+      "productsandstartups": "produtos e startups"
+    },
+    "description": "Explore produtos e startups através de instantâneos visuais",
+    "login": "Entrar",
+    "search": "Pesquisar produtos...",
+    "just-launched": "Recém-lançados",
+    "favorites": "Meus favoritos",
+    "signout": "Sair",
+    "subscribe": {
+      "receive": "Receber atualizações diárias",
+      "unsubscribe": "Cancelar inscrição",
+      "subscribed": "Inscrito",
+      "subscribedToUpdates": "Inscrito para atualizações",
+      "unsubscribeConfirm": "Tem certeza de que deseja cancelar a inscrição em nossas atualizações?",
+      "success": "Inscrição bem-sucedida",
+      "failed": "Falha na inscrição",
+      "subscribeDescription": "Agora você receberá atualizações diárias por e-mail.",
+      "unsubscribeSuccess": "Cancelamento de inscrição bem-sucedido",
+      "unsubscribeFailed": "Falha no cancelamento da inscrição",
+      "unsubscribeDescription": "Você não receberá mais nossas atualizações.",
+      "error": "Ocorreu um erro ao tentar se inscrever. Por favor, tente novamente.",
+      "cancel": "Cancelar",
+      "unsubscribing": "Cancelando inscrição..."
+    }
+  },
+  "Showcase": {
+    "Alternatives": "Alternativas ao {name}",
+    "WeeklyTop": "Top 10 produtos da semana",
+    "MoreAbout": "Mais sobre {name}",
+    "VisitWebsite": "Visitar site"
+  },
+  "Catalog": {
+    "YC": {
+      "LaunchTime": "Tempo de lançamento",
+      "TeamSize": "Tamanho da equipe",
+      "Public": "Público",
+      "Acquired": "Adquirido",
+      "All": "Todos"
+    },
+    "ProductHunt": {
+      "SortByTime": "Ordenar por tempo",
+      "SortByVotes": "Ordenar por votos",
+      "All": "Todos",
+      "DesignTools": "Ferramentas de design",
+      "ArtificialIntelligence": "Inteligência artificial",
+      "OpenSource": "Código aberto",
+      "DeveloperTools": "Ferramentas de desenvolvedor",
+      "SaaS": "SaaS"
+    }
+  },
+  "Search": {
+    "NoResults": "Nenhum resultado encontrado.",
+    "TryDifferentKeywords": "Tente pesquisar com palavras-chave diferentes.",
+    "SearchResultsFor": "Resultados da pesquisa para {query}"
+  }
+}

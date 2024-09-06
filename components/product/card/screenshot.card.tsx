@@ -10,6 +10,9 @@ import { useState } from "react";
 import Spiner from "../../ui-custom/skeleton/loading.spin";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductTypes, urlMapper } from "@/types/product.types";
+import { useLocale } from 'next-intl';
+import { SupportedLangs } from "@/i18n/routing";
+import { TranslationContent } from "@/db/schema/types";
 
 export type BaseMiniCardMetadata = {
   id: number,
@@ -18,7 +21,8 @@ export type BaseMiniCardMetadata = {
   thumbnail: string | null,
   tagline: string | null,
   website: string,
-  new: boolean
+  new: boolean,
+  translations: Record<SupportedLangs, TranslationContent>
 }
 
 type ProductHuntMetadata = {
@@ -42,6 +46,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
   const toggleFavorite = useToggleFavorite();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const locale = useLocale() as SupportedLangs;
 
   const getOptimizedImage = (uuid: string) => {
     return `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/cdn-cgi/image/width=990,height=500,fit=crop,gravity=0x0,format=webp/${uuid}.webp`
@@ -58,10 +63,17 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
     }
 
   }
+  const getLocalizedTagline = () => {
+    if (product.translations && product.translations[locale]) {
+      return product.translations[locale].tagline || product.tagline;
+    }
+    return product.tagline;
+  };
+
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
-        <Link target="_blank" passHref key={product.id} href={urlMapper[cardType](product.id)}>
+        <Link target="_blank" passHref key={product.id} href={urlMapper[cardType](product.id, locale)}>
           <img alt="" loading="lazy" className=" h-[250px] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={getOptimizedImage(product.uuid)}></img>
         </Link>
       </div>
@@ -76,7 +88,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
               }
             </div>
             <div className="text-sm text-muted-foreground">
-              {product.tagline}
+              {getLocalizedTagline()}
             </div>
           </div>
 
