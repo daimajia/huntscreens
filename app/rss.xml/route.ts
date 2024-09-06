@@ -40,21 +40,21 @@ export async function GET() {
       url: `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${item.uuid}.webp`,
       type: "image/webp"
     },
-    url: `https://huntscreens.com/p/${item.id}`,
+    url: `https://huntscreens.com/en/p/${item.id}`,
     categories: item.tags || [],
     date: item.added_at || new Date()
   }))
   ycs.map((yc) => feed.item({
     title: yc.name || "",
     description: yc.description || "",
-    url: `https://huntscreens.com/startup/yc/${yc.id}`,
+    url: `https://huntscreens.com/en/startup/yc/${yc.id}`,
     categories: yc.tags || [],
     date: yc.launched_at || new Date()
   }));
   ids.map((ih) => feed.item({
     title: ih.name || "",
     description: ih.description || "",
-    url: `https://huntscreens.com/indiehackers/${ih.id}`,
+    url: `https://huntscreens.com/en/indiehackers/${ih.id}`,
     categories: ih.tags || [],
     date: ih.added_at || new Date(),
     
