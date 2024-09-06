@@ -1,5 +1,5 @@
 import { localeNames, SupportedLangs } from "@/i18n/routing";
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory, SchemaType } from "@google/generative-ai";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY';
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -22,7 +22,26 @@ async function generateSEOContent(name: string, tagline: string, description: st
       },
       required: ["title", "description", "keywords"]
     }
-  }});
+  },
+  safetySettings: [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    }
+  ]
+  });
 
   const prompt = `Generate SEO-friendly content based on the following product information:
   Name: ${name}
