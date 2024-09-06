@@ -6,10 +6,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemaps = productTypes.flatMap(category => 
     locales.flatMap(lang => [
       {
-        url: `https://huntscreens.com/${lang}/${category}`,
-        lastModified: new Date()
-      },
-      {
         url: `https://huntscreens.com/sitemaps/${lang}/${category}`,
         lastModified: new Date()
       }
