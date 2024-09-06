@@ -5,8 +5,32 @@ import { routing } from './i18n/routing';
 
 const middleware = createMiddleware(routing);
 
+function detectSearchEngine(userAgent: string): string | null {
+  const searchEngines = [
+    { name: 'Googlebot', pattern: /Googlebot/ },
+    { name: 'Bingbot', pattern: /Bingbot/ },
+    { name: 'Baiduspider', pattern: /Baiduspider/ },
+    { name: 'YandexBot', pattern: /YandexBot/ },
+    { name: 'DuckDuckBot', pattern: /DuckDuckBot/ },
+  ];
+
+  for (const engine of searchEngines) {
+    if (engine.pattern.test(userAgent)) {
+      return engine.name;
+    }
+  }
+
+  return null;
+}
+
 export default async function customMiddleware(request: NextRequest) {
-  console.log(`Current request URL: ${request.url}`);  // Add this line to log the URL
+  console.log(`Current request URL: ${request.url}`);
+
+  const userAgent = request.headers.get('user-agent') || '';
+  const searchEngine = detectSearchEngine(userAgent);
+  if (searchEngine) {
+    console.log(`Detected search engine crawler: ${searchEngine}`);
+  }
 
   const pathname = request.nextUrl.pathname;
 
