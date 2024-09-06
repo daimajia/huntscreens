@@ -6,6 +6,8 @@ import { routing } from './i18n/routing';
 const middleware = createMiddleware(routing);
 
 export default async function customMiddleware(request: NextRequest) {
+  console.log(`Current request URL: ${request.url}`);  // Add this line to log the URL
+
   const pathname = request.nextUrl.pathname;
 
   if (/^\/(p|indiehackers|startup\/yc|taaft)\//.test(pathname)) {
