@@ -115,8 +115,6 @@ export async function getAISEOContent(id: number, productType: ProductTypes, loc
       }
     }).where(eq(table.id, id));
 
-    await redis.incr(redisKey);
-
     return seoContent;
   } catch (error) {
     console.error(`Error generating SEO content: ${error}`);

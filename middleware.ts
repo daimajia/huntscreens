@@ -1,17 +1,21 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest } from 'next/server';
-import { defaultLocale, locales } from './i18n/routing';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { routing } from './i18n/routing';
 
-const intlMiddleware = createMiddleware({
-  locales: locales,
-  defaultLocale: defaultLocale,
-  localeDetection: true
-});
+const middleware = createMiddleware(routing);
 
-export default function middleware(req: NextRequest) {
-  return intlMiddleware(req);
+export default async function customMiddleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  if (/^\/(p|indiehackers|startup\/yc|taaft)\//.test(pathname)) {
+    const newUrl = new URL(`/en${pathname}`, request.url);    
+    return NextResponse.redirect(newUrl, 301);
+  }
+
+  return middleware(request);
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|.*\\..*|sitemap.xml|sitemaps|rss.xml).*)']
+  matcher: ['/', '/(en|zh|es|ar|hi|pt|ja|ru|id|tr)/:path*', '/(p|indiehackers|startup/yc|taaft)/:path*']
 };
