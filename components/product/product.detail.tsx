@@ -19,6 +19,20 @@ import { SupportedLangs } from "@/i18n/routing";
 import { TranslationContent } from "@/db/schema/types";
 import { getLocale, getTranslations } from "next-intl/server";
 
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '$1') // Bold
+    .replace(/\*(.*?)\*/g, '$1') // Italic
+    .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Links
+    .replace(/#{1,6}\s?/g, '') // Headers
+    .replace(/`{3}[\s\S]*?`{3}/g, '') // Code blocks
+    .replace(/`(.+?)`/g, '$1') // Inline code
+    .replace(/(?:^|\n)>[^\n]*/g, '') // Blockquotes
+    .replace(/(?:^|\n)[-*+]\s/g, '') // List items
+    .replace(/\n+/g, ' ') // Replace multiple newlines with a single space
+    .trim();
+}
+
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
   product: ProductModel<T>,
@@ -38,7 +52,6 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
     )
   });
 
-  // Get the translated content
   const translatedContent: TranslationContent | undefined = product.translations?.[currentLang];
 
   return (
@@ -80,7 +93,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
               <div>
                 <h3 className="text-gray-600 dark:text-gray-400">
-                  {translatedContent?.description || product.description}
+                  {stripMarkdown(translatedContent?.description || product.description || '')}
                 </h3>
               </div>
 
@@ -111,7 +124,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
             </div>
 
             {productIntro && (
-              <div className="bg-white dark:bg-gray-800 border rounded-lg p-5">
+              <div className="bg-white dark:bg-gray-800 border rounded-lg p-5 w-full">
                 <div className="text-2xl mb-5 font-bold">
                   {t('MoreAbout', { name: product.name })}
                 </div>

@@ -34,7 +34,10 @@ async function translateByGemini({ json: text, targetLanguages }: TranslationOpt
   }});
 
   const languageList = targetLanguages.map(lang => `${localeNames[lang]}(${lang})`).join(', ');
-  const prompt = `Translate the following JSON text into these languages: ${languageList} , natural and fluent. if the value is Markdown, just translate it, don't change the Markdown structure.
+  const prompt = `Translate the following JSON text into these languages: ${languageList} ,
+  - natural and fluent. 
+  - if the value is Markdown, just translate it, don't change the Markdown structure.
+  - if the value is empty, just return an empty string.
 
 ${JSON.stringify(text, null, 2)}`;
 
