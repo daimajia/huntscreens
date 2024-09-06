@@ -16,11 +16,17 @@ export default function SiteNav({ updateCounts }: { updateCounts: UpdateCount })
     { name: 'Taaft', href: '/taaft', icon: '/taaft.png', emoji: '🚀', countKey: 'TAAFT' },
   ];
   const currentPath = usePathname();
+  
+  const isActiveRoute = (href: string) => {
+    const pathWithoutLocale = currentPath.split('/').slice(2).join('/');
+    return href === '/' ? pathWithoutLocale === '' : pathWithoutLocale.startsWith(href.slice(1));
+  };
+
   return (
     <nav className="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm overflow-x-auto hidden md:flex whitespace-nowrap border">
       <ul className="flex space-x-2">
         {navItems.map((item) => {
-          const isActive = currentPath === item.href;
+          const isActive = isActiveRoute(item.href);
           const itemUpdateCount = item.countKey ? updateCounts[item.countKey as keyof UpdateCount] : 0;
           return (
             <li key={item.name} className="inline-block">
