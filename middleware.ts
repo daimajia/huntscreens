@@ -43,5 +43,12 @@ export default async function customMiddleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/(en|zh|es|ar|hi|pt|ja|ru|id|tr)/:path*', '/(p|indiehackers|startup/yc|taaft)/:path*']
+  matcher: [
+    '/', 
+    '/(en|zh|es|ar|hi|pt|ja|ru|id|tr)/:path*', 
+    '/(p|indiehackers|startup/yc|taaft)/:path*',
+    '/search/:path*',
+    '/favorites',
+    '/email/:path*',
+  ]
 };
