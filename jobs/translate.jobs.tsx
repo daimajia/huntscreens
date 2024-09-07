@@ -67,7 +67,7 @@ client.defineJob({
     try {
       for (let i = 0; i < missingLanguages.length; i += maxLanguagesPerBatch) {
         const languageBatch = missingLanguages.slice(i, i + maxLanguagesPerBatch);
-        await io.logger.info(`Translating batch for ${productType} item ${uuid}`);
+        await io.logger.info(`Translating batch ${i / maxLanguagesPerBatch + 1} for ${productType} item ${uuid}`);
         
         const translatedContent = await translateByGemini({ json: contentToTranslate, targetLanguages: languageBatch });
         Object.assign(newTranslations, translatedContent);
