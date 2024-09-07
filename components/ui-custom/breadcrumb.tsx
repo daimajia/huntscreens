@@ -5,7 +5,7 @@ import {
   BreadcrumbList, BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { ProductTypes } from "@/types/product.types";
 
 export default function SiteBreadcrumb({productType}: {productType: ProductTypes}) {

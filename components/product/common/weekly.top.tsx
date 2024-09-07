@@ -2,7 +2,7 @@ import { db } from "@/db/db";
 import { Producthunt, producthunt } from "@/db/schema";
 import { gt } from "drizzle-orm";
 import Logo from "@/components/logo";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { ThumbsUpIcon } from "lucide-react";
 import redis from "@/db/redis";
 import { urlMapper } from "@/types/product.types";
@@ -13,7 +13,7 @@ import { useLocale } from "next-intl";
 const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
   const locale = useLocale() as SupportedLangs;
   return <>
-    <Link href={urlMapper["ph"](product.id, locale)}>
+    <Link href={urlMapper["ph"](product.id)}>
       <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
         <div className="flex flex-row gap-5 items-center w-full">
           <div className="w-10 h-10">

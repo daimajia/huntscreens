@@ -1,6 +1,7 @@
 import { removeAudience } from "@/lib/resend";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+
 
 export default async function UnsubscribePage({ params }: { params: { contactId: string } }) {
   const res = await removeAudience(params.contactId)
@@ -11,7 +12,7 @@ export default async function UnsubscribePage({ params }: { params: { contactId:
         {res.error ? <>
           Got an error, please contact admin.
         </> :
-          <>Successfully Unsubscribed <Link href="https://huntscreens.com" className=" text-blue-500">Back to HuntScreens.com</Link></>
+          <>Successfully Unsubscribed <Link href="/" className=" text-blue-500">Back to HuntScreens.com</Link></>
         }
       </div>
     </div>

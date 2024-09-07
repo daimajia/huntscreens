@@ -1,7 +1,6 @@
 "use client"
-import { useRouter, usePathname } from 'next/navigation';
-import { useLocale } from 'next-intl';
 import { Button } from "@/components/ui/button";
+import { usePathname, Link } from '@/i18n/routing';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,33 +8,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { locales, SupportedLangs } from '@/i18n/routing';
-import { GlobeIcon } from 'lucide-react';
+import { LanguagesIcon } from "lucide-react";
 
 export default function LanguageDropdown() {
-  const router = useRouter();
   const pathname = usePathname();
-  const currentLocale = useLocale() as SupportedLangs;
-
-  const handleLanguageChange = (newLocale: SupportedLangs) => {
-    const newPathname = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
-    router.push(newPathname);
-  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <GlobeIcon className="h-[1.2rem] w-[1.2rem]" />
+          <LanguagesIcon className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {locales.map((locale) => (
-          <DropdownMenuItem
-            key={locale}
-            onClick={() => handleLanguageChange(locale)}
-          >
-            {getLanguageName(locale)}
+        {locales.map((locale: SupportedLangs) => (
+          <DropdownMenuItem key={locale} asChild>
+            <Link href={pathname} locale={locale}>
+              {getLanguageName(locale)}
+            </Link>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

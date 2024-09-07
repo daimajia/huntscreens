@@ -1,9 +1,9 @@
 import Logo from "@/components/logo";
-import Link from "next/link";
 import { ProductTypes, urlMapper } from "@/types/product.types";
 import { useLocale } from "next-intl";
 import { SupportedLangs } from "@/i18n/routing";
 import { TranslationContent } from "@/db/schema/types";
+import { Link } from "@/i18n/routing";
 
 type SimilarProductCardProps = {
   itemId: string;
@@ -28,7 +28,7 @@ export default function SimilarProductCard({
 }: SimilarProductCardProps) {
   const locale = useLocale() as SupportedLangs;
   return (
-    <Link href={urlMapper[itemType](itemId, locale)}>
+    <Link href={urlMapper[itemType](itemId)}>
       <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
         <div className="flex flex-row gap-5 items-center">
           <div className="w-10 h-10">

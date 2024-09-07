@@ -7,7 +7,7 @@ import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import SiteBreadcrumb from "../ui-custom/breadcrumb";
 import AIIntro from "./ai.intro";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import YCInfoBadge from "./yc/yc.info.badge";
 import { Badge } from "@/components/ui/badge";
 import NextPrevCard from "./next.prev.card";

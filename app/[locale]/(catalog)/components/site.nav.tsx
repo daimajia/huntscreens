@@ -1,10 +1,9 @@
 "use client";
-import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { UpdateCount } from '@/lib/api/query.updatecount';
-import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/routing';
 
 export default function SiteNav({ updateCounts }: { updateCounts: UpdateCount }) {
   const t = useTranslations("Home");
@@ -17,25 +16,20 @@ export default function SiteNav({ updateCounts }: { updateCounts: UpdateCount })
     { name: 'Taaft', href: `/taaft`, icon: '/taaft.png', emoji: '🚀', countKey: 'TAAFT' },
   ];
   const currentPath = usePathname();
-  
-  const isActiveRoute = (href: string) => {
-    const pathWithoutLocale = currentPath.split('/').slice(2).join('/');
-    return href === '/' ? pathWithoutLocale === '' : pathWithoutLocale.startsWith(href.slice(1));
-  };
 
   return (
     <nav className="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm overflow-x-auto hidden md:flex whitespace-nowrap border">
       <ul className="flex space-x-2">
         {navItems.map((item) => {
-          const isActive = isActiveRoute(item.href);
+          
           const itemUpdateCount = item.countKey ? updateCounts[item.countKey as keyof UpdateCount] : 0;
           return (
             <li key={item.name} className="inline-block">
               <Link
-                href={`/${locale}${item.href}`}
+                href={item.href}
                 className={cn(
                   "flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                  isActive
+                  currentPath === item.href
                     ? "bg-gray-200/80 dark:bg-gray-700 text-primary"
                     : "hover:bg-gray-200/80 dark:hover:bg-gray-700"
                 )}

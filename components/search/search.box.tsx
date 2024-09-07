@@ -1,9 +1,9 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Search, Loader2 } from "lucide-react";
 import { useTranslations } from 'next-intl';
+import { useRouter, usePathname } from "@/i18n/routing";
 
 export default function SearchBox() {
   const [query, setQuery] = useState('');

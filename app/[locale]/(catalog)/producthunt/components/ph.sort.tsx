@@ -1,14 +1,15 @@
 "use client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslations } from "next-intl";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback } from "react";
+import { useRouter, usePathname } from "@/i18n/routing";
 
 export default function SortDropdown({ selectedValue }: {
   selectedValue: 'time' | 'vote'
 }) {
   const router = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
   const searchParams = useSearchParams()
   const t = useTranslations("Catalog.ProductHunt");
   const createQueryString = useCallback(

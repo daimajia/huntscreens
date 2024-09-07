@@ -2,10 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { CoinsIcon, Skull, TrendingUp } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
-
+import { Link, usePathname } from "@/i18n/routing";
 
 export default function YCFilter(props: {
   selectedTag: string

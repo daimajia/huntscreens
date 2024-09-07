@@ -1,20 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
 import { ModeToggle } from "@/components/theme/theme-button";
 import { getLogtoContext, LogtoContext, signIn } from "@logto/next/server-actions";
 import SignIn from "@/components/auth/sign-in";
 import UserMenu from "@/components/ui-custom/user.menu";
-import { Button } from "@/components/ui/button";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import getUpdateCounts from "@/lib/api/query.updatecount";
 import SearchBox from "@/components/search/search.box";
 import { logtoConfig } from "@/lib/auth/logto";
 import LanguageDropdown from "../ui-custom/language.dropdown";
-import { getLocale } from "next-intl/server";
+import { Link } from "@/i18n/routing";
 
 export default async function Header() {
-  const updateCns = await getUpdateCounts();
-  const locale = await getLocale();
   let response: LogtoContext;
   try {
     response = await getLogtoContext(logtoConfig);
@@ -30,23 +24,23 @@ export default async function Header() {
     <div className="grid grid-cols-2 justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
 
       <div className="bg-dark-logo flex">
-        <Link href={`/${locale}`}>
+        <Link href={`/`}>
           <img alt="logo" loading="lazy" src="/logo.png" className="dark:hidden w-40"></img>
           <img alt="dark logo" loading="lazy" src="/dark-logo.png" className="w-0 dark:w-40"></img>
         </Link>
       </div>
 
       <div className="lg:hidden flex flex-row gap-3 justify-end">
-        <Link href={`/${locale}`} className="hover:underline flex flex-row gap-1 justify-center items-center">
+        <Link href={`/producthunt`} className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/phlogo.png" alt="ProductHunt logo" className=" h-8" />
         </Link>
-        <Link href={`/${locale}/indiehackers`} className="hover:underline flex flex-row gap-1 justify-center items-center">
+        <Link href={`/indiehackers`} className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/indiehackers.jpg" alt="IndieHackers logo" className=" h-7 rounded-full" />
         </Link>
-        <Link href={`/${locale}/startup/yc`} className="hover:underline flex flex-row gap-1 justify-center items-center">
+        <Link href={`/startup/yc`} className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/yc.png" alt="YC logo" className="h-7 rounded-full" />
         </Link>
-        <Link href={`/${locale}/taaft`} className="hover:underline flex flex-row gap-1 justify-center items-center">
+        <Link href={`/taaft`} className="hover:underline flex flex-row gap-1 justify-center items-center">
           <img src="/taaft.png" alt="TAAFT logo" className="h-7 rounded-full" />
         </Link>
       </div>

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import UpVote from "../upvote";
 import { useMediaQuery } from 'usehooks-ts';
 import { Bookmark } from "lucide-react";
@@ -73,7 +73,7 @@ export default function MiniScreenshotCard<T extends ProductTypes>({ isFavorite,
   return <>
     <div className={`flex flex-col gap-5 hover:bg-muted p-3 rounded-lg transition hover:cursor-pointer`}>
       <div>
-        <Link target="_blank" passHref key={product.id} href={urlMapper[cardType](product.id, locale)}>
+        <Link target="_blank" passHref key={product.id} href={urlMapper[cardType](product.id)}>
           <img alt="" loading="lazy" className=" h-[250px] object-cover object-top w-full rounded-t-lg border-gray-400/20 border" src={getOptimizedImage(product.uuid)}></img>
         </Link>
       </div>

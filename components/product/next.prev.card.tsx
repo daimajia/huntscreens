@@ -1,5 +1,5 @@
 import Logo from "@/components/logo";
-import { SupportedLangs } from "@/i18n/routing";
+import { Link, SupportedLangs } from "@/i18n/routing";
 import { ProductModel, ProductTypes, urlMapper } from "@/types/product.types";
 import { useLocale } from "next-intl";
 
@@ -14,7 +14,7 @@ export default function NextPrevCard<T extends ProductTypes>(props: NextPrevCard
   return (
     <div className="flex flex-col md:flex-row justify-between gap-5">
       {props.prev && (
-        <a href={urlMapper[props.productType](props.prev.id, locale)} className="w-full md:w-1/2">
+        <Link href={urlMapper[props.productType](props.prev.id)} className="w-full md:w-1/2">
           <div className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
             <div className="text-sm text-gray-500 mb-2">← Previous</div>
             <div className="flex flex-row gap-2">
@@ -27,10 +27,10 @@ export default function NextPrevCard<T extends ProductTypes>(props: NextPrevCard
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       )}
       {props.next && (
-        <a href={urlMapper[props.productType](props.next.id, locale)} className="w-full md:w-1/2">
+        <Link href={urlMapper[props.productType](props.next.id)} className="w-full md:w-1/2">
           <div className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
             <div className="text-sm text-gray-500 mb-2 text-right">Next →</div>
             <div className="flex flex-row gap-2">
@@ -43,7 +43,7 @@ export default function NextPrevCard<T extends ProductTypes>(props: NextPrevCard
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       )}
     </div>
   )

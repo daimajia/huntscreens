@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { FlameIcon } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useTranslations } from 'next-intl';
+import { Link, usePathname } from "@/i18n/routing";
 
 export default function PHTopics(props: {
   selectedTag: string
