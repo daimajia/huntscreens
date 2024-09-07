@@ -3,7 +3,7 @@ import { db } from "@/db/db";
 import { allProducts } from "@/db/schema/all";
 import { eq, and } from "drizzle-orm";
 import { getProductTable, ProductTypes, urlMapper } from "@/types/product.types";
-import { locales, SupportedLangs } from "@/i18n/routing";
+import { locales, SupportedLangs } from "@/i18n/types";
 import { SEOContent } from '@/db/schema/types';
 import { generateSEOContent } from '../ai/gemini/seo.generator';
 import redis from '@/db/redis';

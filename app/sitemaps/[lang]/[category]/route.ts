@@ -1,7 +1,7 @@
 import { db } from '@/db/db';
 import { desc, eq } from 'drizzle-orm';
 import { allProducts } from '@/db/schema';
-import { SupportedLangs, locales } from '@/i18n/routing';
+import { locales, SupportedLangs } from '@/i18n/types';
 import { ProductTypes, productTypes, urlMapper } from '@/types/product.types';
 
 export async function GET(

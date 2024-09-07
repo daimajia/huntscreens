@@ -1,4 +1,4 @@
-import { locales } from '@/i18n/routing';
+import { locales } from '@/i18n/types';
 import { productTypes } from '@/types/product.types';
 import { MetadataRoute } from 'next';
 

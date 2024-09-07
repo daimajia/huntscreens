@@ -4,7 +4,7 @@ import Logo from '@/components/logo';
 import { ExternalLink } from 'lucide-react';
 import { SearchResult } from '../../types/search.type';
 import { useLocale } from 'next-intl';
-import { SupportedLangs } from '@/i18n/routing';
+import { SupportedLangs } from '@/i18n/types';
 import { Link } from '@/i18n/routing';
 type SearchCardProps = {
   result: SearchResult;

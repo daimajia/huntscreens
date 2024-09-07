@@ -49,6 +49,6 @@ export const config = {
     '/(p|indiehackers|startup/yc|taaft)/:path*',
     '/search/:path*',
     '/favorites',
-    '/email/:path*',
+    '/email/:path*'
   ]
 };

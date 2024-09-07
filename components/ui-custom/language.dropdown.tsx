@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { locales, SupportedLangs } from '@/i18n/routing';
+import { locales, SupportedLangs } from '@/i18n/types';
 import { LanguagesIcon } from "lucide-react";
 
 export default function LanguageDropdown() {

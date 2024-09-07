@@ -1,4 +1,4 @@
-import { SupportedLangs } from '@/i18n/routing';
+import { SupportedLangs } from '@/i18n/types';
 import { SortBy } from '@/types/api.types';
 import { and, arrayContains, eq, SQL, sql } from 'drizzle-orm';
 import { boolean, index, integer, json, jsonb, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';

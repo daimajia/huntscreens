@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { taaft } from "@/db/schema";
 import ProductDetailPage from "@/components/product/product.detail";
 import { generateUniversalMetadata } from '@/lib/seo/metadata';
-import { SupportedLangs } from '@/i18n/routing';
+import { SupportedLangs } from '@/i18n/types';
 
 type Props = {
   params: { id: number, locale: SupportedLangs }

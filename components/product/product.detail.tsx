@@ -15,7 +15,7 @@ import SimilarProducts from "./similar.products";
 import Logo from "@/components/logo";
 import WeeklyTop from "./common/weekly.top";
 import ImageLoader from "@/components/ui-custom/ImageLoader";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { TranslationContent } from "@/db/schema/types";
 import { getLocale, getTranslations } from "next-intl/server";
 

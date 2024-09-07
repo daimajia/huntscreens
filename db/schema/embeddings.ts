@@ -5,7 +5,7 @@ import { yc } from "./yc";
 import { indiehackers } from "./indiehackers";
 import { taaft } from "./taaft";
 import { TranslationContent } from "./types";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 
 export const embeddings = pgTable('embeddings', {
   id: serial('id').primaryKey(),

@@ -1,4 +1,4 @@
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { eq, SQL, sql } from "drizzle-orm";
 import { boolean, index, integer, jsonb, pgTable, pgView, QueryBuilder, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { SEOContent, TranslationContent } from "./types";

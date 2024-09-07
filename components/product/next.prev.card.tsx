@@ -1,5 +1,6 @@
 import Logo from "@/components/logo";
-import { Link, SupportedLangs } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { ProductModel, ProductTypes, urlMapper } from "@/types/product.types";
 import { useLocale } from "next-intl";
 

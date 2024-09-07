@@ -1,4 +1,4 @@
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { YCSortBy, YCStatus } from "@/types/yc.types";
 import { sql, eq, SQL, and, gte } from "drizzle-orm";
 import { boolean, date, index, integer, jsonb, pgTable, pgView, QueryBuilder, serial, text, uuid } from "drizzle-orm/pg-core";

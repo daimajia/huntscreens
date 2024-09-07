@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from "next/navigation";
 import ProductDetailPage from "@/components/product/product.detail";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { generateUniversalMetadata } from "@/lib/seo/metadata";
 
 type Props = {

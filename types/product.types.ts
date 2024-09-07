@@ -1,8 +1,8 @@
 import { indiehackers, IndieHackers, producthunt, Producthunt, taaft, Taaft, yc, YC } from "@/db/schema";
 import { differenceInHours } from "date-fns";
-import { MiniCardMetadata } from "../components/product/card/screenshot.card";
 import { TranslationContent } from "@/db/schema/types";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
+import { MiniCardMetadata } from "./card.types";
 
 export const productTypes = ["ph", "yc", "taaft", "indiehackers"] as const;
 export type ProductTypes = (typeof productTypes)[number];

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import query_yc from "@/lib/api/query.yc";
 import { YCSortBy } from "@/types/yc.types";
 import ProductDetailPage from "@/components/product/product.detail";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { generateUniversalMetadata } from "@/lib/seo/metadata";
 type Props = {
   params: { id: number, locale: SupportedLangs }

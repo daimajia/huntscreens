@@ -1,4 +1,4 @@
-import { localeNames, SupportedLangs } from "@/i18n/routing";
+import { localeNames, SupportedLangs } from "@/i18n/types";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory, SchemaType } from "@google/generative-ai";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY';

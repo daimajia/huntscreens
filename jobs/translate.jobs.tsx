@@ -6,7 +6,7 @@ import { intro } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { translateByGemini } from "@/lib/ai/gemini";
 import { getProductTable, productTypes } from "@/types/product.types";
-import { SupportedLangs, locales } from "@/i18n/routing";
+import { SupportedLangs, locales } from "@/i18n/types";
 import { TranslationContent } from "@/db/schema/types";
 
 const translationConcurrencyLimit = client.defineConcurrencyLimit({

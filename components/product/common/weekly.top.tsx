@@ -7,7 +7,7 @@ import { ThumbsUpIcon } from "lucide-react";
 import redis from "@/db/redis";
 import { urlMapper } from "@/types/product.types";
 import { getTranslations } from "next-intl/server";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { useLocale } from "next-intl";
 
 const WeeklyTopCard = ({ product }: { product: Producthunt }) => {

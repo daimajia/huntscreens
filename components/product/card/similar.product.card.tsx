@@ -1,7 +1,7 @@
 import Logo from "@/components/logo";
 import { ProductTypes, urlMapper } from "@/types/product.types";
 import { useLocale } from "next-intl";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { TranslationContent } from "@/db/schema/types";
 import { Link } from "@/i18n/routing";
 

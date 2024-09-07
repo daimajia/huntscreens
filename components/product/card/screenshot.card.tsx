@@ -11,26 +11,8 @@ import Spiner from "../../ui-custom/skeleton/loading.spin";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductTypes, urlMapper } from "@/types/product.types";
 import { useLocale } from 'next-intl';
-import { SupportedLangs } from "@/i18n/routing";
-import { TranslationContent } from "@/db/schema/types";
-
-export type BaseMiniCardMetadata = {
-  id: number,
-  name: string,
-  uuid: string,
-  thumbnail: string | null,
-  tagline: string | null,
-  website: string,
-  new: boolean,
-  translations: Record<SupportedLangs, TranslationContent>
-}
-
-type ProductHuntMetadata = {
-  votesCount: number,
-  producthunt_url: string
-}
-
-export type MiniCardMetadata<T extends ProductTypes> = T extends 'ph' ? BaseMiniCardMetadata & ProductHuntMetadata : BaseMiniCardMetadata;
+import { SupportedLangs } from "@/i18n/types";
+import { MiniCardMetadata } from "@/types/card.types";
 
 interface MiniCardProps<T extends ProductTypes> {
   isFavorite: boolean,

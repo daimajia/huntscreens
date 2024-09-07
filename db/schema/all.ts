@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { pgView, text, integer, timestamp, jsonb } from 'drizzle-orm/pg-core';
-import { SupportedLangs } from '@/i18n/routing';
+import { SupportedLangs } from '@/i18n/types';
 import { TranslationContent } from './types';
 import { indiehackers } from './indiehackers';
 import { producthunt } from './ph';

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { IHSort } from "@/types/indiehackers.types";
 import query_indiehacker from "@/lib/api/query.indiehacker";
 import ProductDetailPage from "@/components/product/product.detail";
-import { SupportedLangs } from "@/i18n/routing";
+import { SupportedLangs } from "@/i18n/types";
 import { generateUniversalMetadata } from "@/lib/seo/metadata";
 
 type Props = {

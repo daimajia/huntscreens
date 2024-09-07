@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 import { producthunt, yc, indiehackers, taaft, intro } from "@/db/schema";
-import { eq, is } from "drizzle-orm";
-import { locales, SupportedLangs } from "@/i18n/routing";
+import { eq } from "drizzle-orm";
+import { locales, SupportedLangs } from "@/i18n/types";
 import { ProductTypes } from "@/types/product.types";
 import { translateByGemini } from "@/lib/ai/gemini";
 import { TranslationContent } from "@/db/schema/types";

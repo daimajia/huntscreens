@@ -4,7 +4,6 @@ import { embeddings, EmbeddingWithSimilarity } from "@/db/schema/embeddings";
 import { cosineDistance, desc, gt, sql, eq } from "drizzle-orm";
 import redis from '@/db/redis';
 import { allProducts } from '@/db/schema';
-import { SupportedLangs } from '@/i18n/routing';
 
 
 let embeddingPipeline: any = null;
