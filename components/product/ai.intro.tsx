@@ -13,6 +13,8 @@ export default async function AIIntro({ uuid, overwrite }: { uuid: string, overw
     markdown = aiintro.description;
   }
 
+  markdown = markdown.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+
   return <>
     <div className="prose dark:prose-invert w-full
   prose-h1:font-bold prose-h1:text-lg prose-h2:text-lg
