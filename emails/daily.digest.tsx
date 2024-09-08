@@ -1,7 +1,5 @@
-import { yc, YC } from "@/db/schema";
 import { Producthunt } from "@/db/schema/ph";
 import { Body, Column, Container, Hr, Html, Img, Link, Row, Section, Tailwind, Text } from "@react-email/components";
-import * as React from "react";
 
 type DigestProps = {
   producthunts: Producthunt[],
@@ -27,7 +25,9 @@ export default function DailyDigestEmail(props: DigestProps) {
               <Section>
                 <Row className="border border-black items-center justify-center">
                   <Link href={`https://huntscreens.com/p/${ph.id}`}>
-                    <Img style={{ border: "1px solid #dfdfdf", objectFit: "cover", objectPosition: "top" }} className=" border rounded-lg  object-cover object-top" width="500" height="300" src={`https://shot.huntscreens.com/${ph.uuid}.webp`}></Img>
+                    <Img style={{ border: "1px solid #dfdfdf", objectFit: "cover", objectPosition: "top" }} className=" border rounded-lg  object-cover object-top" width="500" height="300" 
+                    src={`https://shot.huntscreens.com/cdn-cgi/image/width=990,height=500,fit=crop,gravity=0x0,format=webp/${ph.uuid}.webp`}>
+                    </Img>
                   </Link>
                 </Row>
                 <Row className="mt-5">
