@@ -1,7 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
-import { ImageOff } from 'lucide-react';
+import { ImageOff, Maximize, Minimize, ExternalLink } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import Link from 'next/link';
 
 export default function ImageLoader({
   src,
@@ -14,6 +17,7 @@ export default function ImageLoader({
 }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [expandView, setExpandView] = useState(false);
 
   useEffect(() => {
     const img = new Image();
@@ -26,7 +30,7 @@ export default function ImageLoader({
   }, [src]);
 
   return (
-    <div className="relative h-[500px] w-full overflow-hidden">
+    <div className="relative h-[500px] w-full">
       {loading && (
         <div className="border rounded-lg absolute inset-0 backdrop-blur-sm bg-white/30 dark:bg-gray-800/30 flex items-center justify-center z-10">
           <div className="w-10 h-10 border-4 border-gray-200 border-t-orange-400 rounded-full animate-spin"></div>
@@ -37,17 +41,53 @@ export default function ImageLoader({
           <ImageOff className="w-16 h-16 text-gray-400 dark:text-gray-600" />
         </div>
       ) : (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src}
-          alt={alt || ""}
-          loading="lazy"
-          className={cn(
-            "h-full w-full object-cover object-top border rounded-lg transition-opacity duration-300",
-            loading ? "opacity-50" : "opacity-100",
-            className
-          )}
-        />
+        <div className={cn(
+          "h-full w-full overflow-hidden",
+          expandView && "overflow-y-auto"
+        )}>
+          <img
+            src={src}
+            alt={alt || ""}
+            loading="lazy"
+            className={cn(
+              "w-full border rounded-lg transition-opacity duration-300",
+              loading ? "opacity-50" : "opacity-100",
+              expandView ? "h-auto" : "h-full",
+              className
+            )}
+          />
+        </div>
+      )}
+      {!loading && !error && (
+        <>
+          <Button
+            onClick={() => setExpandView(!expandView)}
+            className="absolute bottom-4 right-5 rounded-full p-2 shadow-md"
+            size="icon"
+            variant="outline"
+            aria-label={expandView ? "Minimize image" : "Maximize image"}
+          >
+            {expandView ? (
+              <Minimize className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+            ) : (
+              <Maximize className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+            )}
+          </Button>
+          <Link
+            href={src}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open image in new window"
+          >
+            <Button 
+              size="icon" 
+              variant="outline"
+              className="absolute bottom-4 right-16 rounded-full p-2 shadow-md"
+            >
+              <ExternalLink className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+            </Button>
+          </Link>
+        </>
       )}
     </div>
   );

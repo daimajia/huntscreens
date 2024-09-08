@@ -120,7 +120,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
             </div>
 
             <div>
-              <ImageLoader className="h-[500px] w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
+              <ImageLoader className="w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
             </div>
 
             {productIntro && (
