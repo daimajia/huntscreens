@@ -98,7 +98,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
               </div>
 
               <div className="flex w-full flex-row justify-end gap-3">
-                {(product as Producthunt).topics?.nodes.map((item) =>
+                {(product as Producthunt).topics?.nodes?.map((item) =>
                   <Badge key={item.name} className="py-1 text-slate-500 dark:text-white border dark:border-gray-400" variant="outline">{item.name}</Badge>
                 )}
               </div>
