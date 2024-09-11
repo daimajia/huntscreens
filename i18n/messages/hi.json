@@ -67,6 +67,9 @@
       "prefix": "पिछले सप्ताह में",
       "full": "पिछले सप्ताह में लॉन्च किए गए तकनीकी उत्पाद"
     },
+    "Topic": {
+      "relatedProducts": "{topic} से संबंधित उत्पाद"
+    },
     "LatestProducts": {
       "prefix": "नवीनतम",
       "suffix": "उत्पाद",

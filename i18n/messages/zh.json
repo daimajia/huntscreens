@@ -67,6 +67,9 @@
       "prefix": "过去一周",
       "full": "过去一周发布的科技产品"
     },
+    "Topic": {
+      "relatedProducts": "{topic} 相关产品"
+    },
     "LatestProducts": {
       "prefix": "最新",
       "suffix": "产品",

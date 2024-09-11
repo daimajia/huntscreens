@@ -67,6 +67,9 @@
       "prefix": "In the Past Week",
       "full": "In the Past Week Launched Products"
     },
+    "Topic": {
+      "relatedProducts": "{topic}Related Products"
+    },
     "LatestProducts": {
       "prefix": "Latest",
       "suffix": "Products",

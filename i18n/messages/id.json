@@ -67,6 +67,9 @@
       "prefix": "Dalam seminggu terakhir",
       "full": "Produk teknologi yang diluncurkan dalam seminggu terakhir"
     },
+    "Topic": {
+      "relatedProducts": "Produk terkait {topic}"
+    },
     "LatestProducts": {
       "prefix": "Produk",
       "suffix": "terbaru",

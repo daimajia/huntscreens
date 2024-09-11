@@ -67,6 +67,9 @@
       "prefix": "Geçen hafta",
       "full": "Geçen hafta piyasaya sürülen teknoloji ürünleri"
     },
+    "Topic": {
+      "relatedProducts": "{topic} ile ilgili ürünler"
+    },
     "LatestProducts": {
       "prefix": "En yeni",
       "suffix": "ürünler",

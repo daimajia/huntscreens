@@ -67,6 +67,9 @@
       "prefix": "En la última semana",
       "full": "Productos tecnológicos lanzados en la última semana"
     },
+    "Topic": {
+      "relatedProducts": "Productos relacionados con {topic}"
+    },
     "LatestProducts": {
       "prefix": "Últimos",
       "suffix": "productos",

@@ -67,6 +67,9 @@
       "prefix": "過去1週間",
       "full": "過去1週間で発売されたテック製品"
     },
+    "Topic": {
+      "relatedProducts": "{topic} に関連する製品"
+    },
     "LatestProducts": {
       "prefix": "最新の",
       "suffix": "製品",
