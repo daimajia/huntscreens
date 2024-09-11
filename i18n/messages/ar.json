@@ -31,9 +31,10 @@
   },
   "Showcase": {
     "Alternatives": "بدائل {name}",
-    "WeeklyTop": "أفضل 10 منتجات أسبوعيًا",
     "MoreAbout": "المزيد عن {name}",
-    "VisitWebsite": "زيارة الموقع"
+    "VisitWebsite": "زيارة الموقع",
+    "AllCategories": "جميع الفئات",
+    "Home": "الرئيسية"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +59,27 @@
     "NoResults": "لم يتم العثور على نتائج.",
     "TryDifferentKeywords": "حاول البحث باستخدام كلمات مفتاحية مختلفة.",
     "SearchResultsFor": "نتائج البحث عن {query}"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "منتجات تقنية تم إطلاقها",
+      "prefix": "في الأسبوع الماضي",
+      "full": "المنتجات التقنية التي تم إطلاقها في الأسبوع الماضي"
+    },
+    "LatestProducts": {
+      "prefix": "أحدث",
+      "suffix": "المنتجات",
+      "full": "أحدث منتجات {category}"
+    },
+    "TotalProducts": "{count} منتج",
+    "ProductCount": "منتجات",
+    "PageInfo": "الصفحة {current} من {total}",
+    "PreviousPage": "الصفحة السابقة",
+    "NextPage": "الصفحة التالية",
+    "NoProducts": {
+      "title": "لم يتم العثور على منتجات",
+      "description": "عذرًا، لم نتمكن من العثور على أي منتجات في هذه الفئة في الوقت الحالي.",
+      "backToHome": "العودة إلى الصفحة الرئيسية"
+    }
   }
 }

@@ -1,0 +1,354 @@
+[
+  {
+    "maincategory": {
+      "en": "Just Launched",
+      "zh": "新上线",
+      "es": "Recién Lanzado",
+      "ar": "تم إطلاقه للتو",
+      "hi": "अभी लॉन्च हुआ",
+      "pt": "Recém-Lançado",
+      "ja": "新登場",
+      "ru": "Только Запущено",
+      "id": "Baru Diluncurkan",
+      "tr": "Yeni Çıkan"
+    },
+    "slug": "just-launched",
+    "emoji": "🚀"
+  },
+  {
+    "maincategory": {
+      "en": "Productivity",
+      "zh": "生产力",
+      "es": "Productividad",
+      "ar": "الإنتاجية",
+      "hi": "उत्पादकता",
+      "pt": "Produtividade",
+      "ja": "生産性",
+      "ru": "Продуктивность",
+      "id": "Produktivitas",
+      "tr": "Üretkenlik"
+    },
+    "slug": "productivity",
+    "emoji": "⏱️"
+  },
+  {
+    "maincategory": {
+      "en": "Video",
+      "zh": "视频",
+      "es": "Video",
+      "ar": "فيديو",
+      "hi": "वीडियो",
+      "pt": "Vídeo",
+      "ja": "ビデオ",
+      "ru": "Видео",
+      "id": "Video",
+      "tr": "Video"
+    },
+    "slug": "video",
+    "emoji": "🎥"
+  },
+  {
+    "maincategory": {
+      "en": "Audio",
+      "zh": "音频",
+      "es": "Audio",
+      "ar": "صوت",
+      "hi": "ऑडियो",
+      "pt": "Áudio",
+      "ja": "オーディオ",
+      "ru": "Аудио",
+      "id": "Audio",
+      "tr": "Ses"
+    },
+    "slug": "audio",
+    "emoji": "🎧"
+  },
+  {
+    "maincategory": {
+      "en": "Image",
+      "zh": "图像",
+      "es": "Imagen",
+      "ar": "صورة",
+      "hi": "छवि",
+      "pt": "Imagem",
+      "ja": "画像",
+      "ru": "Изображение",
+      "id": "Gambar",
+      "tr": "Görüntü"
+    },
+    "slug": "image",
+    "emoji": "🖼️"
+  },
+  {
+    "maincategory": {
+      "en": "Text & Writing",
+      "zh": "文字与写作",
+      "es": "Texto y Escritura",
+      "ar": "النص والكتابة",
+      "hi": "पाठ और लेखन",
+      "pt": "Texto e Escrita",
+      "ja": "テキストと文章",
+      "ru": "Текст и Письмо",
+      "id": "Teks dan Penulisan",
+      "tr": "Metin ve Yazı"
+    },
+    "slug": "text-writing",
+    "emoji": "✍️"
+  },
+  {
+    "maincategory": {
+      "en": "Design & Art",
+      "zh": "设计与艺术",
+      "es": "Diseño y Arte",
+      "ar": "التصميم والفن",
+      "hi": "डिजाइन और कला",
+      "pt": "Design e Arte",
+      "ja": "デザインとアート",
+      "ru": "Дизайн и Искусство",
+      "id": "Desain dan Seni",
+      "tr": "Tasarım ve Sanat"
+    },
+    "slug": "design-art",
+    "emoji": "🎨"
+  },
+  {
+    "maincategory": {
+      "en": "Business",
+      "zh": "商业",
+      "es": "Negocios",
+      "ar": "الأعمال",
+      "hi": "व्यापार",
+      "pt": "Negócios",
+      "ja": "ビジネス",
+      "ru": "Бизнес",
+      "id": "Bisnis",
+      "tr": "İş"
+    },
+    "slug": "business",
+    "emoji": "💼"
+  },
+  {
+    "maincategory": {
+      "en": "Finance",
+      "zh": "金融",
+      "es": "Finanzas",
+      "ar": "المالية",
+      "hi": "वित्त",
+      "pt": "Finanças",
+      "ja": "ファイナンス",
+      "ru": "Финансы",
+      "id": "Keuangan",
+      "tr": "Finans"
+    },
+    "slug": "finance",
+    "emoji": "💰"
+  },
+  {
+    "maincategory": {
+      "en": "Marketing",
+      "zh": "营销",
+      "es": "Marketing",
+      "ar": "التسويق",
+      "hi": "विपणन",
+      "pt": "Marketing",
+      "ja": "マーケティング",
+      "ru": "Маркетинг",
+      "id": "Pemasaran",
+      "tr": "Pazarlama"
+    },
+    "slug": "marketing",
+    "emoji": "📢"
+  },
+  {
+    "maincategory": {
+      "en": "E-commerce",
+      "zh": "电子商务",
+      "es": "Comercio Electrónico",
+      "ar": "التجارة الإلكترونية",
+      "hi": "ई-कॉमर्स",
+      "pt": "E-commerce",
+      "ja": "Eコマース",
+      "ru": "Электронная Коммерция",
+      "id": "E-commerce",
+      "tr": "E-ticaret"
+    },
+    "slug": "e-commerce",
+    "emoji": "🛒"
+  },
+  {
+    "maincategory": {
+      "en": "Developer Tools",
+      "zh": "开发者工具",
+      "es": "Herramientas de Desarrollo",
+      "ar": "أدوات المطور",
+      "hi": "डेवलपर टूल्स",
+      "pt": "Ferramentas de Desenvolvimento",
+      "ja": "開発者ツール",
+      "ru": "Инструменты Разработчика",
+      "id": "Alat Pengembang",
+      "tr": "Geliştirici Araçları"
+    },
+    "slug": "developer-tools",
+    "emoji": "🛠️"
+  },
+  {
+    "maincategory": {
+      "en": "Research",
+      "zh": "研究",
+      "es": "Investigación",
+      "ar": "البحث",
+      "hi": "अनुसंधान",
+      "pt": "Pesquisa",
+      "ja": "研究",
+      "ru": "Исследования",
+      "id": "Penelitian",
+      "tr": "Araştırma"
+    },
+    "slug": "research",
+    "emoji": "🔬"
+  },
+  {
+    "maincategory": {
+      "en": "Education",
+      "zh": "教育",
+      "es": "Educación",
+      "ar": "التعليم",
+      "hi": "शिक्षा",
+      "pt": "Educação",
+      "ja": "教育",
+      "ru": "Образование",
+      "id": "Pendidikan",
+      "tr": "Eğitim"
+    },
+    "slug": "education",
+    "emoji": "📚"
+  },
+  {
+    "maincategory": {
+      "en": "Entertainment",
+      "zh": "娱乐",
+      "es": "Entretenimiento",
+      "ar": "الترفيه",
+      "hi": "मनोरंजन",
+      "pt": "Entretenimento",
+      "ja": "エンターテイメント",
+      "ru": "Развлечения",
+      "id": "Hiburan",
+      "tr": "Eğlence"
+    },
+    "slug": "entertainment",
+    "emoji": "🎭"
+  },
+  {
+    "maincategory": {
+      "en": "Life Assistant",
+      "zh": "生活助手",
+      "es": "Asistente de Vida",
+      "ar": "مساعد الحياة",
+      "hi": "जीवन सहायक",
+      "pt": "Assistente de Vida",
+      "ja": "ライフアシスタント",
+      "ru": "Помощник по Жизни",
+      "id": "Asisten Kehidupan",
+      "tr": "Yaşam Asistanı"
+    },
+    "slug": "life-assistant",
+    "emoji": "🤖"
+  },
+  {
+    "maincategory": {
+      "en": "Health & Wellness",
+      "zh": "健康与养生",
+      "es": "Salud y Bienestar",
+      "ar": "الصحة والعافية",
+      "hi": "स्वास्थ्य और कल्याण",
+      "pt": "Saúde e Bem-estar",
+      "ja": "健康とウェルネス",
+      "ru": "Здоровье и Благополучие",
+      "id": "Kesehatan & Kebugaran",
+      "tr": "Sağlık ve Zindelik"
+    },
+    "slug": "health-wellness",
+    "emoji": "🧘"
+  },
+  {
+    "maincategory": {
+      "en": "Travel",
+      "zh": "旅行",
+      "es": "Viajes",
+      "ar": "السفر",
+      "hi": "यात्रा",
+      "pt": "Viagem",
+      "ja": "旅行",
+      "ru": "Путешествия",
+      "id": "Perjalanan",
+      "tr": "Seyahat"
+    },
+    "slug": "travel",
+    "emoji": "✈️"
+  },
+  {
+    "maincategory": {
+      "en": "Plugins",
+      "zh": "插件",
+      "es": "Complementos",
+      "ar": "الإضافات",
+      "hi": "प्लगइन्स",
+      "pt": "Plugins",
+      "ja": "プラグイン",
+      "ru": "Плагины",
+      "id": "Plugin",
+      "tr": "Eklentiler"
+    },
+    "slug": "plugins",
+    "emoji": "🔌"
+  },
+  {
+    "maincategory": {
+      "en": "Chatbots",
+      "zh": "聊天机器人",
+      "es": "Chatbots",
+      "ar": "روبوتات الدردشة",
+      "hi": "चैटबॉट्स",
+      "pt": "Chatbots",
+      "ja": "チャットボット",
+      "ru": "Чатботы",
+      "id": "Chatbot",
+      "tr": "Sohbet Botları"
+    },
+    "slug": "chatbots",
+    "emoji": "💬"
+  },
+  {
+    "maincategory": {
+      "en": "Inspiration",
+      "zh": "灵感",
+      "es": "Inspiración",
+      "ar": "الإلهام",
+      "hi": "प्रेरणा",
+      "pt": "Inspiração",
+      "ja": "インスピレーション",
+      "ru": "Вдохновение",
+      "id": "Inspirasi",
+      "tr": "İlham"
+    },
+    "slug": "inspiration",
+    "emoji": "💡"
+  },
+  {
+    "maincategory": {
+      "en": "Consumer Tech",
+      "zh": "消费科技",
+      "es": "Tecnología de Consumo",
+      "ar": "تكنولوجيا المستهلك",
+      "hi": "उपभोक्ता तकनीक",
+      "pt": "Tecnologia de Consumo",
+      "ja": "コンシューマーテック",
+      "ru": "Потребительские Технологии",
+      "id": "Teknologi Konsumen",
+      "tr": "Tüketici Teknolojisi"
+    },
+    "slug": "consumer-tech",
+    "emoji": "📱"
+  }
+]

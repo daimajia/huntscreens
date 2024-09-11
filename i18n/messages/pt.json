@@ -33,7 +33,9 @@
     "Alternatives": "Alternativas ao {name}",
     "WeeklyTop": "Top 10 produtos da semana",
     "MoreAbout": "Mais sobre {name}",
-    "VisitWebsite": "Visitar site"
+    "VisitWebsite": "Visitar site",
+    "AllCategories": "Todas as categorias",
+    "Home": "Início"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +60,27 @@
     "NoResults": "Nenhum resultado encontrado.",
     "TryDifferentKeywords": "Tente pesquisar com palavras-chave diferentes.",
     "SearchResultsFor": "Resultados da pesquisa para {query}"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "produtos tecnológicos lançados",
+      "prefix": "Na última semana",
+      "full": "Produtos tecnológicos lançados na última semana"
+    },
+    "LatestProducts": {
+      "prefix": "Últimos",
+      "suffix": "produtos",
+      "full": "Últimos produtos de {category}"
+    },
+    "TotalProducts": "{count} produtos",
+    "ProductCount": "produtos",
+    "PageInfo": "Página {current} de {total}",
+    "PreviousPage": "Página anterior",
+    "NextPage": "Próxima página",
+    "NoProducts": {
+      "title": "Nenhum produto encontrado",
+      "description": "Desculpe, não encontramos nenhum produto nesta categoria no momento.",
+      "backToHome": "Voltar para a página inicial"
+    }
   }
 }

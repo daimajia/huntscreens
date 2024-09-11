@@ -33,7 +33,9 @@
     "Alternatives": "{name} Alternatives",
     "WeeklyTop": "Weekly Top 10 Products",
     "MoreAbout": "More About {name}",
-    "VisitWebsite": "Visit Website"
+    "VisitWebsite": "Visit Website",
+    "AllCategories": "All Categories",
+    "Home": "Home"
   },
   "Catalog": {
     "YC": {
@@ -44,9 +46,9 @@
       "All": "All"
     },
     "ProductHunt": {
-      "SortByTime" : "Sort by Time",
-      "SortByVotes":  "Sort by Votes",
-      "All" :"All",
+      "SortByTime": "Sort by Time",
+      "SortByVotes": "Sort by Votes",
+      "All": "All",
       "DesignTools": "Design Tools",
       "ArtificialIntelligence": "Artificial Intelligence",
       "OpenSource": "Open Source",
@@ -58,5 +60,28 @@
     "NoResults": "No results found.",
     "TryDifferentKeywords": "Try searching with different keywords.",
     "SearchResultsFor": "Search Results for {query}"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "Tech Products Launched",
+      "prefix": "In the Past Week",
+      "full": "In the Past Week Launched Products"
+    },
+    "LatestProducts": {
+      "prefix": "Latest",
+      "suffix": "Products",
+      "full": "Latest {category} Products"
+    },
+
+    "TotalProducts": "{count} Products",
+    "ProductCount": "products",
+    "PageInfo": "Page {current} of {total}",
+    "PreviousPage": "Previous Page",
+    "NextPage": "Next Page",
+    "NoProducts": {
+      "title": "No products found",
+      "description": "Sorry, we couldn't find any products in this category at the moment.",
+      "backToHome": "Back to Home"
+    }
   }
 }

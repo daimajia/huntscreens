@@ -33,7 +33,9 @@
     "Alternatives": "{name} के विकल्प",
     "WeeklyTop": "साप्ताहिक शीर्ष 10 उत्पाद",
     "MoreAbout": "{name} के बारे में अधिक जानकारी",
-    "VisitWebsite": "वेबसाइट पर जाएं"
+    "VisitWebsite": "वेबसाइट पर जाएं",
+    "AllCategories": "सभी श्रेणियाँ",
+    "Home": "होम"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +60,27 @@
     "NoResults": "कोई परिणाम नहीं मिला।",
     "TryDifferentKeywords": "अलग कीवर्ड के साथ खोजने का प्रयास करें।",
     "SearchResultsFor": "{query} के लिए खोज परिणाम"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "तकनीकी उत्पाद लॉन्च किए गए",
+      "prefix": "पिछले सप्ताह में",
+      "full": "पिछले सप्ताह में लॉन्च किए गए तकनीकी उत्पाद"
+    },
+    "LatestProducts": {
+      "prefix": "नवीनतम",
+      "suffix": "उत्पाद",
+      "full": "नवीनतम {category} उत्पाद"
+    },
+    "TotalProducts": "{count} उत्पाद",
+    "ProductCount": "उत्पाद",
+    "PageInfo": "पृष्ठ {current} का {total}",
+    "PreviousPage": "पिछला पृष्ठ",
+    "NextPage": "अगला पृष्ठ",
+    "NoProducts": {
+      "title": "कोई उत्पाद नहीं मिला",
+      "description": "क्षमा करें, इस श्रेणी में फिलहाल कोई उत्पाद नहीं मिला।",
+      "backToHome": "होम पर वापस जाएं"
+    }
   }
 }

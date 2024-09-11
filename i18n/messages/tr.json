@@ -33,7 +33,9 @@
     "Alternatives": "{name} Alternatifleri",
     "WeeklyTop": "Haftanın En İyi 10 Ürünü",
     "MoreAbout": "{name} Hakkında Daha Fazla",
-    "VisitWebsite": "Web Sitesini Ziyaret Et"
+    "VisitWebsite": "Web Sitesini Ziyaret Et",
+    "AllCategories": "Tüm Kategoriler",
+    "Home": "Ana Sayfa"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +60,27 @@
     "NoResults": "Sonuç bulunamadı.",
     "TryDifferentKeywords": "Farklı anahtar kelimelerle aramayı deneyin.",
     "SearchResultsFor": "{query} için Arama Sonuçları"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "teknoloji ürünü piyasaya sürüldü",
+      "prefix": "Geçen hafta",
+      "full": "Geçen hafta piyasaya sürülen teknoloji ürünleri"
+    },
+    "LatestProducts": {
+      "prefix": "En yeni",
+      "suffix": "ürünler",
+      "full": "En yeni {category} ürünleri"
+    },
+    "TotalProducts": "{count} Ürün",
+    "ProductCount": "ürün",
+    "PageInfo": "Sayfa {current} / {total}",
+    "PreviousPage": "Önceki Sayfa",
+    "NextPage": "Sonraki Sayfa",
+    "NoProducts": {
+      "title": "Ürün bulunamadı",
+      "description": "Üzgünüz, şu anda bu kategoride herhangi bir ürün bulamadık.",
+      "backToHome": "Ana Sayfaya Dön"
+    }
   }
 }
