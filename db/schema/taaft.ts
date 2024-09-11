@@ -2,8 +2,10 @@ import { SupportedLangs } from "@/i18n/types";
 import { sql } from "drizzle-orm";
 import { boolean, date, index, integer, jsonb, pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { SEOContent, TranslationContent } from "./types";
+import { Category } from "@/lib/ai/types";
 
 export type Taaft = typeof taaft.$inferSelect;
+export type NewTaaft = typeof taaft.$inferInsert;
 
 export const taaft = pgTable('taaft', {
   id: serial('id').primaryKey(),
@@ -32,7 +34,9 @@ export const taaft = pgTable('taaft', {
   webp: boolean('webp').default(false),
   created_at: timestamp('created_at', {withTimezone: true}).defaultNow(),
   translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`),
-  seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`)
+  seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`),
+  categories: jsonb('categories').$type<Category>().default(sql`'{}'::jsonb`),
+  isai: boolean('isai').default(false)
 }, (table) => {
   return {
     taaftuuidIndex: index('taaft_uuid_index').on(table.uuid),
