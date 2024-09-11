@@ -5,7 +5,7 @@ import { intro, YC } from "@/db/schema";
 import { ProductModel, ProductTypes, thumbailGetter } from "@/types/product.types";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
-import { SiteBreadcrumbGenerator } from "@/components/ui-custom/breadcrumb";
+import { BreadcrumbItem, SiteBreadcrumbGenerator } from "@/components/ui-custom/breadcrumb";
 import AIIntro from "./ai.intro";
 import { Link } from "@/i18n/routing";
 import YCInfoBadge from "./yc/yc.info.badge";
@@ -33,6 +33,30 @@ function stripMarkdown(text: string): string {
     .trim();
 }
 
+async function getBreadcrumbCategoryItems<T extends ProductTypes>(
+  product: ProductModel<T>,
+  currentLang: SupportedLangs,
+  t: (key: string) => string
+): Promise<BreadcrumbItem[]> {
+  let breadcrumbItems: BreadcrumbItem[] = [
+    { name: t('Home'), href: "/" },
+    { name: t('AllCategories'), href: "/categories" }
+  ];
+
+  try {
+    if (product && product.categories?.maincategory) {
+      breadcrumbItems.push({ name: product.categories.maincategory.translations[currentLang], href: `/category/${product.categories.maincategory.slug}` });
+      if(product.categories?.subcategory){
+        breadcrumbItems.push({ name: product.categories.subcategory.translations[currentLang], href: `/category/${product.categories.maincategory.slug}/${product.categories.subcategory.slug}` });
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  return breadcrumbItems;
+}
+
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
   product: ProductModel<T>,
@@ -53,29 +77,13 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   });
 
   const translatedContent: TranslationContent | undefined = product.translations?.[currentLang];
+  const breadcrumbItems = await getBreadcrumbCategoryItems(product, currentLang, t);
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900">
       <div className="flex-col max-w-7xl mx-auto gap-5">
         <div className="flex flex-row gap-5 px-5 md:px-10 pt-5 md:pt-10">
-          <SiteBreadcrumbGenerator items={[
-            {
-              name: t('Home'),
-              href: "/"
-            },
-            {
-              name: t('AllCategories'),
-              href: "/categories"
-            },
-            {
-              name: product.categories?.maincategory?.translations[currentLang],
-              href: `/category/${product.categories?.maincategory?.slug}`
-            },
-            {
-              name: product.categories?.subcategory?.translations[currentLang],
-              href: `/category/${product.categories?.maincategory?.slug}/${product.categories?.subcategory?.slug}`
-            }
-          ]} />
+          <SiteBreadcrumbGenerator items={breadcrumbItems} />
         </div>
 
         <div className="flex md:flex-row w-full flex-col gap-10 p-5 md:p-10">
@@ -115,14 +123,14 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
               </div>
 
               <div className="flex w-full flex-row flex-wrap justify-end gap-3">
-                { product.categories?.topics?.map((topic) => (
+                {product.categories?.topics?.map((topic) => (
                   <Badge key={topic.slug} className="py-1 text-slate-500 dark:text-white border dark:border-gray-400" variant="outline">
                     <Link href={`/topic/${topic.slug}`}>
                       <span>{topic.translations[currentLang]}</span>
                     </Link>
                   </Badge>
                 ))}
-                
+
 
               </div>
             </div>

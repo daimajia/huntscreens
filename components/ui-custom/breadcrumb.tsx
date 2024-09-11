@@ -8,8 +8,10 @@ import { Slash } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { ProductTypes } from "@/types/product.types";
 import React from "react";
+import { headers } from "next/headers";
+import { getLocale } from "next-intl/server";
 
-type BreadcrumbItem = {
+export type BreadcrumbItem = {
   name?: string;
   href: string;
 }
@@ -18,9 +20,8 @@ type BreadcrumbProps = {
   items: BreadcrumbItem[];
 }
 
-export function SiteBreadcrumbGenerator({ items }: BreadcrumbProps) {
-  if (items.length === 0) return null;
-
+export async function SiteBreadcrumbGenerator({ items }: BreadcrumbProps) {
+  if (items.length === 0) return <></>;
   return (
     <Breadcrumb>
       <BreadcrumbList>
