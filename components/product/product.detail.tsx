@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import { intro, Producthunt, YC } from "@/db/schema";
+import { intro, YC } from "@/db/schema";
 import { ProductModel, ProductTypes, thumbailGetter } from "@/types/product.types";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
-import SiteBreadcrumb from "../ui-custom/breadcrumb";
+import { SiteBreadcrumbGenerator } from "@/components/ui-custom/breadcrumb";
 import AIIntro from "./ai.intro";
 import { Link } from "@/i18n/routing";
 import YCInfoBadge from "./yc/yc.info.badge";
@@ -58,7 +58,24 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
     <div className="bg-gray-100 dark:bg-gray-900">
       <div className="flex-col max-w-7xl mx-auto gap-5">
         <div className="flex flex-row gap-5 px-5 md:px-10 pt-5 md:pt-10">
-          <SiteBreadcrumb productType={props.productType} />
+          <SiteBreadcrumbGenerator items={[
+            {
+              name: t('Home'),
+              href: "/"
+            },
+            {
+              name: t('AllCategories'),
+              href: "/categories"
+            },
+            {
+              name: product.categories?.maincategory?.translations[currentLang],
+              href: `/category/${product.categories?.maincategory?.slug}`
+            },
+            {
+              name: product.categories?.subcategory?.translations[currentLang],
+              href: `/category/${product.categories?.maincategory?.slug}/${product.categories?.subcategory?.slug}`
+            }
+          ]} />
         </div>
 
         <div className="flex md:flex-row w-full flex-col gap-10 p-5 md:p-10">
@@ -68,7 +85,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                 <div className="w-20">
                   <Logo name={product.name || ""} url={thumbnail || ""} className="w-20 h-20" />
                 </div>
-                
+
                 <div className="flex flex-col w-full justify-between">
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex flex-row items-center justify-between gap-4">
@@ -97,10 +114,16 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                 </h3>
               </div>
 
-              <div className="flex w-full flex-row justify-end gap-3">
-                {(product as Producthunt).topics?.nodes.map((item) =>
-                  <Badge key={item.name} className="py-1 text-slate-500 dark:text-white border dark:border-gray-400" variant="outline">{item.name}</Badge>
-                )}
+              <div className="flex w-full flex-row flex-wrap justify-end gap-3">
+                { product.categories?.topics?.map((topic) => (
+                  <Badge key={topic.slug} className="py-1 text-slate-500 dark:text-white border dark:border-gray-400" variant="outline">
+                    <Link href={`/topic/${topic.slug}`}>
+                      <span>{topic.translations[currentLang]}</span>
+                    </Link>
+                  </Badge>
+                ))}
+                
+
               </div>
             </div>
 

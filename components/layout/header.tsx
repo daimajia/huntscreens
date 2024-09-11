@@ -8,7 +8,11 @@ import { logtoConfig } from "@/lib/auth/logto";
 import LanguageDropdown from "../ui-custom/language.dropdown";
 import { Link } from "@/i18n/routing";
 
-export default async function Header() {
+type HeaderProps = {
+  className?: string;
+}
+
+export default async function Header({className}: HeaderProps) {
   let response: LogtoContext;
   try {
     response = await getLogtoContext(logtoConfig);
@@ -21,7 +25,7 @@ export default async function Header() {
   }
 
   return <>
-    <div className="grid grid-cols-2 justify-between py-4 px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background">
+    <div className={` h-[70px] grid grid-cols-2 justify-between items-center px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background ${className}`}>
 
       <div className="bg-dark-logo flex">
         <Link href={`/`}>

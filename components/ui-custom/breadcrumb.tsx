@@ -7,8 +7,43 @@ import {
 import { Slash } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { ProductTypes } from "@/types/product.types";
+import React from "react";
 
-export default function SiteBreadcrumb({productType}: {productType: ProductTypes}) {
+type BreadcrumbItem = {
+  name?: string;
+  href: string;
+}
+
+type BreadcrumbProps = {
+  items: BreadcrumbItem[];
+}
+
+export function SiteBreadcrumbGenerator({ items }: BreadcrumbProps) {
+  if (items.length === 0) return null;
+
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href={item.href}>{item.name || 'Untitled'}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {index < items.length - 1 && (
+              <BreadcrumbSeparator>
+                /
+              </BreadcrumbSeparator>
+            )}
+          </React.Fragment>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+
+export default function SiteBreadcrumb({ productType }: { productType: ProductTypes }) {
   let rootPath;
   let pathName;
   switch (productType) {

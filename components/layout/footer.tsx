@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 export default function Footer() {
   const t = useTranslations("Home");
   return (
-    <footer className="bg-white rounded-lg dark:bg-gray-900 m-4">
+    <footer className="bg-white rounded-lg dark:bg-gray-900 mt-10">
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className=" flex flex-col gap-2">

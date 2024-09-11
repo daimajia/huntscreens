@@ -7,21 +7,27 @@ import { SupportedLangs } from "@/i18n/types";
 import { generateUniversalMetadata } from "@/lib/seo/metadata";
 
 type Props = {
-  params: { id: number, locale: SupportedLangs }
+  params: { id: string, locale: SupportedLangs }
 }
 
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  return generateUniversalMetadata(params.id, "ph", params.locale);
+  if (isNaN(Number(params.id)) || !Number.isInteger(Number(params.id))) {
+    return notFound();
+  }
+  return generateUniversalMetadata(Number(params.id), "ph", params.locale);
 }
 
 
 export default async function ProductDetail({ params }: Props) {
+  if (isNaN(Number(params.id)) || !Number.isInteger(Number(params.id))) {
+    return notFound();
+  }
   const sort = cookies().get('sort')?.value || 'time';
   const topic = cookies().get('topic')?.value || 'All';
-  const data = await queryProduct(params.id, sort === "time" ? "time" : "vote", topic);
+  const data = await queryProduct(Number(params.id), sort === "time" ? "time" : "vote", topic);
   if (!data.product) {
     return notFound();
   }
