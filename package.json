@@ -17,7 +17,8 @@
     "db:up": "drizzle-kit up",
     "index:all:embeddings": "tsx scripts/index.all.embeddings.ts",
     "db:trgm": "tsx scripts/add.trgm.extension.and.index.ts",
-    "db:translate": "tsx scripts/add.multiple.langs.ts"
+    "db:translate": "tsx scripts/add.multiple.langs.ts",
+    "db:categories": "tsx scripts/add.product.categories.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.40",
@@ -31,6 +32,7 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-scroll-area": "^1.1.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
@@ -80,7 +82,7 @@
     "usehooks-ts": "^3.1.0",
     "uuid": "^9.0.1",
     "vaul": "^0.9.1",
-    "zod": "3.22.3",
+    "zod": "^3.22.3",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
