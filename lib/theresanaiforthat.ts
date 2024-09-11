@@ -1,7 +1,7 @@
 import { parse } from 'node-html-parser';
 import { removeUrlParams } from './utils/url';
 import assert from 'assert';
-import { Taaft } from '@/db/schema';
+import { NewTaaft } from '@/db/schema';
 import { subDays, subHours } from 'date-fns';
 
 type PuppeteerResp = {
@@ -75,9 +75,8 @@ export async function fetchTAAFTLatest() {
     throw new Error('taaft puppeteer return error');
   }
 }
-type TaaftApiType = Omit<Taaft, "id" | "webp" | "created_at" | "uuid">;
 
-export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiType> {
+export async function fetchTAAFTProductDetails(url: string): Promise<NewTaaft> {
   const resp = await fetch(`${process.env.PUPPETEER}`, {
     method: 'POST',
     headers: {
@@ -146,8 +145,6 @@ export async function fetchTAAFTProductDetails(url: string): Promise<TaaftApiTyp
     cons: cons,
     tags: tags,
     faqs: faqs,
-    itemType: "taaft",
-    translations: {},
-    seo: {}
-  }
+    itemType: "taaft"
+  } as NewTaaft;
 }
