@@ -1,6 +1,7 @@
 import { TranslationContent } from "@/db/schema/types";
 import { localeNames, SupportedLangs } from "@/i18n/types";
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory, SchemaType } from "@google/generative-ai";
+import { defaultSafetySettings } from "./gemini/config";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY';
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -32,24 +33,7 @@ async function translateByGemini({ json: text, targetLanguages }: TranslationOpt
       required: targetLanguages,
     }
   }, 
-  safetySettings: [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    }
-  ]
+  safetySettings: defaultSafetySettings
 });
 
   const languageList = targetLanguages.map(lang => `${localeNames[lang]}(${lang})`).join(', ');
