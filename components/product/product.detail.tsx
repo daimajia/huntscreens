@@ -40,7 +40,7 @@ async function getBreadcrumbCategoryItems<T extends ProductTypes>(
 ): Promise<BreadcrumbItem[]> {
   let breadcrumbItems: BreadcrumbItem[] = [
     { name: t('Home'), href: "/" },
-    { name: t('AllCategories'), href: "/categories" }
+    { name: t('AllCategories'), href: "/category/just-launched" }
   ];
 
   try {
