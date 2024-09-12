@@ -12,7 +12,7 @@ export default function CategoryLayout({
       <main className="flex flex-col w-full max-w-[1480px] mx-auto mt-5">
         <div className="flex flex-col md:flex-row w-full h-full">
           <div className="hidden md:flex flex-col w-[300px] md:fixed z-0 h-[calc(100vh-70px-20px)]">
-            <div className="py-5 font-bold text-lg uppercase">
+            <div className="px-4 py-5 font-bold text-lg uppercase">
               Categories
             </div>
             <CategoryList />

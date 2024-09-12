@@ -13,7 +13,7 @@ export default function CategoryList({ onClick }: CategoryListProps) {
   const locale = useLocale() as SupportedLangs;
   const pathname = usePathname();
   return (
-    <ScrollArea className="flex-grow overflow-y-auto no-scrollbar">
+    <ScrollArea className="flex-grow overflow-y-auto no-scrollbar px-4">
       <div className="pb-10 flex flex-col">
         {categoriesData.map((category, index) => {
           const isActive = pathname.includes(`/category/${category.slug}`);
