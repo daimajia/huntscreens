@@ -27,7 +27,8 @@
       "error": "Terjadi kesalahan saat mencoba berlangganan. Silakan coba lagi.",
       "cancel": "Batal",
       "unsubscribing": "Sedang berhenti berlangganan..."
-    }
+    },
+    "view-more": "Lihat Lebih Banyak"
   },
   "Showcase": {
     "Alternatives": "Alternatif {name}",

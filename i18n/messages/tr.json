@@ -27,7 +27,8 @@
       "error": "Abone olmaya çalışırken bir hata oluştu. Lütfen tekrar deneyin.",
       "cancel": "İptal",
       "unsubscribing": "Abonelikten çıkılıyor..."
-    }
+    },
+    "view-more": "Daha Fazla Göster"
   },
   "Showcase": {
     "Alternatives": "{name} Alternatifleri",

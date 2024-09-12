@@ -27,7 +27,8 @@
       "error": "Ocorreu um erro ao tentar se inscrever. Por favor, tente novamente.",
       "cancel": "Cancelar",
       "unsubscribing": "Cancelando inscrição..."
-    }
+    },
+    "view-more": "Ver mais"
   },
   "Showcase": {
     "Alternatives": "Alternativas ao {name}",

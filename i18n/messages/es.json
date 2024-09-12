@@ -27,7 +27,8 @@
       "error": "Ocurrió un error al intentar suscribirse. Por favor, inténtalo de nuevo.",
       "cancel": "Cancelar",
       "unsubscribing": "Cancelando suscripción..."
-    }
+    },
+    "view-more": "Ver más"
   },
   "Showcase": {
     "Alternatives": "Alternativas a {name}",

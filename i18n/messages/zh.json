@@ -27,7 +27,8 @@
       "error": "尝试订阅时发生错误。请重试。",
       "cancel": "取消",
       "unsubscribing": "正在取消订阅..."
-    }
+    },
+    "view-more": "查看更多"
   },
   "Showcase": {
     "Alternatives": "{name} 的替代品",
