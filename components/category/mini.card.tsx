@@ -2,6 +2,7 @@
 import { Link } from "@/i18n/routing";
 import { SupportedLangs } from "@/i18n/types";
 import { JustLaunchedProduct, urlMapper } from "@/types/product.types";
+import MiniImageLoader from "../ui-custom/mini.image.loader";
 
 const MiniCard = ({ product, locale }: { product: JustLaunchedProduct, locale?: SupportedLangs }) => {
   const tagline = product.translations[locale ?? "en"]?.tagline ?? product.tagline;
@@ -9,11 +10,12 @@ const MiniCard = ({ product, locale }: { product: JustLaunchedProduct, locale?: 
     <Link href={urlMapper[product.item_type](product.id)} className="block">
       <div className="flex flex-col bg-white border border-gray-200 hover:border-gray-500/40 dark:hover:border-white/50 dark:border-gray-700 h-full dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="relative h-48">
-          <img
-            className="w-full object-cover object-center h-48"
+          <MiniImageLoader
+            key={product.uuid}
             src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/cdn-cgi/image/width=800,height=500,fit=cover,gravity=0x0,format=webp/${product.uuid}.webp`}
             alt={product.name}
-            loading="lazy"
+            className="w-full object-cover object-center h-48"
+            errorClassName="bg-gray-100 dark:bg-gray-800 h-48"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
           <img
