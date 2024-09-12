@@ -98,8 +98,8 @@ export default async function MainCategoryPage({ params, searchParams }: {
           </div>
         )
       }
-      <div className="p-4">
-        <Footer />
+      <div>
+        <Footer className="md:px-7" />
       </div>
     </div>
   </Suspense>
