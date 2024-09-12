@@ -80,7 +80,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   const breadcrumbItems = await getBreadcrumbCategoryItems(product, currentLang, t);
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-900">
+    <div className="bg-gray-100 dark:bg-black">
       <div className="flex-col max-w-7xl mx-auto gap-5">
         <div className="flex flex-row gap-5 px-5 md:px-10 pt-5 md:pt-10">
           <SiteBreadcrumbGenerator items={breadcrumbItems} />

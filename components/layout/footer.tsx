@@ -1,11 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
-export default function Footer() {
+type FooterProps = {
+  className?: string;
+}
+
+export default function Footer({ className }: FooterProps) {
   const t = useTranslations("Home");
   return (
-    <footer className="bg-white rounded-lg dark:bg-gray-900 mt-10">
-      <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+    <footer className={`rounded-lg mt-10 ${className}`}>
+      <div className="w-full mx-auto md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className=" flex flex-col gap-2">
             <a href="/" className="flex items-center mb-4 sm:mb-0">
@@ -18,9 +22,9 @@ export default function Footer() {
                 {t('description')}
             </span>
             <div className="mt-5">
-              <a href="https://www.producthunt.com/posts/huntscreens?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-huntscreens" target="_blank" rel="noopener noreferrer">
+              <Link href="https://www.producthunt.com/posts/huntscreens?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-huntscreens" target="_blank" rel="noopener noreferrer">
                 <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=478742&theme=light" alt="HuntScreens - Visually&#0032;Discover&#0032;Latest&#0032;Products&#0032;and&#0032;Startups&#0046; | Product Hunt" style={{ width: '250px', height: '54px' }} width="250" height="54" />
-              </a>
+              </Link>
             </div>
           </div>
           <div className="flex gap-20">

@@ -10,7 +10,7 @@ export default function ShowcaseLayout({
     <>
       <Header />
       {children}
-      <Footer />
+      <Footer className="max-w-7xl mx-auto"/>
     </>
   );
 }
