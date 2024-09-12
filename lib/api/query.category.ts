@@ -1,6 +1,38 @@
 import { db } from "@/db/db";
 import { allProducts } from "@/db/schema";
+import { SupportedLangs } from "@/i18n/types";
 import { sql } from "drizzle-orm";
+import { cache } from "react";
+
+interface SubCategory {
+  slug: string;
+  translations: Record<SupportedLangs, string>[];
+}
+export const revalidate = 3600;
+
+export const getSubCategories = cache(async (maincategorySlug: string): Promise<SubCategory[]> => {
+  const result = await db.execute(sql<{
+    slug: string;
+    translations: Record<SupportedLangs, string>[];
+  }>`
+    SELECT
+      cats->'subcategory'->>'slug' as slug,
+      JSON_AGG(cats->'subcategory'->'translations') as translations
+    FROM (
+      SELECT categories as cats
+      FROM just_launched_products
+      WHERE categories -> 'maincategory' ->> 'slug' = ${maincategorySlug}
+    ) as subquery
+    GROUP BY cats->'subcategory'->>'slug'
+  `);
+  const ret = result.map(row => {
+    return {
+      slug: row.slug as string,
+      translations: row.translations as Record<SupportedLangs, string>[]
+    }
+  });
+  return ret;
+})
 
 export const getTopicProducts = async (topic: string, page: number, pageSize: number) => {
   let t = decodeURIComponent(topic);
@@ -52,6 +84,8 @@ export const getCategoryProducts = async (mainslug: string, page: number, pageSi
   return {
     products,
     totalCount,
-    totalPages: Math.ceil(totalCount / pageSize)
+    totalPages: Math.ceil(totalCount / pageSize),
+    mainslug,
+    subSlug
   }
 }

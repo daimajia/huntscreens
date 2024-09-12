@@ -1,5 +1,14 @@
 import { SupportedLangs } from "@/i18n/types";
 
+
+export type PredefinedCategory = {
+  maincategory: {
+    [key: string]: string;
+  };
+  slug: string;
+  emoji: string;
+}
+
 /**
  * AIProductInfoForCategorization is a type that represents the product information for categorization.
  * It is used to query the AI for product categorization.
