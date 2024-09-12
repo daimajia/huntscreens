@@ -9,7 +9,7 @@ import { SupportedLangs } from "@/i18n/types";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon } from "lucide-react";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Footer from "@/components/layout/footer";
 import redis from "@/db/redis";
 
@@ -27,7 +27,8 @@ type IndexDataPack = {
   subSlug: string | undefined;
 }
 
-const CategorySection = ({ predefinedCategory, products, locale }: CategorySectionProps) => {
+const CategorySection = async ({ predefinedCategory, products, locale }: CategorySectionProps) => {
+  const t = await getTranslations('Home');
   if (!predefinedCategory) return null;
   return (
     <div>
@@ -51,7 +52,7 @@ const CategorySection = ({ predefinedCategory, products, locale }: CategorySecti
       <div className="flex justify-center mt-8">
         <Link href={`/category/${predefinedCategory.slug}`}>
           <Button size="lg" variant="outline" className="px-20">
-            View More <ChevronRightIcon className="ml-2 w-4 h-4" />
+            {t('view-more')} <ChevronRightIcon className="ml-2 w-4 h-4" />
           </Button>
         </Link>
       </div>
@@ -70,8 +71,13 @@ const getBulkCategoryProducts = async (maincategory_slugs: string[]): Promise<In
     console.error(e);
   }
 
-  products = await Promise.all(maincategory_slugs.map(slug => getCategoryProducts(slug, 1, 8)));
-  await redis.set('index:datapack', JSON.stringify(products), 'EX', 60 * 60 * 2);
+  products = await Promise.all(maincategory_slugs.map(slug => {
+    if (slug === 'just-launched') {
+      return getCategoryProducts(slug, 1, 8);
+    }
+    return getCategoryProducts(slug, 1, 4);
+  }));
+  await redis.set('index:datapack', JSON.stringify(products), 'EX', 60 * 60 * 15);
   return products as unknown as IndexDataPack[];
 }
 
