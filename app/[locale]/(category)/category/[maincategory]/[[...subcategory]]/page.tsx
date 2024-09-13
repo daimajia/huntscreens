@@ -10,18 +10,39 @@ import { JustLaunchedProduct } from "@/types/product.types";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import { getCachedSEOFromPath } from "@/db/redis/cache";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params, searchParams }:  {
+  params: { maincategory: string, subcategory: string[] },
+  searchParams: { page?: string }
+}): Promise<Metadata> {
+  const locale = await getLocale() as SupportedLangs;
+  const mainCategory = params.maincategory;
+  const subCategories = params.subcategory?.length > 0 ? params.subcategory[0] : undefined;
+
+  const seoContent = subCategories ?
+    await getCachedSEOFromPath(locale, mainCategory, subCategories) :
+    await getCachedSEOFromPath(locale, mainCategory);
+
+  return {
+    title: seoContent.title,
+    description: seoContent.description,
+    keywords: seoContent.keywords.join(',')
+  };
+}
 
 export default async function MainCategoryPage({ params, searchParams }: {
   params: { maincategory: string, subcategory: string[] },
   searchParams: { page?: string }
 }) {
   const t = await getTranslations("Categories");
+  const locale = await getLocale() as SupportedLangs;
   const mainCategory = params.maincategory;
   const subCategories = params.subcategory?.length > 0 ? params.subcategory[0] : undefined;
   const page = parseInt(searchParams.page || '1');
   const { products, totalCount, totalPages } = await getCategoryProducts(mainCategory, page, 30, subCategories);
   const categoryData = products.length > 0 ? products[0].categories : undefined;
-  const locale = await getLocale() as SupportedLangs;
   const nextlink = subCategories ? `/category/${mainCategory}/${subCategories}?page=${page + 1}` : `/category/${mainCategory}?page=${page + 1}`;
   const prevlink = subCategories ? `/category/${mainCategory}/${subCategories}?page=${page - 1}` : `/category/${mainCategory}?page=${page - 1}`;
 

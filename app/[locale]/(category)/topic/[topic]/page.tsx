@@ -9,6 +9,22 @@ import Footer from "@/components/layout/footer";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import { Metadata } from "next";
+import { getCachedSEOFromPath } from "@/db/redis/cache";
+
+export async function generateMetadata({ params, searchParams }:  {
+  params: { topic: string },
+  searchParams: { page?: string }
+}): Promise<Metadata> {
+  const locale = await getLocale() as SupportedLangs;
+  const topic = params.topic;
+  const seoContent = await getCachedSEOFromPath(locale, topic, true);
+  return {
+    title: seoContent.title,
+    description: seoContent.description,
+    keywords: seoContent.keywords.join(',')
+  };
+}
 
 export default async function TopicPage({ params, searchParams }: { params: { topic: string }, searchParams: { page?: string } }) {
   const page = parseInt(searchParams.page || '1');
