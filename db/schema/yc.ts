@@ -3,10 +3,10 @@ import { YCSortBy, YCStatus } from "@/types/yc.types";
 import { sql, eq, SQL, and, gte } from "drizzle-orm";
 import { boolean, date, index, integer, jsonb, pgTable, pgView, QueryBuilder, serial, text, uuid } from "drizzle-orm/pg-core";
 import { SEOContent, TranslationContent } from "./types";
+import { Category } from "@/lib/ai/types";
 
 export type YC  = typeof yc.$inferSelect;
-
-export type YCJson = Omit<YC, "id" | "uuid" | "webp">;
+export type NewYC = typeof yc.$inferInsert;
 
 export const yc = pgTable('yc', {
   id: serial('id').primaryKey(),
@@ -35,7 +35,9 @@ export const yc = pgTable('yc', {
   uuid: uuid('uuid').defaultRandom().notNull(),
   webp: boolean('webp').default(false),
   translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`),
-  seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`)
+  seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`),
+  categories: jsonb('categories').$type<Category>().default(sql`'{}'::jsonb`),
+  isai: boolean('isai').default(false)
 }, (table) => {
   return {
     ycuuidIndex: index('yc_uuid_idx').on(table.uuid),

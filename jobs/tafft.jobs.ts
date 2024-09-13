@@ -6,6 +6,7 @@ import { client } from "@/trigger";
 import { eventTrigger, intervalTrigger } from "@trigger.dev/sdk";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import triggerCommonJobs from "./utils";
 
 const chromeRunLimitation = client.defineConcurrencyLimit({
   id: `chrome-limit`,
@@ -50,14 +51,8 @@ client.defineJob({
       await io.logger.info('Screenshot successfully:', { payload });
       await db.update(taaft).set({webp: true}).where(eq(taaft.uuid, payload.uuid));
 
-      await io.sendEvent(`create embedding for ${payload.website}`, {
-        name: "create.embedding.by.type",
-        payload: {
-          productType: "taaft",
-          uuid: payload.uuid,
-        }
-      });
-      
+      await triggerCommonJobs(io, payload.uuid, "taaft");
+
     }else{
       await io.logger.error('got screenshot error', result);
     }

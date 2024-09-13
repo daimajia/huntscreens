@@ -9,3 +9,8 @@ export type SEOContent = {
   description: string,
   keywords: string[],
 }
+
+export interface PathSegment {
+  slug_type: string;
+  slug: string;
+}

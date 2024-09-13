@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { yc } from "@/db/schema";
 import { getScreenshotOneParams, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
 import { fethcYCLatestCompanies } from "@/lib/yc";
+import triggerCommonJobs from "./utils";
 
 client.defineJob({
   id: "Schedule YC Latest Portfolio",
@@ -100,13 +101,7 @@ client.defineJob({
       if(result.store.location) {
         await db.update(yc).set({webp: true}).where(eq(yc.id, payload.id));
 
-        await io.sendEvent(`create embedding for ${company.website}`, {
-          name: "create.embedding.by.type",
-          payload: {
-            productType: "yc",
-            uuid: company.uuid,
-          }
-        })
+        await triggerCommonJobs(io, company.uuid, "yc");
 
         return {
           payload: payload,

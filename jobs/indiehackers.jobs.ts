@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { indiehackers } from "@/db/schema";
 import { getScreenshotOneParams, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
 import { getIndiehackersProducts } from "@/lib/indiehackers";
+import triggerCommonJobs from "./utils";
 
 client.defineJob({
   id: "Schedule Indiehackers Latest products",
@@ -75,13 +76,7 @@ client.defineJob({
     if(result.store.location) {
       await db.update(indiehackers).set({webp: true}).where(eq(indiehackers.uuid, payload.uuid));
 
-      await io.sendEvent(`create embedding for ${payload.website}`, {
-        name: "create.embedding.by.type",
-        payload: {
-          productType: "indiehackers",
-          uuid: payload.uuid,
-        }
-      });
+      await triggerCommonJobs(io, payload.uuid, "indiehackers");
 
       return {
         payload: payload,

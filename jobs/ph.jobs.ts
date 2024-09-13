@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
 import { getScreenshotOneParams, getUsage, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
+import triggerCommonJobs from "./utils";
 
 const producthuntConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ph-limit`,
@@ -95,13 +96,7 @@ client.defineJob({
       await io.logger.info('Screenshot successfully:', { payload });
       await db.update(producthunt).set({webp: true}).where(eq(producthunt.uuid, payload.uuid));
       
-      await io.sendEvent(`create embedding for ${payload.url}`, {
-        name: "create.embedding.by.type",
-        payload: {
-          productType: "ph",
-          uuid: payload.uuid,
-        }
-      });
+      await triggerCommonJobs(io, payload.uuid, "ph");
 
     }else{
       await io.logger.error('got screenshot error', result);

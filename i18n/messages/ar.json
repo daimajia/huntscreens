@@ -12,6 +12,7 @@
     "just-launched": "أطلق للتو",
     "favorites": "المفضلة",
     "signout": "تسجيل الخروج",
+    "categories": "الفئات",
     "subscribe": {
       "receive": "استلام التحديثات اليومية",
       "unsubscribe": "إلغاء الاشتراك",
@@ -27,7 +28,8 @@
       "error": "حدث خطأ أثناء محاولة الاشتراك. يرجى المحاولة مرة أخرى.",
       "cancel": "إلغاء",
       "unsubscribing": "جاري إلغاء الاشتراك..."
-    }
+    },
+    "view-more": "عرض المزيد"
   },
   "Showcase": {
     "Alternatives": "بدائل {name}",
@@ -60,5 +62,30 @@
     "NoResults": "لم يتم العثور على نتائج.",
     "TryDifferentKeywords": "حاول البحث باستخدام كلمات مفتاحية مختلفة.",
     "SearchResultsFor": "نتائج البحث عن {query}"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "منتجات تقنية تم إطلاقها",
+      "prefix": "في الأسبوع الماضي",
+      "full": "المنتجات التقنية التي تم إطلاقها في الأسبوع الماضي"
+    },
+    "Topic": {
+      "relatedProducts": "المنتجات المتعلقة بـ {topic}"
+    },
+    "LatestProducts": {
+      "prefix": "أحدث",
+      "suffix": "المنتجات",
+      "full": "أحدث منتجات {category}"
+    },
+    "TotalProducts": "{count} منتج",
+    "ProductCount": "منتجات",
+    "PageInfo": "الصفحة {current} من {total}",
+    "PreviousPage": "الصفحة السابقة",
+    "NextPage": "الصفحة التالية",
+    "NoProducts": {
+      "title": "لم يتم العثور على منتجات",
+      "description": "عذرًا، لم نتمكن من العثور على أي منتجات في هذه الفئة في الوقت الحالي.",
+      "backToHome": "العودة إلى الصفحة الرئيسية"
+    }
   }
 }

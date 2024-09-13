@@ -12,6 +12,7 @@
     "just-launched": "刚刚发布",
     "favorites": "我的收藏",
     "signout": "退出登录",
+    "categories": "分类",
     "subscribe": {
       "receive": "接收每日更新",
       "unsubscribe": "取消订阅",
@@ -27,13 +28,16 @@
       "error": "尝试订阅时发生错误。请重试。",
       "cancel": "取消",
       "unsubscribing": "正在取消订阅..."
-    }
+    },
+    "view-more": "查看更多"
   },
   "Showcase": {
-    "Alternatives": "{name}的替代品",
+    "Alternatives": "{name} 的替代品",
     "WeeklyTop": "每周十大热门产品",
-    "MoreAbout": "更多关于{name}的信息",
-    "VisitWebsite": "访问网站"
+    "MoreAbout": "更多关于 {name} 的信息",
+    "VisitWebsite": "访问网站",
+    "AllCategories": "所有类别",
+    "Home": "首页"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +62,30 @@
     "NoResults": "未找到结果。",
     "TryDifferentKeywords": "请尝试使用不同的关键词搜索。",
     "SearchResultsFor": "{query} 的搜索结果"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "发布的科技产品",
+      "prefix": "过去一周",
+      "full": "过去一周发布的科技产品"
+    },
+    "Topic": {
+      "relatedProducts": "{topic} 相关产品"
+    },
+    "LatestProducts": {
+      "prefix": "最新",
+      "suffix": "产品",
+      "full": "最新 {category} 产品"
+    },
+    "TotalProducts": "{count} 个产品",
+    "ProductCount": "产品",
+    "PageInfo": "第 {current} 页，共 {total} 页",
+    "PreviousPage": "上一页",
+    "NextPage": "下一页",
+    "NoProducts": {
+      "title": "未找到产品",
+      "description": "抱歉，目前在此类别中找不到任何产品。",
+      "backToHome": "返回首页"
+    }
   }
 }

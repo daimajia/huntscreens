@@ -12,6 +12,7 @@
     "just-launched": "Baru Diluncurkan",
     "favorites": "Favorit Saya",
     "signout": "Keluar",
+    "categories": "Kategori",
     "subscribe": {
       "receive": "Terima Pembaruan Harian",
       "unsubscribe": "Berhenti Berlangganan",
@@ -27,13 +28,16 @@
       "error": "Terjadi kesalahan saat mencoba berlangganan. Silakan coba lagi.",
       "cancel": "Batal",
       "unsubscribing": "Sedang berhenti berlangganan..."
-    }
+    },
+    "view-more": "Lihat Lebih Banyak"
   },
   "Showcase": {
     "Alternatives": "Alternatif {name}",
     "WeeklyTop": "10 Produk Teratas Mingguan",
     "MoreAbout": "Lebih Lanjut Tentang {name}",
-    "VisitWebsite": "Kunjungi Situs Web"
+    "VisitWebsite": "Kunjungi Situs Web",
+    "AllCategories": "Semua Kategori",
+    "Home": "Beranda"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +62,30 @@
     "NoResults": "Tidak ada hasil ditemukan.",
     "TryDifferentKeywords": "Coba cari dengan kata kunci yang berbeda.",
     "SearchResultsFor": "Hasil Pencarian untuk {query}"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "produk teknologi diluncurkan",
+      "prefix": "Dalam seminggu terakhir",
+      "full": "Produk teknologi yang diluncurkan dalam seminggu terakhir"
+    },
+    "Topic": {
+      "relatedProducts": "Produk terkait {topic}"
+    },
+    "LatestProducts": {
+      "prefix": "Produk",
+      "suffix": "terbaru",
+      "full": "Produk {category} terbaru"
+    },
+    "TotalProducts": "{count} Produk",
+    "ProductCount": "produk",
+    "PageInfo": "Halaman {current} dari {total}",
+    "PreviousPage": "Halaman Sebelumnya",
+    "NextPage": "Halaman Berikutnya",
+    "NoProducts": {
+      "title": "Tidak ada produk ditemukan",
+      "description": "Maaf, kami tidak dapat menemukan produk apa pun dalam kategori ini saat ini.",
+      "backToHome": "Kembali ke Beranda"
+    }
   }
 }

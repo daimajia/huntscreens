@@ -59,7 +59,7 @@ export default async function WeeklyTop() {
   const weeklyTops = await getWeeklyTop();
   const t = await getTranslations('Showcase');
   return <div>
-    <h1 className="text-2xl font-bold mb-5">{t("WeeklyTop")}</h1>
+    <h2 className="text-2xl font-bold mb-5">{t("WeeklyTop")}</h2>
     <ul className="flex flex-col gap-5">
       {weeklyTops.map((weeklyTop) => (
         <li key={weeklyTop.id}>
