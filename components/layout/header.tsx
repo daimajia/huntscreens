@@ -9,6 +9,7 @@ import LanguageDropdown from "../ui-custom/language.dropdown";
 import { Link } from "@/i18n/routing";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import CategorySheet from "./category.sheet";
+import { cn } from "@/lib/utils";
 
 type HeaderProps = {
   className?: string;
@@ -27,7 +28,7 @@ export default async function Header({ className }: HeaderProps) {
   }
 
   return <>
-    <div className={` h-[70px] grid grid-cols-2 justify-between items-center px-4 md:px-10  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background ${className}`}>
+    <div className={cn(`h-[70px] px-4 grid grid-cols-2 justify-between items-center  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background`, className)}>
 
       <div className="flex flex-row gap-4 items-center">
         <div className="bg-dark-logo flex pb-1">
