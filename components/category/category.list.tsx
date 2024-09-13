@@ -22,9 +22,11 @@ export default function CategoryList({ onClick }: CategoryListProps) {
               <div className={`flex items-center justify-between py-2 pl-2 rounded-md transition-colors duration-200 ${isActive ? 'bg-gray-200 dark:bg-gray-600' : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}>
                 <div className="flex items-center">
-                  <span className="mr-3 text-lg">{category.emoji}</span>
-                  <span className={`text-sm ${isActive ? 'font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300'
-                    }`}>{category.maincategory[locale]}</span>
+                  <h3>
+                    <span className="mr-3 text-lg">{category.emoji}</span>
+                    <span className={`text-sm ${isActive ? 'font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300'
+                      }`}>{category.maincategory[locale]}</span>
+                  </h3>
                 </div>
                 {/* <span className="text-xs text-gray-500 dark:text-gray-400 mr-2">23</span> */}
               </div>

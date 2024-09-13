@@ -4,7 +4,7 @@ import Footer from "@/components/layout/footer";
 import MiniCardLoading from "@/components/ui-custom/skeleton/minicard.loading";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
-import { SupportedLangs } from "@/i18n/types";
+import { locales, SupportedLangs } from "@/i18n/types";
 import { getCategoryProducts } from "@/lib/api/query.category";
 import { JustLaunchedProduct } from "@/types/product.types";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
@@ -25,10 +25,26 @@ export async function generateMetadata({ params, searchParams }:  {
     await getCachedSEOFromPath(locale, mainCategory, subCategories) :
     await getCachedSEOFromPath(locale, mainCategory);
 
+  const alternateLanguages: Record<string, string> = {};
+  locales.forEach(lang => {
+    alternateLanguages[lang] = `/${lang}/category/${mainCategory}/${subCategories ? subCategories : ''}`;
+  });
+  
+
   return {
+    metadataBase: new URL("https://huntscreens.com"),
     title: seoContent.title,
     description: seoContent.description,
-    keywords: seoContent.keywords.join(',')
+    keywords: seoContent.keywords.join(','),
+    openGraph: {
+      locale: locale,
+      title: seoContent.title,
+      description: seoContent.description,
+    },
+    alternates: {
+      canonical: `/${locale}/category/${mainCategory}/${subCategories ? subCategories : ''}`,
+      languages: alternateLanguages,
+    },
   };
 }
 

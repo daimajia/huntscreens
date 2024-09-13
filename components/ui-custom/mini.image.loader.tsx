@@ -53,7 +53,7 @@ export default function MiniImageLoader({
           alt={alt || ""}
           loading="lazy"
           className={cn(
-            "w-full h-full object-cover border rounded-lg",
+            "w-full h-full object-cover rounded-t-lg",
             className
           )}
         />

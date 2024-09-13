@@ -4,8 +4,12 @@ import { SupportedLangs } from "@/i18n/types";
 import { JustLaunchedProduct, urlMapper } from "@/types/product.types";
 import MiniImageLoader from "../ui-custom/mini.image.loader";
 
-const MiniCard = ({ product, locale }: { product: JustLaunchedProduct, locale?: SupportedLangs }) => {
+const MiniCard = ({ product, locale, isMainContent = true }: { product: JustLaunchedProduct, locale?: SupportedLangs, isMainContent?: boolean }) => {
   const tagline = product.translations[locale ?? "en"]?.tagline ?? product.tagline;
+  
+  const TitleTag = isMainContent ? 'h2' : 'h3';
+  const SubtitleTag = isMainContent ? 'h3' : 'p';
+
   return (
     <Link href={urlMapper[product.item_type](product.id)} className="block">
       <div className="flex flex-col bg-white border border-gray-200 hover:border-gray-500/40 dark:hover:border-white/50 dark:border-gray-700 h-full dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
@@ -26,8 +30,8 @@ const MiniCard = ({ product, locale }: { product: JustLaunchedProduct, locale?: 
           />
         </div>
         <div className="p-4 flex flex-col h-full">
-          <h3 className="font-bold text-base dark:text-gray-100 truncate">{product.name}</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mt-1 mb-3">{tagline}</p>
+          <TitleTag className="font-bold text-base dark:text-gray-100 truncate">{product.name}</TitleTag>
+          <SubtitleTag className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mt-1 mb-3">{tagline}</SubtitleTag>
           <div className="mt-auto flex justify-end">
             {product.categories?.topics?.[0] && (
               <span className="inline-block px-2 py-0.5 text-xs font-medium text-gray-500 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">

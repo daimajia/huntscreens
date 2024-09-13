@@ -46,7 +46,7 @@ async function getBreadcrumbCategoryItems<T extends ProductTypes>(
   try {
     if (product && product.categories?.maincategory) {
       breadcrumbItems.push({ name: product.categories.maincategory.translations[currentLang], href: `/category/${product.categories.maincategory.slug}` });
-      if(product.categories?.subcategory){
+      if (product.categories?.subcategory) {
         breadcrumbItems.push({ name: product.categories.subcategory.translations[currentLang], href: `/category/${product.categories.maincategory.slug}/${product.categories.subcategory.slug}` });
       }
     }
@@ -97,11 +97,15 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                 <div className="flex flex-col w-full justify-between">
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex flex-row items-center justify-between gap-4">
-                      <Link href={product.website || ""} target="_blank">
-                        <h1 className="text-3xl md:text-5xl font-bold break-words hover:underline">
+                      <h1 className="text-3xl md:text-5xl font-bold break-words flex flex-col gap-2">
+                        <Link href={product.website || ""} className="hover:underline" target="_blank">
                           {product.name}
-                        </h1>
-                      </Link>
+                        </Link>
+                        <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                          {translatedContent?.tagline || product.tagline}
+                        </span>
+                      </h1>
+
                       <Link href={product.website || ""} target="_blank">
                         <Button variant={"outline"} className="hidden md:flex bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
                           {t('VisitWebsite')}
@@ -109,17 +113,15 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                         </Button>
                       </Link>
                     </div>
-                    <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                      {translatedContent?.tagline || product.tagline}
-                    </h2>
+
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-600 dark:text-gray-400">
                   {stripMarkdown(translatedContent?.description || product.description || '')}
-                </h3>
+                </p>
               </div>
 
               <div className="flex w-full flex-row flex-wrap justify-end gap-3">

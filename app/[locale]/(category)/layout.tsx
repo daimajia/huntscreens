@@ -13,7 +13,7 @@ export default function CategoryLayout({
         <div className="flex flex-col md:flex-row w-full h-full">
           <div className="hidden md:flex flex-col w-[300px] md:fixed z-0 h-[calc(100vh-70px-20px)]">
             <div className="px-4 py-5 font-bold text-lg uppercase">
-              Categories
+              <h2>Categories</h2>
             </div>
             <CategoryList />
           </div>

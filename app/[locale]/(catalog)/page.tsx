@@ -33,19 +33,19 @@ const CategorySection = async ({ predefinedCategory, products, locale }: Categor
   return (
     <div>
       <Link href={`/category/${predefinedCategory.slug}`}>
-        <h1 className="text-3xl font-bold mb-5 inline-block hover:underline">
+        <h2 className="text-3xl font-bold mb-5 inline-block hover:underline">
           <span className="relative inline-block mx-2">
             <span className="absolute inset-0 bg-orange-500/80 transform -skew-y-2" />
             <span className="relative z-10 inline-block px-5 py-1 text-white font-bold">
               {predefinedCategory.emoji} {predefinedCategory.maincategory[locale]}
             </span>
           </span>
-        </h1>
+        </h2>
       </Link>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
-          <MiniCard key={product.uuid} product={product} locale={locale} />
+          <MiniCard key={product.uuid} product={product} locale={locale} isMainContent={false} />
         ))}
       </div>
 

@@ -30,17 +30,6 @@ export default function Footer({ className }: FooterProps) {
           <div className="flex flex-col sm:flex-row gap-8 sm:gap-20">
             <ul className="flex flex-col items-start text-sm font-medium text-gray-500 dark:text-gray-400 gap-4">
               <li>
-                <a rel="noopener" href="/" className="hover:underline mb-2">ProductHunt</a>
-              </li>
-              <li>
-                <a rel="noopener" href="/indiehackers" className="hover:underline mb-2">IndieHackers</a>
-              </li>
-              <li>
-                <a rel="noopener" href="/startup/yc" className="hover:underline">Y Combinator</a>
-              </li>
-            </ul>
-            <ul className="flex flex-col items-start text-sm font-medium text-gray-500 dark:text-gray-400 gap-4">
-              <li>
                 <a rel="noopener" href="https://www.producthunt.com/products/huntscreens" target="_blank" className="hover:underline mb-2">About</a>
               </li>
               <li>

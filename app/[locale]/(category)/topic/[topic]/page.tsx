@@ -4,7 +4,7 @@ import { getTopicProducts } from "@/lib/api/query.category";
 import MiniCard from "@/components/category/mini.card";
 import { JustLaunchedProduct } from "@/types/product.types";
 import { getLocale, getTranslations } from "next-intl/server";
-import { SupportedLangs } from "@/i18n/types";
+import { locales, SupportedLangs } from "@/i18n/types";
 import Footer from "@/components/layout/footer";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
@@ -19,10 +19,22 @@ export async function generateMetadata({ params, searchParams }:  {
   const locale = await getLocale() as SupportedLangs;
   const topic = params.topic;
   const seoContent = await getCachedSEOFromPath(locale, topic, true);
+  const alternateLanguages: Record<string, string> = {};
+  locales.forEach(lang => {
+    alternateLanguages[lang] = `/${lang}/topic/${topic}?page=${searchParams.page || '1'}`;
+  });
   return {
+    metadataBase: new URL("https://huntscreens.com"),
     title: seoContent.title,
     description: seoContent.description,
-    keywords: seoContent.keywords.join(',')
+    keywords: seoContent.keywords.join(','),
+    openGraph: {
+      locale: locale
+    },
+    alternates: {
+      canonical: `${locale}/topic/${topic}`,
+      languages: alternateLanguages,
+    },
   };
 }
 
