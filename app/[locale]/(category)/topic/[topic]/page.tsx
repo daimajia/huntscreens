@@ -12,7 +12,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Metadata } from "next";
 import { getCachedSEOFromPath } from "@/db/redis/cache";
 
-export async function generateMetadata({ params, searchParams }:  {
+export async function generateMetadata({ params, searchParams }: {
   params: { topic: string },
   searchParams: { page?: string }
 }): Promise<Metadata> {
@@ -60,7 +60,7 @@ export default async function TopicPage({ params, searchParams }: { params: { to
         <Suspense fallback={<MiniCardLoading />}>
           <div className="min-w-full max-h-full">
             <div className="max-w-6xl mx-auto p-4">
-              <div className="flex flex-row justify-between items-center mb-5">
+              <div className="flex flex-col md:flex-row justify-between items-center mb-5 gap-2 md:gap-0">
                 <h1 className="text-2xl font-bold">
                   {t('Topic.relatedProducts', { topic: topic?.translations?.[locale] || params.topic })}
                 </h1>
@@ -68,7 +68,7 @@ export default async function TopicPage({ params, searchParams }: { params: { to
                   {t('TotalProducts', { count: totalCount })}，{t('PageInfo', { current: page, total: totalPages })}
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 py-5">
                 {
                   products.map(product => (
                     <MiniCard key={product.id} locale={locale} product={product as unknown as JustLaunchedProduct} />

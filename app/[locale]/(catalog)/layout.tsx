@@ -4,7 +4,6 @@ import SubscribeButton from '@/components/ui-custom/subscribe.button';
 import underline from "/public/underline.svg";
 import { getCurrentUser } from '@/lib/user';
 import LoomFlowsWidget from '@/components/thirdparties/loomflow';
-import SiteNav from './components/site.nav';
 import getUpdateCounts from '@/lib/api/query.updatecount';
 import { getTranslations } from 'next-intl/server';
 
