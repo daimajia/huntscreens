@@ -10,6 +10,7 @@ import { Link } from "@/i18n/routing";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import CategorySheet from "./category.sheet";
 import { cn } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 
 type HeaderProps = {
   className?: string;
@@ -27,6 +28,8 @@ export default async function Header({ className }: HeaderProps) {
     }
   }
 
+  const t = await getTranslations("Home");
+
   return <>
     <div className={cn(`h-[70px] px-4 grid grid-cols-2 justify-between items-center  sticky top-0 z-50 border-b dark:border-none  navbar bg-base-100  bg-background`, className)}>
 
@@ -43,7 +46,7 @@ export default async function Header({ className }: HeaderProps) {
             <NavigationMenuItem>
               <Link href="/category/just-launched" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                🔖 Categories
+                🔖 {t("categories")}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
