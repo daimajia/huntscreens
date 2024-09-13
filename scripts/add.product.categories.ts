@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { indiehackers, producthunt, taaft, yc } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, isNull, or } from "drizzle-orm";
 import { ProductTypes } from "@/types/product.types";
 import { categorizeProductV3 } from "@/lib/ai/gemini/category.v3";
 import { AIProductInfoForCategorization } from "@/lib/ai/types";
@@ -12,7 +12,10 @@ const REDIS_KEY_PREFIX = "categorization_failure:";
 const CONCURRENCY_LIMIT = 10;
 
 async function categorizeAndUpdateProduct(table: any, itemType: ProductTypes) {
-  const items = await db.select().from(table);
+  const items = await db.select().from(table).where(or(
+    eq(table.categories,{}), 
+    eq(table.categories, []), 
+    isNull(table.categories)));
   const limit = pLimit(10);
   let consecutiveFailures = 0;
 
