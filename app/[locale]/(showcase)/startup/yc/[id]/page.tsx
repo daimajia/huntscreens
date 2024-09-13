@@ -7,19 +7,25 @@ import ProductDetailPage from "@/components/product/product.detail";
 import { SupportedLangs } from "@/i18n/types";
 import { generateUniversalMetadata } from "@/lib/seo/metadata";
 type Props = {
-  params: { id: number, locale: SupportedLangs }
+  params: { id: string, locale: SupportedLangs }
 }
 
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  return generateUniversalMetadata(params.id, "yc", params.locale);
+  if (!Number.isInteger(Number(params.id))) {
+    return notFound();
+  }
+  return generateUniversalMetadata(Number(params.id), "yc", params.locale);
 }
 
 export default async function YCPage({ params }: Props) {
+  if (!Number.isInteger(Number(params.id))) {
+    return notFound();
+  }
   const sort = cookies().get('yc.sort')?.value || 'time';
-  const data = await query_yc(params.id, sort as YCSortBy, "All");
+  const data = await query_yc(Number(params.id), sort as YCSortBy, "All");
   if (!data.product) {
     return notFound();
   }

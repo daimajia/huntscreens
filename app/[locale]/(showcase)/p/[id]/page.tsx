@@ -14,7 +14,7 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  if (isNaN(Number(params.id)) || !Number.isInteger(Number(params.id))) {
+  if (!Number.isInteger(Number(params.id))) {
     return notFound();
   }
   return generateUniversalMetadata(Number(params.id), "ph", params.locale);
@@ -22,7 +22,7 @@ export async function generateMetadata(
 
 
 export default async function ProductDetail({ params }: Props) {
-  if (isNaN(Number(params.id)) || !Number.isInteger(Number(params.id))) {
+  if (!Number.isInteger(Number(params.id))) {
     return notFound();
   }
   const sort = cookies().get('sort')?.value || 'time';

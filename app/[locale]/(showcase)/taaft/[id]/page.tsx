@@ -8,20 +8,26 @@ import { generateUniversalMetadata } from '@/lib/seo/metadata';
 import { SupportedLangs } from '@/i18n/types';
 
 type Props = {
-  params: { id: number, locale: SupportedLangs }
+  params: { id: string, locale: SupportedLangs }
 }
 
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  return generateUniversalMetadata(params.id, "taaft", params.locale);
+  if (!Number.isInteger(Number(params.id))) {
+    return notFound();
+  }
+  return generateUniversalMetadata(Number(params.id), "taaft", params.locale);
 }
 
 
 export default async function TaaftPage({ params }: Props) {
+  if (!Number.isInteger(Number(params.id))) {
+    return notFound();
+  }
   const data = await db.query.taaft.findFirst({
-    where: eq(taaft.id, params.id)
+    where: eq(taaft.id, Number(params.id))
   });
   if (!data) {
     return notFound();
