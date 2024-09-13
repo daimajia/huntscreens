@@ -12,6 +12,7 @@
     "just-launched": "Только запущенные",
     "favorites": "Избранное",
     "signout": "Выйти",
+    "categories": "Категории",
     "subscribe": {
       "receive": "Получать ежедневные обновления",
       "unsubscribe": "Отписаться",
@@ -27,13 +28,16 @@
       "error": "При попытке подписаться произошла ошибка. Пожалуйста, попробуйте еще раз.",
       "cancel": "Отмена",
       "unsubscribing": "Отписка..."
-    }
+    },
+    "view-more": "Посмотреть больше"
   },
   "Showcase": {
     "Alternatives": "Альтернативы {name}",
     "WeeklyTop": "Топ-10 продуктов недели",
     "MoreAbout": "Подробнее о {name}",
-    "VisitWebsite": "Посетить сайт"
+    "VisitWebsite": "Посетить сайт",
+    "AllCategories": "Все категории",
+    "Home": "Главная"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +62,30 @@
     "NoResults": "Результаты не найдены.",
     "TryDifferentKeywords": "Попробуйте поискать с другими ключевыми словами.",
     "SearchResultsFor": "Результаты поиска для {query}"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "технологических продуктов запущено",
+      "prefix": "За последнюю неделю",
+      "full": "Технологические продукты, запущенные за последнюю неделю"
+    },
+    "Topic": {
+      "relatedProducts": "Продукты, связанные с {topic}"
+    },
+    "LatestProducts": {
+      "prefix": "Последние",
+      "suffix": "продукты",
+      "full": "Последние продукты в категории {category}"
+    },
+    "TotalProducts": "{count} продуктов",
+    "ProductCount": "продуктов",
+    "PageInfo": "Страница {current} из {total}",
+    "PreviousPage": "Предыдущая страница",
+    "NextPage": "Следующая страница",
+    "NoProducts": {
+      "title": "Продукты не найдены",
+      "description": "К сожалению, в данный момент в этой категории не найдено продуктов.",
+      "backToHome": "Вернуться на главную"
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { IndieHackersJson } from "@/db/schema/indiehackers";
+import { NewIndieHackers } from "@/db/schema/indiehackers";
 import algoliasearch from "algoliasearch";
 
 type RawIndieHackersJSON = {
@@ -26,7 +26,7 @@ type RawIndieHackersJSON = {
   objectID: string;
 }
 
-function convertToIndieHackerModel(raw: RawIndieHackersJSON): IndieHackersJson {
+function convertToIndieHackerModel(raw: RawIndieHackersJSON): NewIndieHackers {
   return {
     name: raw.name,
     tags: raw._tags,
@@ -44,12 +44,10 @@ function convertToIndieHackerModel(raw: RawIndieHackersJSON): IndieHackersJson {
     added_at: new Date(raw.approvedTimestamp),
     itemType: "indiehackers",
     thumb_url: raw.avatarUrl,
-    translations: {},
-    seo: {}
-  }
+  } as NewIndieHackers;
 }
 
-export async function getIndiehackersProducts(page=0): Promise<IndieHackersJson[]> {
+export async function getIndiehackersProducts(page=0): Promise<NewIndieHackers[]> {
   const client = algoliasearch("N86T1R3OWZ", "5140dac5e87f47346abbda1a34ee70c3");
   const index = client.initIndex("products");
   const results = await index.search<RawIndieHackersJSON>("", {

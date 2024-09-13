@@ -18,7 +18,7 @@ async function translateWithoutRetry(text: string, targetLanguages: SupportedLan
 }
 
 async function translateAndUpdateProduct(table: any, itemType: ProductTypes) {
-  const items = await db.select().from(table).where(eq(table.translations, {}));
+  const items = (await db.select().from(table).where(eq(table.translations, {})));
   const limit = pLimit(10); 
   let consecutiveFailures = 0;
   

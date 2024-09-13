@@ -3,6 +3,7 @@ import { differenceInHours } from "date-fns";
 import { TranslationContent } from "@/db/schema/types";
 import { SupportedLangs } from "@/i18n/types";
 import { MiniCardMetadata } from "./card.types";
+import { Category } from "@/lib/ai/types";
 
 export const productTypes = ["ph", "yc", "taaft", "indiehackers"] as const;
 export type ProductTypes = (typeof productTypes)[number];
@@ -24,9 +25,11 @@ export type JustLaunchedProduct = {
   website: string;
   thumb_url: string;
   uuid: string;
-  item_type: 'ph' | 'yc' | 'indiehackers' | 'taaft';
+  item_type: ProductTypes;
   launch_date: string;
-  translations: Record<SupportedLangs, TranslationContent>
+  translations: Record<SupportedLangs, TranslationContent>,
+  categories: Category,
+  isai: boolean
 };
 
 export type ApiReturnDataType<T extends ProductTypes> =

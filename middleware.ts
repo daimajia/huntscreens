@@ -12,6 +12,11 @@ function detectSearchEngine(userAgent: string): string | null {
     { name: 'Baiduspider', pattern: /Baiduspider/ },
     { name: 'YandexBot', pattern: /YandexBot/ },
     { name: 'DuckDuckBot', pattern: /DuckDuckBot/ },
+    { name: 'Slurp', pattern: /Slurp/ }, // Yahoo's bot
+    { name: 'Sogou', pattern: /Sogou/ },
+    { name: 'AhrefsBot', pattern: /AhrefsBot/ },
+    { name: 'SemrushBot', pattern: /SemrushBot/ },
+    { name: 'Naverbot', pattern: /Naverbot/ },
   ];
 
   for (const engine of searchEngines) {

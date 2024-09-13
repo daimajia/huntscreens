@@ -6,8 +6,7 @@ import { getCurrentUser } from '@/lib/user';
 import LoomFlowsWidget from '@/components/thirdparties/loomflow';
 import SiteNav from './components/site.nav';
 import getUpdateCounts from '@/lib/api/query.updatecount';
-import { getMessages, getTranslations } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 export const revalidate = 0;
 
@@ -22,7 +21,7 @@ export default async function Home({
   return (
     <>
       <Header />
-      <main className="flex flex-col items-center justify-between p-5 gap-10">
+      <main className="flex flex-col items-center justify-between p-5 gap-10 max-w-[1380px] mx-auto">
         <div className=' w-full flex flex-col gap-4 px-5 md:mt-5'>
           <div className='flex flex-col justify-center items-center'>
             <h1 className=' relative text-center lg:leading-[3.5rem] font-bold text-slate-800 dark:text-gray-100 text-2xl md:mt-3 md:text-5xl leading-10'>
@@ -42,7 +41,6 @@ export default async function Home({
           </div>
 
         </div>
-        <SiteNav updateCounts={updateCounts} />
         {children}
       </main>
       <LoomFlowsWidget accessToken="c1bacc70-40ad-4c40-97ac-295e6ac630f2" />

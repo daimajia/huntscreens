@@ -12,6 +12,7 @@
     "just-launched": "Recién lanzados",
     "favorites": "Mis favoritos",
     "signout": "Cerrar sesión",
+    "categories": "Categorías",
     "subscribe": {
       "receive": "Recibir actualizaciones diarias",
       "unsubscribe": "Cancelar suscripción",
@@ -27,13 +28,16 @@
       "error": "Ocurrió un error al intentar suscribirse. Por favor, inténtalo de nuevo.",
       "cancel": "Cancelar",
       "unsubscribing": "Cancelando suscripción..."
-    }
+    },
+    "view-more": "Ver más"
   },
   "Showcase": {
     "Alternatives": "Alternativas a {name}",
     "WeeklyTop": "Top 10 productos de la semana",
     "MoreAbout": "Más sobre {name}",
-    "VisitWebsite": "Visitar sitio web"
+    "VisitWebsite": "Visitar sitio web",
+    "AllCategories": "Todas las categorías",
+    "Home": "Inicio"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +62,30 @@
     "NoResults": "No se encontraron resultados.",
     "TryDifferentKeywords": "Intenta buscar con diferentes palabras clave.",
     "SearchResultsFor": "Resultados de búsqueda para {query}"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "productos tecnológicos lanzados",
+      "prefix": "En la última semana",
+      "full": "Productos tecnológicos lanzados en la última semana"
+    },
+    "Topic": {
+      "relatedProducts": "Productos relacionados con {topic}"
+    },
+    "LatestProducts": {
+      "prefix": "Últimos",
+      "suffix": "productos",
+      "full": "Últimos productos de {category}"
+    },
+    "TotalProducts": "{count} productos",
+    "ProductCount": "productos",
+    "PageInfo": "Página {current} de {total}",
+    "PreviousPage": "Página anterior",
+    "NextPage": "Página siguiente",
+    "NoProducts": {
+      "title": "No se encontraron productos",
+      "description": "Lo sentimos, no pudimos encontrar ningún producto en esta categoría en este momento.",
+      "backToHome": "Volver al inicio"
+    }
   }
 }

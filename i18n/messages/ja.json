@@ -12,6 +12,7 @@
     "just-launched": "新登場",
     "favorites": "お気に入り",
     "signout": "ログアウト",
+    "categories": "カテゴリー",
     "subscribe": {
       "receive": "日次更新を受け取る",
       "unsubscribe": "購読解除",
@@ -27,13 +28,16 @@
       "error": "購読中にエラーが発生しました。もう一度お試しください。",
       "cancel": "キャンセル",
       "unsubscribing": "購読解除中..."
-    }
+    },
+    "view-more": "もっと見る"
   },
   "Showcase": {
     "Alternatives": "{name}の代替品",
     "WeeklyTop": "週間トップ10製品",
     "MoreAbout": "{name}についてもっと知る",
-    "VisitWebsite": "ウェブサイトを訪問"
+    "VisitWebsite": "ウェブサイトを訪問",
+    "AllCategories": "すべてのカテゴリー",
+    "Home": "ホーム"
   },
   "Catalog": {
     "YC": {
@@ -58,5 +62,30 @@
     "NoResults": "結果が見つかりません。",
     "TryDifferentKeywords": "別のキーワードで検索してみてください。",
     "SearchResultsFor": "「{query}」の検索結果"
+  },
+  "Categories": {
+    "JustLaunched": {
+      "suffix": "のテック製品が発売",
+      "prefix": "過去1週間",
+      "full": "過去1週間で発売されたテック製品"
+    },
+    "Topic": {
+      "relatedProducts": "{topic} に関連する製品"
+    },
+    "LatestProducts": {
+      "prefix": "最新の",
+      "suffix": "製品",
+      "full": "最新の{category}製品"
+    },
+    "TotalProducts": "{count} 製品",
+    "ProductCount": "製品",
+    "PageInfo": "ページ {current} / {total}",
+    "PreviousPage": "前のページ",
+    "NextPage": "次のページ",
+    "NoProducts": {
+      "title": "製品が見つかりません",
+      "description": "申し訳ありませんが、現在このカテゴリーに製品が見つかりません。",
+      "backToHome": "ホームに戻る"
+    }
   }
 }

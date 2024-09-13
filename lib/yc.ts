@@ -1,4 +1,4 @@
-import { YCJson } from "@/db/schema/yc";
+import { NewYC } from "@/db/schema/yc";
 import algoliasearch from "algoliasearch";
 
 type RawYCJSON = {
@@ -34,7 +34,7 @@ type RawYCJSON = {
   objectID: string;
 };
 
-export async function fethcYCLatestCompanies(page=0): Promise<YCJson[]> {
+export async function fethcYCLatestCompanies(page=0): Promise<NewYC[]> {
   const client = algoliasearch("45BWZJ1SGC", "MjBjYjRiMzY0NzdhZWY0NjExY2NhZjYxMGIxYjc2MTAwNWFkNTkwNTc4NjgxYjU0YzFhYTY2ZGQ5OGY5NDMxZnJlc3RyaWN0SW5kaWNlcz0lNUIlMjJZQ0NvbXBhbnlfcHJvZHVjdGlvbiUyMiUyQyUyMllDQ29tcGFueV9CeV9MYXVuY2hfRGF0ZV9wcm9kdWN0aW9uJTIyJTVEJnRhZ0ZpbHRlcnM9JTVCJTIyeWNkY19wdWJsaWMlMjIlNUQmYW5hbHl0aWNzVGFncz0lNUIlMjJ5Y2RjJTIyJTVE");
   const index = client.initIndex("YCCompany_By_Launch_Date_production");
   const results = await index.search<RawYCJSON>("", {
@@ -44,7 +44,7 @@ export async function fethcYCLatestCompanies(page=0): Promise<YCJson[]> {
   return results.hits.map((item) => convertToYCModel(item));
 }
 
-export function convertToYCModel(company: RawYCJSON): YCJson {
+export function convertToYCModel(company: RawYCJSON): NewYC {
   return {
     name: company.name,
     slug: company.slug,
@@ -67,8 +67,6 @@ export function convertToYCModel(company: RawYCJSON): YCJson {
     regions: company.regions,
     stage: company.stage,
     objectID: company.objectID,
-    itemType: "yc",
-    translations: {},
-    seo: {}
-  }
+    itemType: "yc"
+  } as NewYC;
 }
