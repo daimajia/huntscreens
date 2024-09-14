@@ -43,6 +43,7 @@
     "@radix-ui/react-tooltip": "^1.1.1",
     "@react-email/components": "0.0.21",
     "@react-email/render": "0.0.16",
+    "@sentry/nextjs": "^8.30.0",
     "@trigger.dev/nextjs": "^2.3.19",
     "@trigger.dev/react": "^2.3.19",
     "@trigger.dev/resend": "^2.3.19",
