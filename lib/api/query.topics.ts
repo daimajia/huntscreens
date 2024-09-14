@@ -8,7 +8,6 @@ type TopicCount = {
 }
 
 export async function queryTopicsItemCount(topics: string[]): Promise<{ error?: string, results?: TopicCount[] }> {
-  console.log("queryTopicsItemCount", topics);
   if (!Array.isArray(topics) || topics.length === 0 || topics.length > 3) {
     return { error: "Invalid input. Provide 1 to 3 topics." };
   }
