@@ -13,7 +13,7 @@ import { Suspense } from "react";
 import { getCachedSEOFromPath } from "@/db/redis/cache";
 import { Metadata } from "next";
 
-export async function generateMetadata({ params, searchParams }:  {
+export async function generateMetadata({ params, searchParams }: {
   params: { maincategory: string, subcategory: string[] },
   searchParams: { page?: string }
 }): Promise<Metadata> {
@@ -21,19 +21,21 @@ export async function generateMetadata({ params, searchParams }:  {
   const mainCategory = params.maincategory;
   const subCategories = params.subcategory?.length > 0 ? params.subcategory[0] : undefined;
 
-
-  const counts = await getCategoryItemCount([{ mainslug: mainCategory, subSlug: subCategories }]);
-  const count = counts[subCategories ? `${mainCategory}/${subCategories}` : mainCategory];
-  if(count === 0) {
-    return {
-      title: "Category Not Found",
-      description: "The category you are looking for does not exist.",
-      keywords: [],
-      openGraph: {
-        locale: locale
+  if (mainCategory !== 'just-launched') {
+    const counts = await getCategoryItemCount([{ mainslug: mainCategory, subSlug: subCategories }]);
+    const count = counts[subCategories ? `${mainCategory}/${subCategories}` : mainCategory];
+    if (count === 0) {
+      return {
+        title: "Category Not Found",
+        description: "The category you are looking for does not exist.",
+        keywords: [],
+        openGraph: {
+          locale: locale
+        }
       }
     }
   }
+
   const seoContent = subCategories ?
     await getCachedSEOFromPath(locale, mainCategory, subCategories) :
     await getCachedSEOFromPath(locale, mainCategory);
@@ -42,7 +44,7 @@ export async function generateMetadata({ params, searchParams }:  {
   locales.forEach(lang => {
     alternateLanguages[lang] = `/${lang}/category/${mainCategory}/${subCategories ? subCategories : ''}`;
   });
-  
+
 
   return {
     metadataBase: new URL("https://huntscreens.com"),
