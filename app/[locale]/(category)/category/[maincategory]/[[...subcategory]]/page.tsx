@@ -5,7 +5,7 @@ import MiniCardLoading from "@/components/ui-custom/skeleton/minicard.loading";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { locales, SupportedLangs } from "@/i18n/types";
-import { getCategoryProducts } from "@/lib/api/query.category";
+import { getCategoryItemCount, getCategoryProducts } from "@/lib/api/query.category";
 import { JustLaunchedProduct } from "@/types/product.types";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -21,6 +21,19 @@ export async function generateMetadata({ params, searchParams }:  {
   const mainCategory = params.maincategory;
   const subCategories = params.subcategory?.length > 0 ? params.subcategory[0] : undefined;
 
+
+  const counts = await getCategoryItemCount([{ mainslug: mainCategory, subSlug: subCategories }]);
+  const count = counts[subCategories ? `${mainCategory}/${subCategories}` : mainCategory];
+  if(count === 0) {
+    return {
+      title: "Category Not Found",
+      description: "The category you are looking for does not exist.",
+      keywords: [],
+      openGraph: {
+        locale: locale
+      }
+    }
+  }
   const seoContent = subCategories ?
     await getCachedSEOFromPath(locale, mainCategory, subCategories) :
     await getCachedSEOFromPath(locale, mainCategory);

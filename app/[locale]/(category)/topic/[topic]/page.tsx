@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Metadata } from "next";
 import { getCachedSEOFromPath } from "@/db/redis/cache";
+import { queryTopicsItemCount } from "@/lib/api/query.topics";
 
 export async function generateMetadata({ params, searchParams }: {
   params: { topic: string },
@@ -18,6 +19,18 @@ export async function generateMetadata({ params, searchParams }: {
 }): Promise<Metadata> {
   const locale = await getLocale() as SupportedLangs;
   const topic = params.topic;
+  const counts = await queryTopicsItemCount([topic]);
+  const count = counts.results?.[0]?.count || 0;
+  if(count === 0) {
+    return {
+      title: "Topic Not Found",
+      description: "The topic you are looking for does not exist.",
+      keywords: [],
+      openGraph: {
+        locale: locale
+      }
+    }
+  }
   const seoContent = await getCachedSEOFromPath(locale, topic, true);
   const alternateLanguages: Record<string, string> = {};
   locales.forEach(lang => {

@@ -10,6 +10,7 @@ interface SubCategory {
   slug: string;
   translations: Record<SupportedLangs, string>[];
 }
+
 export const revalidate = 3600;
 
 export const getSubCategories = cache(async (maincategorySlug: string): Promise<SubCategory[]> => {
@@ -54,6 +55,41 @@ export const getTopicProducts = async (topic: string, page: number, pageSize: nu
     totalCount,
     totalPages: Math.ceil(totalCount / pageSize)
   }
+}
+
+interface CategoryQuery {
+  mainslug: string;
+  subSlug?: string;
+}
+
+export async function getCategoryItemCount(queries: CategoryQuery[]): Promise<Record<string, number>> {
+  if (queries.length > 3) {
+    throw new Error("Maximum of 3 queries allowed");
+  }
+
+  const queryPromises = queries.map(async ({ mainslug, subSlug }) => {
+    let main = decodeURIComponent(mainslug);
+    let query = sql`categories->'maincategory'->>'slug' = ${main}`;
+
+    if (subSlug) {
+      let sub = decodeURIComponent(subSlug);
+      query = sql`categories->'maincategory'->>'slug' = ${main} and categories->'subcategory'->>'slug' = ${sub}`;
+    }
+
+    const countResult = await db.select({ count: sql`count(*)` })
+      .from(allProducts)
+      .where(query);
+
+    const key = subSlug ? `${mainslug}/${subSlug}` : mainslug;
+    return { key, count: Number(countResult[0].count) };
+  });
+
+  const results = await Promise.all(queryPromises);
+
+  return results.reduce((acc, { key, count }) => {
+    acc[key] = count;
+    return acc;
+  }, {} as Record<string, number>);
 }
 
 export async function getCategoryProducts(mainslug: string, page: number, pageSize: number, subSlug?: string): Promise<IndexDataPack> {
