@@ -5,9 +5,6 @@ import { sql } from "drizzle-orm";
 import { cache } from "react";
 import { IndexDataPack } from "./query.types";
 import { JustLaunchedProduct } from "@/types/product.types";
-import pLimit from 'p-limit';
-
-const limit = pLimit(3);
 
 interface SubCategory {
   slug: string;
@@ -65,35 +62,32 @@ export async function getCategoryProducts(mainslug: string, page: number, pageSi
       categories->'maincategory'->>'slug' = ${main}
   `;
   if (subSlug) {
-    let sub = decodeURIComponent(subSlug);
-    query = sql`
-      categories->'maincategory'->>'slug' = ${main} and categories->'subcategory'->>'slug' = ${sub}
-    `;
+  let sub = decodeURIComponent(subSlug);
+  query =  sql`
+    categories->'maincategory'->>'slug' = ${main} and categories->'subcategory'->>'slug' = ${sub}
+    `
   }
   if(mainslug === 'just-launched') {
     query = sql`
-      launch_date > now() - interval '1 week'
-    `;
+    launch_date > now() - interval '1 week'
+    `
   }
-
   const [products, countResult] = await Promise.all([
-    limit(() => db.select()
+    db.select()
       .from(allProducts)
       .where(query)
       .limit(pageSize)
-      .offset((page - 1) * pageSize)),
-    limit(() => db.select({ count: sql`count(*)` })
+      .offset((page - 1) * pageSize),
+    db.select({ count: sql`count(*)` })
       .from(allProducts)
-      .where(query))
+      .where(query)
   ]);
-
   const totalCount = Number(countResult[0].count);
-
   return {
     products: products as unknown as JustLaunchedProduct[],
     totalCount,
     totalPages: Math.ceil(totalCount / pageSize),
     mainslug,
     subSlug
-  };
+  }
 }
