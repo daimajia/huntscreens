@@ -1,11 +1,10 @@
-import { cookies } from "next/headers";
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from "next/navigation";
-import query_yc from "@/lib/api/query.yc";
-import { YCSortBy } from "@/types/yc.types";
 import ProductDetailPage from "@/components/product/product.detail";
 import { SupportedLangs } from "@/i18n/types";
 import { generateUniversalMetadata } from "@/lib/seo/metadata";
+import queryShowcaseById from "@/lib/api/query.showcase";
+
 type Props = {
   params: { id: string, locale: SupportedLangs }
 }
@@ -21,15 +20,13 @@ export async function generateMetadata(
 }
 
 export default async function YCPage({ params }: Props) {
-  if (!Number.isInteger(Number(params.id))) {
+  const product = await queryShowcaseById(params.id, "yc");
+
+  if(!product){
     return notFound();
   }
-  const sort = cookies().get('yc.sort')?.value || 'time';
-  const data = await query_yc(Number(params.id), sort as YCSortBy, "All");
-  if (!data.product) {
-    return notFound();
-  }
+
   return <>
-    {data && data.product && <ProductDetailPage productType="yc" product={data.product} next={data.next} prev={data.prev} />}
+    <ProductDetailPage productType="yc" product={product} />
   </>
 }

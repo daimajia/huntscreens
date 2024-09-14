@@ -10,7 +10,6 @@ import AIIntro from "./ai.intro";
 import { Link } from "@/i18n/routing";
 import YCInfoBadge from "./yc/yc.info.badge";
 import { Badge } from "@/components/ui/badge";
-import NextPrevCard from "./next.prev.card";
 import SimilarProducts from "./similar.products";
 import Logo from "@/components/logo";
 import WeeklyTop from "./common/weekly.top";
@@ -60,8 +59,6 @@ async function getBreadcrumbCategoryItems<T extends ProductTypes>(
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
   product: ProductModel<T>,
-  next?: ProductModel<T> | null,
-  prev?: ProductModel<T> | null,
   lang?: SupportedLangs
 }) {
   const t = await getTranslations('Showcase');
@@ -126,7 +123,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
               <div className="flex w-full flex-row flex-wrap justify-end gap-3">
                 {product.categories?.topics?.map((topic) => (
-                  <Badge key={topic.slug} className="py-1 text-slate-500 dark:text-white border dark:border-gray-400" variant="outline">
+                  <Badge key={topic.slug} className="py-1 text-slate-500 dark:text-white" variant={"outline"}>
                     <Link href={`/topic/${topic.slug}`}>
                       <span>{topic.translations[currentLang]}</span>
                     </Link>
@@ -165,9 +162,6 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
               </div>
             )}
 
-            <div>
-              <NextPrevCard productType={props.productType} next={props.next} prev={props.prev} />
-            </div>
           </div>
 
           <div className="w-full md:w-[400px] gap-5 flex flex-col">
