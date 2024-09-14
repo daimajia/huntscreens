@@ -9,4 +9,3 @@ export * from "./intro.jobs";
 export * from "./embedding.jobs";
 export * from "./translate.jobs";
 export * from "./category.jobs";
-export * from "./cron.update.jobs";
