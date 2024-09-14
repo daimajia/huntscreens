@@ -109,8 +109,6 @@ async function generateSEOFromPath(pathSegments: PathSegment[], locale: Supporte
 
   Please provide:
   1. An engaging and descriptive title (max 60 characters)
-     Format: [Specific Tool/Category]: [Benefit or Feature] - ${currentYear}
-     Example: "AI Code Generator: Boost Developer Productivity - ${currentYear}"
 
   2. A captivating meta description (max 160 characters)
      Highlight the unique value proposition and include the year ${currentYear}
@@ -122,7 +120,6 @@ async function generateSEOFromPath(pathSegments: PathSegment[], locale: Supporte
   - Use powerful and action-oriented language to grab attention
   - Emphasize cutting-edge features and groundbreaking capabilities
   - Highlight tangible benefits for users or businesses
-  - Incorporate relevant AI terminology and current tech trends of ${currentYear}
   - Ensure the content appeals to both tech enthusiasts and curious beginners
   - Avoid overly technical jargon while maintaining a professional tone
   - Include a mix of specific and broader terms to capture various search intents
