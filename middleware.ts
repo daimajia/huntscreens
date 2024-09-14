@@ -51,7 +51,7 @@ export const config = {
   matcher: [
     '/', 
     '/(en|zh|es|ar|hi|pt|ja|ru|id|tr)/:path*', 
-    '/(p|indiehackers|startup/yc|taaft)/:path*',
+    '/(p|indiehackers|startup/yc|taaft|topic|category)/:path*',
     '/search/:path*',
     '/favorites',
     '/email/:path*'
