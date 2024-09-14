@@ -1,11 +1,9 @@
 import redis from "@/db/redis";
 import { getCategoryProducts } from "./query.category";
 import { IndexDataPack } from "./query.types";
-import pLimit from 'p-limit';
 
 export const getBulkCategoryProducts = async (maincategory_slugs: string[], forceUpdate: boolean = false): Promise<IndexDataPack[]> => {
-  let products: IndexDataPack[] = [];
-  if(!forceUpdate) {
+  if (!forceUpdate) {
     try {
       let data = await redis.get('index:datapack');
       if (data) {
@@ -16,15 +14,13 @@ export const getBulkCategoryProducts = async (maincategory_slugs: string[], forc
     }
   }
 
-  const limit = pLimit(5); 
-  products = await Promise.all(maincategory_slugs.map(slug => 
-    limit(() => {
-      if (slug === 'just-launched') {
-        return getCategoryProducts(slug, 1, 8);
-      }
-      return getCategoryProducts(slug, 1, 4);
-    })
-  ));
+  const products: IndexDataPack[] = [];
+  
+  for (const slug of maincategory_slugs) {
+    const result = await getCategoryProducts(slug, 1, slug === 'just-launched' ? 8 : 4);
+    products.push(result);
+  }
+
   await redis.setex('index:datapack', 60 * 60 * 24, JSON.stringify(products));
   return products;
 }
