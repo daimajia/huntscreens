@@ -3,6 +3,8 @@ import { allProducts } from "@/db/schema";
 import { SupportedLangs } from "@/i18n/types";
 import { sql } from "drizzle-orm";
 import { cache } from "react";
+import { IndexDataPack } from "./query.types";
+import { JustLaunchedProduct } from "@/types/product.types";
 
 interface SubCategory {
   slug: string;
@@ -54,7 +56,7 @@ export const getTopicProducts = async (topic: string, page: number, pageSize: nu
   }
 }
 
-export const getCategoryProducts = async (mainslug: string, page: number, pageSize: number, subSlug?: string) => {
+export async function getCategoryProducts(mainslug: string, page: number, pageSize: number, subSlug?: string): Promise<IndexDataPack> {
   let main = decodeURIComponent(mainslug);
   let query = sql`
       categories->'maincategory'->>'slug' = ${main}
@@ -82,7 +84,7 @@ export const getCategoryProducts = async (mainslug: string, page: number, pageSi
   ]);
   const totalCount = Number(countResult[0].count);
   return {
-    products,
+    products: products as unknown as JustLaunchedProduct[],
     totalCount,
     totalPages: Math.ceil(totalCount / pageSize),
     mainslug,

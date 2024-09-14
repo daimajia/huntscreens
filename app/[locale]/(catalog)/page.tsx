@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import Loading from "@/components/ui-custom/skeleton/list.loading";
 import { JustLaunchedProduct } from "@/types/product.types";
 import MiniCard from "@/components/category/mini.card";
-import { getCategoryProducts } from "@/lib/api/query.category";
 import Categorydata from "@/i18n/custom/categories.json";
 import { PredefinedCategory } from "@/lib/ai/types";
 import { SupportedLangs } from "@/i18n/types";
@@ -11,20 +10,12 @@ import { Button } from "@/components/ui/button";
 import { ChevronRightIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import Footer from "@/components/layout/footer";
-import redis from "@/db/redis";
+import { getBulkCategoryProducts } from "@/lib/api/query.landing";
 
 type CategorySectionProps = {
   predefinedCategory: PredefinedCategory | undefined;
   products: JustLaunchedProduct[];
   locale: SupportedLangs;
-}
-
-type IndexDataPack = {
-  products: JustLaunchedProduct[];
-  totalCount: number;
-  totalPages: number;
-  mainslug: string;
-  subSlug: string | undefined;
 }
 
 const CategorySection = async ({ predefinedCategory, products, locale }: CategorySectionProps) => {
@@ -60,26 +51,6 @@ const CategorySection = async ({ predefinedCategory, products, locale }: Categor
   )
 }
 
-const getBulkCategoryProducts = async (maincategory_slugs: string[]): Promise<IndexDataPack[]> => {
-  let products;
-  try {
-    let data = await redis.get('index:datapack');
-    if (data) {
-      return JSON.parse(data) as IndexDataPack[];
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
-  products = await Promise.all(maincategory_slugs.map(slug => {
-    if (slug === 'just-launched') {
-      return getCategoryProducts(slug, 1, 8);
-    }
-    return getCategoryProducts(slug, 1, 4);
-  }));
-  await redis.set('index:datapack', JSON.stringify(products), 'EX', 60 * 60 * 15);
-  return products as unknown as IndexDataPack[];
-}
 
 export default async function IndexPage() {
   const locale = await getLocale();
