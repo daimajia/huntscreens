@@ -4,7 +4,36 @@ import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { ImageOff } from 'lucide-react';
 
-export default function MiniImageLoader({
+export function MiniLogoLoader({
+  src,
+  alt,
+  size = 24,
+  className,
+}: {
+  src: string;
+  alt: string;
+  size?: number;
+  className?: string;
+}) {
+  const [error, setError] = useState(false);
+
+  return (
+    <div className="rounded-full relative shadow-md w-full h-full">
+      {error ? (
+        <ImageOff className="w-full h-full p-2 text-gray-400 dark:text-gray-600" />
+      ) : (
+        <img
+          src={src}
+          alt={alt}
+          className={cn("object-cover", className)}
+          onError={() => setError(true)}
+        />
+      )}
+    </div>
+  );
+}
+
+export default function MiniScreenshotLoader({
   src,
   alt,
   className,

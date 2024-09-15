@@ -1,4 +1,5 @@
 "use client";
+import { ImageOff } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface LogoProps {
@@ -19,7 +20,7 @@ const Logo: React.FC<LogoProps> = ({ name, url, className }) => {
   };
 
   return (
-    <div className={`w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-gray-200 dark:bg-gray-700 ${className}`}>
+    <div className={`w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-700 ${className}`}>
       {!imageError ? (
         <img
           src={url}
@@ -28,9 +29,7 @@ const Logo: React.FC<LogoProps> = ({ name, url, className }) => {
           onError={handleImageError}
         />
       ) : (
-        <span className="text-xl font-bold text-gray-600 dark:text-gray-300">
-          {getInitial(name)}
-        </span>
+        <ImageOff size={40} className="text-gray-400 dark:text-gray-600 p-2" />
       )}
     </div>
   );

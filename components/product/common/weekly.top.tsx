@@ -9,6 +9,7 @@ import { urlMapper } from "@/types/product.types";
 import { getTranslations } from "next-intl/server";
 import { SupportedLangs } from "@/i18n/types";
 import { useLocale } from "next-intl";
+import MiniImageLoader, { MiniLogoLoader } from "@/components/ui-custom/mini.image.loader";
 
 const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
   const locale = useLocale() as SupportedLangs;
@@ -16,7 +17,7 @@ const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
     <Link href={urlMapper["ph"](product.id)}>
       <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
         <div className="flex flex-row gap-5 items-center w-full">
-          <div className="w-10 h-10">
+          <div className="w-10 h-10 ">
             <Logo name={product.name || ""} url={product.thumb_url || ""} />
           </div>
           <div className="flex flex-col w-full">
@@ -68,4 +69,4 @@ export default async function WeeklyTop() {
       ))}
     </ul>
   </div>;
-}
+  }
