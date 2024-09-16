@@ -69,11 +69,11 @@ export async function getCategoryItemCount(queries: CategoryQuery[]): Promise<Re
 
   const queryPromises = queries.map(async ({ mainslug, subSlug }) => {
     let main = decodeURIComponent(mainslug);
-    let query = sql`categories->'maincategory'->>'slug' = ${main}`;
+    let query = sql`categories->'maincategory' @> ${`{"slug": "${main}"}`}`;
 
     if (subSlug) {
       let sub = decodeURIComponent(subSlug);
-      query = sql`categories->'maincategory'->>'slug' = ${main} and categories->'subcategory'->>'slug' = ${sub}`;
+      query = sql`categories->'maincategory' @> ${`{"slug": "${main}"}`} and categories->'subcategory' @> ${`{"slug": "${sub}"}`}`;
     }
 
     const countResult = await db.select({ count: sql`count(*)` })
@@ -95,12 +95,12 @@ export async function getCategoryItemCount(queries: CategoryQuery[]): Promise<Re
 export async function getCategoryProducts(mainslug: string, page: number, pageSize: number, subSlug?: string): Promise<IndexDataPack> {
   let main = decodeURIComponent(mainslug);
   let query = sql`
-      categories->'maincategory'->>'slug' = ${main}
+      categories->'maincategory' @> ${`{"slug": "${main}"}`}
   `;
   if (subSlug) {
   let sub = decodeURIComponent(subSlug);
   query =  sql`
-    categories->'maincategory'->>'slug' = ${main} and categories->'subcategory'->>'slug' = ${sub}
+    categories->'maincategory' @> ${`{"slug": "${main}"}`} and categories->'subcategory' @> ${`{"slug": "${sub}"}`}
     `
   }
   if(mainslug === 'just-launched') {
