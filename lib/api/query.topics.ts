@@ -29,9 +29,9 @@ export async function queryTopicsItemCount(topics: string[]): Promise<{ error?: 
       const result = await db
         .select({ count: sql`count(*)` })
         .from(allProducts)
-        .where(sql`${topic} = ANY(SELECT jsonb_array_elements(categories->'topics')->>'slug')`)
+        .where(sql`categories->'topics' @> ${`[{"slug": "${topic}"}]`}`)
         .execute();
-
+  
       return {
         topic,
         count: Number(result[0].count)

@@ -42,12 +42,12 @@ export const getTopicProducts = async (topic: string, page: number, pageSize: nu
   const [products, countResult] = await Promise.all([
     db.select()
       .from(allProducts)
-      .where(sql`${t} = ANY(SELECT jsonb_array_elements(categories->'topics')->>'slug')`)
+      .where(sql`categories->'topics' @> ${`[{"slug": "${topic}"}]`}`)
       .limit(pageSize)
       .offset((page - 1) * pageSize),
     db.select({ count: sql`count(*)` })
       .from(allProducts)
-      .where(sql`${t} = ANY(SELECT jsonb_array_elements(categories->'topics')->>'slug')`)
+      .where(sql`categories->'topics' @> ${`[{"slug": "${topic}"}]`}`)
   ]);
   const totalCount = Number(countResult[0].count);
   return {
