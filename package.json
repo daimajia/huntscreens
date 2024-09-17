@@ -18,7 +18,8 @@
     "index:all:embeddings": "tsx scripts/index.all.embeddings.ts",
     "db:trgm": "tsx scripts/add.trgm.extension.and.index.ts",
     "db:translate": "tsx scripts/add.multiple.langs.ts",
-    "db:categories": "tsx scripts/add.product.categories.ts"
+    "db:categories": "tsx scripts/add.product.categories.ts",
+    "redis:migrate": "tsx scripts/migrate.redis.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.40",
