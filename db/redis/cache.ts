@@ -44,8 +44,7 @@ export async function getCachedSEOFromPath(
 
     const seoContent = await generateSEOFromPath(pathSegments, locale);
 
-    const expirationTime = 90 * 24 * 60 * 60;
-    await redis.setex(cacheKey, expirationTime, JSON.stringify(seoContent));
+    await redis.set(cacheKey, JSON.stringify(seoContent));
 
     return seoContent;
   } catch (error) {
