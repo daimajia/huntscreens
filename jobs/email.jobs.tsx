@@ -5,15 +5,11 @@ import { and, desc, eq, gte } from "drizzle-orm";
 import { producthunt } from "@/db/schema/ph";
 import { subHours } from "date-fns";
 import DailyDigestEmail from "@/emails/daily.digest";
-import { Resend } from "resend";
-import { Resend as TriggerResend } from "@trigger.dev/resend"; // trigger.resend is out of date.
 import { z } from "zod";
 import { yc } from "@/db/schema";
+import { Resend } from "resend";
 
-const triggerResend = new TriggerResend({
-  id: "resend",
-  apiKey: process.env.RESEND_KEY!,
-});
+const resend = new Resend(process.env.RESEND_KEY!);
 
 export const resendLimiter = client.defineConcurrencyLimit({
   id: `resend-limit`,
@@ -33,9 +29,6 @@ client.defineJob({
     })
   }),
   concurrencyLimit: resendLimiter,
-  integrations: {
-    triggerResend
-  },
   run: async (payload, io, ctx) => {
     const phs = await db.query.producthunt.findMany({
       where: and(
@@ -57,13 +50,13 @@ client.defineJob({
     if (yc_count.length > 0) {
       subject = '🚀 YC Launched ' + yc_count.length + ' Companies Today!';
     }
-    await io.triggerResend.emails.send(`send-digest-email-${payload.email}`, {
+
+    await resend.emails.send({
       to: payload.email,
       subject: subject,
       from: `HuntScreens Daily Digest <hello@huntscreens.com>`,
       react: <DailyDigestEmail producthunts={phs} contactId={payload.contactId} yc_count={yc_count.length} />
     });
-    await io.wait("waitting-" + payload.email, 3);
   }
 })
 
@@ -75,29 +68,28 @@ client.defineJob({
   trigger: cronTrigger({
     cron: "30 9 * * 1-5"
   }),
-  integrations: {
-    triggerResend
-  },
   run: async (payload, io, cxt) => {
-    const resend = new Resend(process.env.RESEND_KEY!);
+
     const { data: subscribers, error } = await resend.contacts.list({
       audienceId: process.env.RESEND_AUDIENCE_ID!
-    })
+    });
 
     if (error) {
       throw error;
     }
 
-    subscribers?.data.forEach(async (contact) => {
-      if (!contact.unsubscribed) {
-        await io.sendEvent("send digest email " + contact.email, {
-          name: "send.digest.email",
-          payload: {
-            email: contact.email,
-            contactId: contact.id
-          }
-        });
+    if (subscribers?.data) {
+      for (const contact of subscribers.data) {
+        if (!contact.unsubscribed) {
+          await io.sendEvent("send digest email " + contact.email, {
+            name: "send.digest.email",
+            payload: {
+              email: contact.email,
+              contactId: contact.id
+            }
+          });
+        }
       }
-    });
+    }
   }
 });
