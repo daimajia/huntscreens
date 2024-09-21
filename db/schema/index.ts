@@ -6,4 +6,4 @@ export * from "./user";
 export * from "./favorite";
 export * from "./intros";
 export * from "./embeddings";
-export * from "./all";
+export * from "./products";
