@@ -1,9 +1,6 @@
 import { relations } from "drizzle-orm";
 import { index, integer, pgTable, serial, text, timestamp, uuid, vector } from "drizzle-orm/pg-core";
-import { producthunt } from "./ph";
-import { yc } from "./yc";
-import { indiehackers } from "./indiehackers";
-import { taaft } from "./taaft";
+import { products } from "./products";
 import { TranslationContent } from "./types";
 import { SupportedLangs } from "@/i18n/types";
 
@@ -16,7 +13,7 @@ export const embeddings = pgTable('embeddings', {
   thumb_url: text('thumb_url'),
   website: text('website').notNull(),
   name: text('name').notNull(),
-  description: text('description').notNull(),
+  description: text('description'),
   embedding: vector('embedding', { dimensions: 384 }),
   createdAt: timestamp('created_at').defaultNow()
 }, (table) => ({
@@ -32,24 +29,9 @@ export type EmbeddingWithSimilarity = Embedding & {
 export type NewEmbedding = typeof embeddings.$inferInsert;
 
 export const embeddingsRelations = relations(embeddings, ({ one }) => ({
-  ph: one(producthunt, {
+  product: one(products, {
     fields: [embeddings.itemUUID],
-    references: [producthunt.uuid],
-    relationName: 'productHuntEmbedding',
-  }),
-  yc: one(yc, {
-    fields: [embeddings.itemUUID],
-    references: [yc.uuid],
-    relationName: 'ycEmbedding',
-  }),
-  indiehackers: one(indiehackers, {
-    fields: [embeddings.itemUUID],
-    references: [indiehackers.uuid],
-    relationName: 'indiehackersEmbedding',
-  }),
-  taaft: one(taaft, {
-    fields: [embeddings.itemUUID],
-    references: [taaft.uuid],
-    relationName: 'taaftEmbedding',
+    references: [products.uuid],
+    relationName: 'productEmbedding',
   }),
 }));

@@ -1,5 +1,4 @@
 import { SupportedLangs } from "@/i18n/types";
-import { YCSortBy, YCStatus } from "@/types/yc.types";
 import { sql, eq, SQL, and, gte } from "drizzle-orm";
 import { boolean, date, index, integer, jsonb, pgTable, pgView, QueryBuilder, serial, text, uuid } from "drizzle-orm/pg-core";
 import { SEOContent, TranslationContent } from "./types";
@@ -46,19 +45,6 @@ export const yc = pgTable('yc', {
     yc_team_size: index('yc_teamsiz_idx').on(table.team_size)
   }
 })
-
-export const ycViewQueryByStatus = (qb: QueryBuilder, sort: YCSortBy, status: YCStatus) => {
-  let window;
-  switch(sort) {
-    case "time":
-      window = sql`(ORDER BY ${yc.launched_at} DESC, ${yc.id} DESC)`;
-      break;
-    case "teamsize":
-      window = sql`(ORDER BY ${yc.team_size} DESC, ${yc.id} DESC)`;
-      break;
-  }
-  return ycViewQuery(qb, window, and(eq(yc.webp, true), eq(yc.status, status)));
-}
 
 export const  ycViewQuery = (qb: QueryBuilder, window: SQL, where=eq(yc.webp, true)) => {
   return qb.select({
