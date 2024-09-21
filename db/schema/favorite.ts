@@ -1,6 +1,6 @@
 import { index, pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { users } from "./user";
-import { producthunt, yc, indiehackers, taaft, Producthunt, YC, Taaft, IndieHackers } from ".";
+import { products, Product } from ".";
 import { relations } from "drizzle-orm";
 
 export const favorites = pgTable('favorites', {
@@ -23,10 +23,7 @@ export type Favorites = typeof favorites.$inferSelect;
 export type NewFavorites = typeof favorites.$inferInsert;
 
 export type FavoritesWithDetail = Favorites & {
-  ph: Producthunt | null,
-  yc: YC | null,
-  taaft: Taaft | null,
-  indiehackers: IndieHackers | null
+  product: Product | null
 }
 
 export const userFavoritesRelations = relations(favorites, ({ one }) => ({
@@ -34,24 +31,8 @@ export const userFavoritesRelations = relations(favorites, ({ one }) => ({
     fields: [favorites.userId],
     references: [users.id],
   }),
-  ph: one(producthunt, {
+  product: one(products, {
     fields: [favorites.itemId],
-    references: [producthunt.uuid],
-    relationName: 'productHuntFavorite',
-  }),
-  yc: one(yc, {
-    fields: [favorites.itemId],
-    references: [yc.uuid],
-    relationName: 'ycFavorite',
-  }),
-  taaft: one(taaft, {
-    fields: [favorites.itemId],
-    references: [taaft.uuid],
-    relationName: 'taaftFavorite',
-  }),
-  indiehackers: one(indiehackers, {
-    fields: [favorites.itemId],
-    references: [indiehackers.uuid],
-    relationName: 'indiehackersFavorite',
+    references: [products.uuid],
   }),
 }));
