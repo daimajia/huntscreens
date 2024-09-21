@@ -1,15 +1,20 @@
 import { db } from "@/db/db";
-import { getProductTable, ProductModel, ProductTypes } from "@/types/product.types";
-import { eq } from "drizzle-orm";
+import { Product, products } from "@/db/schema";
+import { ProductTypes } from "@/types/product.types";
+import { and, eq } from "drizzle-orm";
 
-export default async function queryShowcaseById<T extends ProductTypes>(id: string, type: T): Promise<ProductModel<T> | null> {
+export default async function queryShowcaseById<T extends ProductTypes>(id: string, type: T): Promise<Product | null> {
   if(!Number.isInteger(Number(id))){
     return null;
   }
-  const table = getProductTable(type);
-  const product = await db.select().from(table).where(eq(table.id, Number(id)));
+  const product = await db.select().from(products).where(
+    and(
+      eq(products.id, Number(id)),
+      eq(products.itemType, type)
+    )
+  );
   if(product.length === 0){
     return null;
   }
-  return product[0] as ProductModel<T>;
+  return product[0];
 }

@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 import { getCurrentUser } from "../user";
 import { favorites } from "@/db/schema";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { ProductTypes } from "@/types/product.types";
 import assert from "assert";
@@ -38,24 +38,30 @@ export async function delete_favorite(itemId: string){
 }
 
 type QueryFavoriteProps = {
-  page: number
+  page: number,
+  pageSize: number
 }
 
-export default async function query_favorites({page} : QueryFavoriteProps) {
+export default async function query_favorites({page, pageSize} : QueryFavoriteProps) {
   assert(page >= 0);
   const user = await getCurrentUser();
-  if(!user) return [];
-  const favs = await db.query.favorites.findMany({
-    where: eq(favorites.userId, user.uuid || ""),
-    with: {
-      ph: true,
-      yc: true,
-      taaft: true,
-      indiehackers: true,
-    },
-    orderBy: desc(favorites.createdAt),
-    limit: 20,
-    offset: (page - 1) * 20
-  })
-  return favs;
+  if(!user) return { favorites: [], totalCount: 0, totalPages: 0, pageSize: pageSize };
+  
+  const [favs, totalCountResult] = await Promise.all([
+    db.query.favorites.findMany({
+      where: eq(favorites.userId, user.uuid || ""),
+      with: {
+        product: true
+      },
+      orderBy: desc(favorites.createdAt),
+      limit: pageSize,
+      offset: (page - 1) * pageSize
+    }),
+    db.select({ count: sql`count(*)` }).from(favorites).where(eq(favorites.userId, user.uuid || ""))
+  ]);
+
+  const totalCount = Number(totalCountResult[0].count);
+  const totalPages = Math.ceil(totalCount / pageSize);
+
+  return { favorites: favs, totalCount, totalPages, pageSize };
 }

@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { allProducts } from "@/db/schema";
+import { products } from "@/db/schema";
 import { sql } from "drizzle-orm";
 
 type TopicCount = {
@@ -28,7 +28,7 @@ export async function queryTopicsItemCount(topics: string[]): Promise<{ error?: 
     validTopics.map(async (topic) => {
       const result = await db
         .select({ count: sql`count(*)` })
-        .from(allProducts)
+        .from(products)
         .where(sql`categories->'topics' @> ${`[{"slug": "${topic}"}]`}`)
         .execute();
   

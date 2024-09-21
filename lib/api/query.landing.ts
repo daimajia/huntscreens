@@ -5,7 +5,7 @@ import { IndexDataPack } from "./query.types";
 export const getBulkCategoryProducts = async (maincategory_slugs: string[], forceUpdate: boolean = false): Promise<IndexDataPack[]> => {
   if (!forceUpdate) {
     try {
-      let data = await redis.get('index:datapack');
+      let data = await redis.get('index:v2:datapack');
       if (data) {
         return JSON.parse(data) as IndexDataPack[];
       }
@@ -21,6 +21,6 @@ export const getBulkCategoryProducts = async (maincategory_slugs: string[], forc
     products.push(result);
   }
 
-  await redis.setex('index:datapack', 60 * 60 * 24, JSON.stringify(products));
+  await redis.setex('index:v2:datapack', 60 * 60 * 24, JSON.stringify(products));
   return products;
 }

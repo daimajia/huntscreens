@@ -1,7 +1,7 @@
-import { JustLaunchedProduct } from "@/types/product.types";
+import { Product } from "@/db/schema";
 
 export type IndexDataPack = {
-  products: JustLaunchedProduct[];
+  products: Product[];
   totalCount: number;
   totalPages: number;
   mainslug: string;
