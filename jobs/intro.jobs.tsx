@@ -1,13 +1,12 @@
-import { ProductTypes } from "@/types/product.types";
 import { db } from "@/db/db";
 
 import redis from "@/db/redis";
-import { IndieHackers, indiehackers, intro, Producthunt, producthunt, YC, yc } from "@/db/schema";
+import { intro, products } from "@/db/schema";
 import { getURLAiIntro } from "@/lib/ai/intro";
 import { generateRandomString } from "@/lib/crypto/random";
 import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
-import { desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 const blackKeywords = [
@@ -23,105 +22,48 @@ const aiConcurrencyLimit = client.defineConcurrencyLimit({
   limit: 3,
 });
 
-
-
-client.defineJob({
-  id: "run all ai intro",
-  name: "run all ai intro",
-  version: "0.0.3",
-  trigger: eventTrigger({
-    name: "run.all.intro"
-  }),
-  run: async (_, io) => {
-
-    async function iterateRun(products: Producthunt[] | YC[] | IndieHackers[], productType: ProductTypes) {
-      for (const item of products) {
-        const wasError = await redis.get(`AI:Error:${item.website}`);
-
-        if(wasError) continue;
-
-        const exist = await db.query.intro.findFirst({
-          where: eq(intro.uuid, item.uuid!)
-        });
-
-        if (exist) continue;
-
-        await io.logger.info(item.website + "");
-        await io.sendEvent(item.uuid + " run all intro " + generateRandomString(5), {
-          name: "run.ai.intro",
-          payload: {
-            url: item.website,
-            uuid: item.uuid,
-            type: productType
-          }
-        })
-      }
-    };
-
-    const phs = await db.query.producthunt.findMany({
-      where: eq(producthunt.webp, true),
-      orderBy: desc(producthunt.added_at)
-    });
-
-    await iterateRun(phs, "ph");
-
-    const ycs = await db.query.yc.findMany({
-      where: eq(yc.webp, true),
-      orderBy: desc(yc.launched_at)
-    });
-
-    await iterateRun(ycs, "yc");
-
-    const ihs = await db.query.indiehackers.findMany({
-      where: eq(indiehackers.webp, true),
-      orderBy: desc(indiehackers.added_at)
-    });
-
-    await iterateRun(ihs, "indiehackers");
-  }
-})
-
 export const addIntroJob = client.defineJob({
   id: "add AI introduction",
   name: "add AI introduction",
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: eventTrigger({
     name: "run.ai.intro",
     schema: z.object({
-      url: z.string().url(),
       uuid: z.string(),
-      type: z.string()
     })
   }),
   concurrencyLimit: aiConcurrencyLimit,
   run: async (payload, io, ctx) => {
-    const wasError = await redis.get(`AI:Error:${payload.url}`);
+    const wasError = await redis.get(`AI:Error:${payload.uuid}`);
     if (wasError) {
       return "Already Error:" + wasError;
     } else {
       try {
-        const { aiintro, prompt } = await getURLAiIntro(payload.url);
+        const allProducts = await db.select().from(products).where(eq(products.uuid, payload.uuid));
+        const product = allProducts[0];
+
+        const { aiintro, prompt } = await getURLAiIntro(product.website);
         const deleted = blackKeywords.some(keyword => aiintro.includes(keyword))
         await db.insert(intro).values({
-          website: payload.url,
-          uuid: payload.uuid,
+          website: product.website,
+          uuid: product.uuid,
           description: aiintro,
-          type: payload.type,
+          type: product.itemType,
           version: "0.0.2",
           deleted: deleted
-        })
+        });
+        
         await io.sendEvent(payload.uuid + " run translate " + generateRandomString(5), {
           name: "translate.new.entry",
           payload: {
-            uuid: payload.uuid,
-            productType: payload.type
+            uuid: payload.uuid
           }
         })
-        await redis.set(`AI:Success:${payload.url}`, `{aiintro: ${aiintro}, prompt: ${prompt}}`);
+        await redis.set(`AI:Success:${payload.uuid}`, `{aiintro: ${aiintro}, prompt: ${prompt}}`);
         return { aiintro: aiintro, prompt: prompt };
       } catch (e) {
-        await redis.set(`AI:Error:${payload.url}`, (e as Error).message);
-        return `AI:Error:${payload.url} Error: ${(e as Error).message}`;
+        await redis.set(`AI:Error:${payload.uuid}`, (e as Error).message);
+        return `AI:Error:${payload.uuid} Error: ${(e as Error).message}`;
       }
     }
   }

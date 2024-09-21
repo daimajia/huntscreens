@@ -1,12 +1,11 @@
-import { eventTrigger, intervalTrigger } from "@trigger.dev/sdk";
+import { intervalTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
-import { z } from "zod";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
-import { indiehackers } from "@/db/schema";
-import { getScreenshotOneParams, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
 import { getIndiehackersProducts } from "@/lib/indiehackers";
-import triggerCommonJobs from "./utils";
+import { products } from "@/db/schema";
+import { IndieHackersMetadata } from "@/db/schema/types";
+import slugify from "slugify";
 
 client.defineJob({
   id: "Schedule Indiehackers Latest products",
@@ -18,23 +17,28 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     const ids = await getIndiehackersProducts();
     for(const product of ids){
-      const exist = await db.query.indiehackers.findFirst({
-        where: eq(indiehackers.objectId, product.objectId!)
+      const exist = await db.query.products.findFirst({
+        where: eq(products.website, product.website)
       });
-      if(!exist) {
-        const inserted = await db.insert(indiehackers).values(product).returning();
-
-        await io.sendEvent("add intro" + inserted[0].uuid, {
-          name: "run.ai.intro",
-          payload: {
-            url: inserted[0].website,
-            uuid: inserted[0].uuid,
-            type: "indiehackers"
-          }
-        })
+      if(!exist && product.id && product.website && product.name) {
+        const inserted = await db.insert(products).values({
+          id: product.id,
+          name: product.name,
+          tagline: product.tagline || "",
+          slug: slugify(product.name),
+          description: product.description || "",
+          website: product.website,
+          itemType: "indiehackers",
+          thumb_url: product.thumb_url || "",
+          launched_at: product.added_at || new Date(),
+          metadata: {
+            revenue: product.revenue,
+            followers: product.followers
+          } as IndieHackersMetadata
+        }).returning();
 
         await io.sendEvent(`take ${product.website} screenshot`, {
-          name: "screenshot.indiehackers",
+          name: "take.product.screenshot",
           payload: {
             uuid: inserted[0].uuid,
             website: inserted[0].website
@@ -44,46 +48,3 @@ client.defineJob({
     }
   }
 });
-
-client.defineJob({
-  id: "take Indiehackers screenshot",
-  name: "take Indiehackers screenshot",
-  version: "0.0.1",
-  trigger: eventTrigger({
-    name: "screenshot.indiehackers",
-    schema: z.object({
-      uuid: z.string(),
-      website: z.string()
-    })
-  }),
-  concurrencyLimit: screenshotConcurrencyLimit,
-  run: async (payload, io, ctx)=>{
-    const result = await io.waitForRequest<ScreenshotResponse>(
-      `call-indiehackers-screenshot`,
-      async (webhook_url) => {
-        await fetch(`https://api.screenshotone.com/take`, {
-          method: 'post',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(getScreenshotOneParams(payload.website, payload.uuid, webhook_url))
-        })
-      },
-      {
-        timeoutInSeconds: 300
-      }
-    )
-    if(result.store.location) {
-      await db.update(indiehackers).set({webp: true}).where(eq(indiehackers.uuid, payload.uuid));
-
-      await triggerCommonJobs(io, payload.uuid, "indiehackers");
-
-      return {
-        payload: payload,
-        result: result.store
-      }
-    }else{
-      throw Error(`screenshot failed, ${result}`);
-    }
-  }
-})
