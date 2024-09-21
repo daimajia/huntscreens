@@ -1,20 +1,21 @@
 import { db } from "@/db/db";
-import { Producthunt, producthunt } from "@/db/schema";
-import { gt } from "drizzle-orm";
+import { desc, sql } from "drizzle-orm";
 import Logo from "@/components/logo";
 import { Link } from "@/i18n/routing";
 import { ThumbsUpIcon } from "lucide-react";
-import redis from "@/db/redis";
-import { urlMapper } from "@/types/product.types";
+import { ProductTypes, urlMapper } from "@/types/product.types";
 import { getTranslations } from "next-intl/server";
 import { SupportedLangs } from "@/i18n/types";
 import { useLocale } from "next-intl";
-import MiniImageLoader, { MiniLogoLoader } from "@/components/ui-custom/mini.image.loader";
+import { Product, products } from "@/db/schema";
+import { ProductHuntMetadata } from "@/db/schema/types";
+import redis from "@/db/redis";
 
-const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
+const WeeklyTopCard = ({ product }: { product: Product }) => {
   const locale = useLocale() as SupportedLangs;
+  const metadata = product.metadata as ProductHuntMetadata;
   return <>
-    <Link href={urlMapper["ph"](product.id)}>
+    <Link href={urlMapper[product.itemType as ProductTypes](product.id || 0)}>
       <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
         <div className="flex flex-row gap-5 items-center w-full">
           <div className="w-10 h-10 ">
@@ -27,7 +28,7 @@ const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
               </div>
               <div className="flex items-center gap-1">
                 <ThumbsUpIcon size={16} className="text-muted-foreground" />
-                <span className="text-muted-foreground">{product.votesCount}</span>
+                <span className="text-muted-foreground">{metadata.votesCount}</span>
               </div>
             </div>
             <div className="w-full">
@@ -42,22 +43,26 @@ const WeeklyTopCard = ({ product }: { product: Producthunt }) => {
   </>
 }
 
-async function getWeeklyTop() {
-  const cached = await redis.get("weekly_top");
-  if (cached) {
-    return JSON.parse(cached) as Producthunt[];
+const getWeeklyTopProducts = async (limit: number = 10) => {
+  const cacheKey = 'weekly_top_v2';
+  const cachedData = await redis.get(cacheKey);
+  if (cachedData) {
+    return JSON.parse(cachedData as string) as Product[];
   }
-  const weeklyTops = await db.query.producthunt.findMany({
-    orderBy: (producthunt, { desc }) => [desc(producthunt.votesCount)],
-    limit: 10,
-    where: gt(producthunt.createdAt, new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
-  });
-  await redis.set("weekly_top", JSON.stringify(weeklyTops), "EX", 60 * 60 * 24 * 1);
-  return weeklyTops as Producthunt[];
-}
+  const weeklyTopProducts = await db
+    .select()
+    .from(products)
+    .where(
+      sql`${products.itemType} = 'ph' AND ${products.added_at} >= NOW() - INTERVAL '7 days'`
+    )
+    .orderBy(desc(sql`(${products.metadata}->>'votesCount')::INTEGER`))
+    .limit(limit);
+  await redis.setex(cacheKey, 36000, JSON.stringify(weeklyTopProducts));
+  return weeklyTopProducts;
+};
 
 export default async function WeeklyTop() {
-  const weeklyTops = await getWeeklyTop();
+  const weeklyTops = await getWeeklyTopProducts();
   const t = await getTranslations('Showcase');
   return <div>
     <h2 className="text-2xl font-bold mb-5">{t("WeeklyTop")}</h2>

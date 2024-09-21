@@ -30,7 +30,7 @@ export default async function SimilarProducts({uuid, name, description }: Simila
           itemType={product.itemType as ProductTypes}
           name={product.name}
           website={product.website}
-          description={product.description}
+          description={product.description || ""}
           thumb_url={product.thumb_url || ""}
         />
       ))}

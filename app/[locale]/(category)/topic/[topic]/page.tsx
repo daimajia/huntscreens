@@ -2,7 +2,6 @@ import MiniCardLoading from "@/components/ui-custom/skeleton/minicard.loading";
 import { Suspense } from "react";
 import { getTopicProducts } from "@/lib/api/query.category";
 import MiniCard from "@/components/category/mini.card";
-import { JustLaunchedProduct } from "@/types/product.types";
 import { getLocale, getTranslations } from "next-intl/server";
 import { locales, SupportedLangs } from "@/i18n/types";
 import Footer from "@/components/layout/footer";
@@ -53,7 +52,7 @@ export async function generateMetadata({ params, searchParams }: {
 
 export default async function TopicPage({ params, searchParams }: { params: { topic: string }, searchParams: { page?: string } }) {
   const page = parseInt(searchParams.page || '1');
-  const { products, totalCount, totalPages } = await getTopicProducts(params.topic, page, 30);
+  const { allProducts: products, totalCount, totalPages } = await getTopicProducts(params.topic, page, 30);
   const t = await getTranslations("Categories");
   const locale = await getLocale() as SupportedLangs;
   const topics = products.length > 0 ? products[0].categories?.topics : null;
@@ -84,7 +83,7 @@ export default async function TopicPage({ params, searchParams }: { params: { to
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 py-5">
                 {
                   products.map(product => (
-                    <MiniCard key={product.id} locale={locale} product={product as unknown as JustLaunchedProduct} />
+                    <MiniCard key={product.id} locale={locale} product={product} />
                   ))
                 }
               </div>
