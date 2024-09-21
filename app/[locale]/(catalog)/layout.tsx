@@ -4,7 +4,6 @@ import SubscribeButton from '@/components/ui-custom/subscribe.button';
 import underline from "/public/underline.svg";
 import { getCurrentUser } from '@/lib/user';
 import LoomFlowsWidget from '@/components/thirdparties/loomflow';
-import getUpdateCounts from '@/lib/api/query.updatecount';
 import { getTranslations } from 'next-intl/server';
 
 export const revalidate = 0;
@@ -15,7 +14,6 @@ export default async function Home({
   children: React.ReactNode
 }) {
   const user = await getCurrentUser();
-  const updateCounts = await getUpdateCounts();
   const t = await getTranslations("Home");
   return (
     <>
