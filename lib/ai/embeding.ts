@@ -3,8 +3,7 @@ import { db } from "@/db/db";
 import { embeddings, EmbeddingWithSimilarity } from "@/db/schema/embeddings";
 import { cosineDistance, desc, gt, sql, eq } from "drizzle-orm";
 import redis from '@/db/redis';
-import { allProducts } from '@/db/schema';
-
+import { products } from '@/db/schema';
 
 let embeddingPipeline: any = null;
 
@@ -41,18 +40,18 @@ export async function findSimilarProducts(uuid: string, description: string, lim
     .select({ 
       itemId: embeddings.itemId,
       itemType: embeddings.itemType,
-      name: allProducts.name,
-      website: allProducts.website,
-      description: allProducts.description,
-      thumb_url: allProducts.thumb_url,
-      tagline: allProducts.tagline,
-      uuid: allProducts.uuid,
-      launch_date: allProducts.launch_date,
-      translations: allProducts.translations,
+      name: products.name,
+      website: products.website,
+      description: products.description,
+      thumb_url: products.thumb_url,
+      tagline: products.tagline,
+      uuid: products.uuid,
+      launch_date: products.launched_at,
+      translations: products.translations,
       similarity: similarity,
     })
     .from(embeddings)
-    .innerJoin(allProducts, eq(embeddings.itemUUID, allProducts.uuid))
+    .innerJoin(products, eq(embeddings.itemUUID, products.uuid))
     .where(gt(similarity, 0.5))
     .orderBy((t) => desc(t.similarity))
     .offset(1)
