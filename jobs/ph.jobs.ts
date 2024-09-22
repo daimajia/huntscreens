@@ -69,16 +69,15 @@ client.defineJob({
   name: "fetch ph newest",
   version: "0.0.5",
   trigger: intervalTrigger({
-    seconds: 600
+    seconds: 6000
   }),
   run: async (payload, io, ctx) => {
     await io.logger.info('start fetch ph newest');
     const edges = await fetchPHPosts();
     for(const element of edges){
 
-
       if(!element.node.website || !element.node.name) {
-        await io.logger.error('product has no website or name, skipping', element.node);
+        await io.logger.error(`product has no website or name, skipping ${element.node.id}`);
         continue;
       }
 
@@ -89,7 +88,6 @@ client.defineJob({
         )
       })
       if(product) {
-        await io.logger.info('product already exists', product);
         continue;
       }
 
@@ -98,17 +96,17 @@ client.defineJob({
       })
 
       if(websitedup) {
-        await io.logger.info('product with website already exists', websitedup);
+        await io.logger.info(`product with website already exists ${websitedup.id}`);
         continue;
       }
 
-      await io.logger.info('product does not exist, inserting', element.node);
+      await io.logger.info(`product does not exist, inserting ${element.node.id}`);
 
       try{
         const resp = await fetch(element.node.website);
         element.node.website = removeUrlParams(resp.url, 'ref');
       }catch(e){
-        await io.logger.error('website has issues, can not fetch the real url, skipping', element.node);
+        await io.logger.error(`website has issues, can not fetch the real url, skipping ${element.node.id}`, element.node);
         continue;
       }
       

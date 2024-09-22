@@ -19,7 +19,7 @@ client.defineJob({
     for(const product of ids){
 
       if(!product.id || !product.website || !product.name) {
-        await io.logger.error('product has no id, website or name, skipping', product);
+        await io.logger.error(`product has no id, website or name, skipping ${new Date().toISOString()}`, product);
         continue;
       }
 
@@ -31,7 +31,7 @@ client.defineJob({
       });
 
       if(productExist) {
-        await io.logger.info('product already exists', productExist);
+        await io.logger.info(`product already exists ${productExist.id}`);
         continue;
       }
 
@@ -40,7 +40,7 @@ client.defineJob({
       });
 
       if(websiteExist) {
-        await io.logger.info('product already exists', websiteExist);
+        await io.logger.info(`product already exists ${websiteExist.id}`);
         continue;
       }
 

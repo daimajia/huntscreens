@@ -19,7 +19,7 @@ client.defineJob({
     const ycCompanies = await fethcYCLatestCompanies();
     for(const company of ycCompanies){
       if(!company.id || !company.name || !company.website) {
-        await io.logger.error('company has no id, name or website, skipping', company);
+        await io.logger.info(`company has no id, name or website, skipping ${new Date().toISOString()}`);
         continue;
       }
       
@@ -30,7 +30,7 @@ client.defineJob({
         )
       });
       if(exist) {
-        await io.logger.info('company already exists', company);
+        await io.logger.info(`company already exists ${company.id}`);
         continue;
       }
 
@@ -39,7 +39,7 @@ client.defineJob({
       });
 
       if(websiteExist) {
-        await io.logger.info('company website already exists', company);
+        await io.logger.info(`company website already exists ${company.id}`);
         continue;
       }
 
