@@ -69,7 +69,7 @@ client.defineJob({
   name: "fetch ph newest",
   version: "0.0.5",
   trigger: intervalTrigger({
-    seconds: 6000
+    seconds: 15 * 60
   }),
   run: async (payload, io, ctx) => {
     await io.logger.info('start fetch ph newest');

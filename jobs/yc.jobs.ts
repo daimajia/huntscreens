@@ -4,9 +4,6 @@ import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import { fethcYCLatestCompanies } from "@/lib/yc";
 import { products } from "@/db/schema";
-import slugify from "slugify";
-import { parseDate } from "@/lib/utils/time";
-import { YCMetadata } from "@/db/schema/types";
 
 client.defineJob({
   id: "Schedule YC Latest Portfolio",
@@ -43,23 +40,7 @@ client.defineJob({
         continue;
       }
 
-      const inserted = await db.insert(products).values({
-          id: company.id,
-          name: company.name,
-          slug: company.slug || slugify(company.name),
-          tagline: company.tagline || "",
-          description: company.description || "",
-          website: company.website,
-          itemType: 'yc',
-          thumb_url: company.thumb_url,
-          launched_at: company.launched_at ? new Date(company.launched_at) : new Date(),
-          metadata: {
-            batch: company.batch,
-            team_size: company.team_size || 0,
-            status: company.status,
-            launched_at: company.launched_at ? parseDate(company.launched_at) : new Date(),
-          } as YCMetadata
-        }).returning();
+      const inserted = await db.insert(products).values(company).returning();
 
         await io.sendEvent(`take ${company.website} screenshot`, {
           name: "take.product.screenshot",

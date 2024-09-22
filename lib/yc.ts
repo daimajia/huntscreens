@@ -1,5 +1,7 @@
-import { NewYC } from "@/db/schema/yc";
+import { NewProduct } from "@/db/schema";
+import { YCMetadata } from "@/db/schema/types";
 import algoliasearch from "algoliasearch";
+import slugify from "slugify";
 
 type RawYCJSON = {
   name: string;
@@ -34,7 +36,7 @@ type RawYCJSON = {
   objectID: string;
 };
 
-export async function fethcYCLatestCompanies(page=0): Promise<NewYC[]> {
+export async function fethcYCLatestCompanies(page=0): Promise<NewProduct[]> {
   const client = algoliasearch("45BWZJ1SGC", "MjBjYjRiMzY0NzdhZWY0NjExY2NhZjYxMGIxYjc2MTAwNWFkNTkwNTc4NjgxYjU0YzFhYTY2ZGQ5OGY5NDMxZnJlc3RyaWN0SW5kaWNlcz0lNUIlMjJZQ0NvbXBhbnlfcHJvZHVjdGlvbiUyMiUyQyUyMllDQ29tcGFueV9CeV9MYXVuY2hfRGF0ZV9wcm9kdWN0aW9uJTIyJTVEJnRhZ0ZpbHRlcnM9JTVCJTIyeWNkY19wdWJsaWMlMjIlNUQmYW5hbHl0aWNzVGFncz0lNUIlMjJ5Y2RjJTIyJTVE");
   const index = client.initIndex("YCCompany_By_Launch_Date_production");
   const results = await index.search<RawYCJSON>("", {
@@ -44,29 +46,25 @@ export async function fethcYCLatestCompanies(page=0): Promise<NewYC[]> {
   return results.hits.map((item) => convertToYCModel(item));
 }
 
-export function convertToYCModel(company: RawYCJSON): NewYC {
+export function convertToYCModel(company: RawYCJSON): NewProduct {
   return {
+    id: parseInt(company.objectID),
     name: company.name,
-    slug: company.slug,
+    slug: company.slug || slugify(company.name, { lower: true, strict: true, trim: true }),
     tagline: company.one_liner,
-    thumb_url: company.small_logo_thumb_url,
-    website: company.website,
-    batch: company.batch,
-    all_locations: company.all_locations,
     description: company.long_description,
-    team_size: company.team_size,
-    industry: company.industry,
-    subindustry: company.subindustry,
-    launched_at: new Date(company.launched_at * 1000).toISOString(),
-    tags: company.tags,
-    top_company: company.top_company,
-    is_hiring: company.isHiring,
-    nonprofit: company.nonprofit,
-    status: company.status,
-    industries: company.industries,
-    regions: company.regions,
-    stage: company.stage,
-    objectID: company.objectID,
-    itemType: "yc"
-  } as NewYC;
+    website: company.website,
+    itemType: 'yc',
+    thumb_url: company.small_logo_thumb_url,
+    added_at: new Date(),
+    launched_at: new Date(company.launched_at * 1000),
+    webp: false,
+    aiintro: null,
+    metadata: {
+      batch: company.batch,
+      team_size: company.team_size || 0,
+      launched_at: new Date(company.launched_at * 1000),
+      status: company.status,
+    } as YCMetadata
+  };
 }
