@@ -2,12 +2,15 @@ import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
 import { z } from "zod";
 import { db } from "@/db/db";
-import { producthunt, yc, indiehackers, embeddings, taaft } from "@/db/schema";
 import { generateEmbedding } from "@/lib/ai/embeding";
 import { eq } from "drizzle-orm";
+import { embeddings } from "@/db/schema";
+import { ProductTypes } from "@/types/product.types";
+import { visibleProducts } from "@/db/schema/views/visible.products";
+
 const embeddingConcurrencyLimit = client.defineConcurrencyLimit({
   id: `embedding-limit`,
-  limit: 10,
+  limit: 5,
 });
 
 client.defineJob({
@@ -17,39 +20,26 @@ client.defineJob({
   trigger: eventTrigger({
     name: "create.embedding.by.type",
     schema: z.object({
-      productType: z.enum(["ph", "yc", "indiehackers", "taaft"]),
       uuid: z.string(),
     })
   }),
   concurrencyLimit: embeddingConcurrencyLimit,
   run: async (payload, io, ctx) => {
-    const { productType, uuid } = payload;
+    const { uuid } = payload;
     
     let product;
-    switch (productType) {
-      case "ph":
-        product = await db.select().from(producthunt).where(eq(producthunt.uuid, uuid)).limit(1);
-        break;
-      case "yc":
-        product = await db.select().from(yc).where(eq(yc.uuid, uuid)).limit(1);
-        break;
-      case "indiehackers":
-        product = await db.select().from(indiehackers).where(eq(indiehackers.uuid, uuid)).limit(1);
-        break;
-      case "taaft":
-        product = await db.select().from(taaft).where(eq(taaft.uuid, uuid)).limit(1);
-        break;
-    }
+    product = await db.select().from(visibleProducts).where(eq(visibleProducts.uuid, uuid)).limit(1);
 
     if (!product || product.length === 0) {
-      await io.logger.error(`Product not found for ${productType} with UUID ${uuid}`);
+      await io.logger.error(`Product not found for ${uuid}`);
       return { success: false, error: "Product not found" };
     }
 
     const item = product[0];
+    const productType = item.itemType;
 
     if(!item.webp) {
-      await io.logger.error(`Product has no image for ${productType} with UUID ${uuid}`);
+      await io.logger.error(`Product has no image for ${uuid} ${item.name} ${item.website}`);
       return { success: false, error: "Product has no image" };
     }
 
@@ -65,14 +55,14 @@ client.defineJob({
       const embedding = await generateEmbedding(description!);
 
       await db.insert(embeddings).values({
-        name: item.name!,
-        itemType: productType,
-        website: item.website!,
-        description: description!,
+        name: item.name,
+        itemType: productType as ProductTypes,
+        website: item.website,
+        description: description || "",
         embedding: embedding,
-        thumb_url: item.thumb_url,
-        tagline: item.tagline,
-        itemId: item.id,
+        thumb_url: item.thumb_url || "",
+        tagline: item.tagline || "",
+        itemId: item.id || 0,
         itemUUID: uuid,
       });
 

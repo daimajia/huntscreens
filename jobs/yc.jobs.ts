@@ -1,12 +1,13 @@
-import { eventTrigger, intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
+import { intervalTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
-import { z } from "zod";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
-import { yc } from "@/db/schema";
-import { getScreenshotOneParams, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
 import { fethcYCLatestCompanies } from "@/lib/yc";
-import triggerCommonJobs from "./utils";
+import { products } from "@/db/schema";
+import slugify from "slugify";
+import assert from "assert";
+import { parseDate } from "@/lib/utils/time";
+import { YCMetadata } from "@/db/schema/types";
 
 client.defineJob({
   id: "Schedule YC Latest Portfolio",
@@ -18,25 +19,37 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     const ycCompanies = await fethcYCLatestCompanies();
     for(const company of ycCompanies){
-      const exist = await db.query.yc.findFirst({
-        where: eq(yc.objectID, company.objectID!)
+      const exist = await db.query.products.findFirst({
+        where: eq(products.website, company.website)
       });
       if(!exist) {
-        const inserted = await db.insert(yc).values(company).returning();
+        assert(company.id, "company id is required");
+        assert(company.name, "company name is required");
+        assert(company.website, "company url is required");
 
-        await io.sendEvent("add intro" + inserted[0].uuid, {
-          name: "run.ai.intro",
-          payload: {
-            url: inserted[0].website,
-            uuid: inserted[0].uuid,
-            type: "yc"
-          }
-        })
+        const inserted = await db.insert(products).values({
+          id: company.id,
+          name: company.name,
+          slug: company.slug || slugify(company.name),
+          tagline: company.tagline || "",
+          description: company.description || "",
+          website: company.website,
+          itemType: 'yc',
+          thumb_url: company.thumb_url,
+          launched_at: company.launched_at ? new Date(company.launched_at) : new Date(),
+          metadata: {
+            batch: company.batch,
+            team_size: company.team_size || 0,
+            status: company.status,
+            launched_at: company.launched_at ? parseDate(company.launched_at) : new Date(),
+          } as YCMetadata
+        }).returning();
 
         await io.sendEvent(`take ${company.website} screenshot`, {
-          name: "screenshot.yc",
+          name: "take.product.screenshot",
           payload: {
-            id: inserted[0].id
+            url: company.website,
+            uuid: inserted[0].uuid
           }
         })
 
@@ -44,72 +57,3 @@ client.defineJob({
     }
   }
 });
-
-client.defineJob({
-  id: "Trigger YC screenshot events",
-  name: "Trigger yc screenshot events",
-  version: "0.0.1",
-  trigger: invokeTrigger({
-    schema: z.object({
-      from_id: z.number(),
-      end_id: z.number(),
-    })
-  }),
-  run: async(payload, io, ctx) => {
-    for(let i = payload.from_id; i <= payload.end_id; i++) {
-      await io.sendEvent(`screenshot-yc-id-${i}`, {
-        name: "screenshot.yc",
-        payload: {
-          id: i
-        }
-      })
-    }
-  }
-})
-
-client.defineJob({
-  id: "take YC screenshot",
-  name: "take YC screenshot",
-  version: "0.0.1",
-  trigger: eventTrigger({
-    name: "screenshot.yc",
-    schema: z.object({
-      id: z.number()
-    })
-  }),
-  concurrencyLimit: screenshotConcurrencyLimit,
-  run: async (payload, io, ctx)=>{
-    const company = await db.query.yc.findFirst({
-      where: eq(yc.id, payload.id)
-    });
-    if(company && company.status !== "Inactive" && company.webp === false){
-      const result = await io.waitForRequest<ScreenshotResponse>(
-        `call-yc-screenshot`,
-        async (webhook_url) => {
-          await fetch(`https://api.screenshotone.com/take`, {
-            method: 'post',
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(getScreenshotOneParams(company.website, company.uuid, webhook_url))
-          })
-        },
-        {
-          timeoutInSeconds: 300
-        }
-      )
-      if(result.store.location) {
-        await db.update(yc).set({webp: true}).where(eq(yc.id, payload.id));
-
-        await triggerCommonJobs(io, company.uuid, "yc");
-
-        return {
-          payload: payload,
-          result: result.store
-        }
-      }else{
-        throw Error(`screenshot failed, ${result}`);
-      }
-    }
-  }
-})

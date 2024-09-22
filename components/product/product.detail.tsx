@@ -1,14 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import { intro, YC } from "@/db/schema";
-import { ProductModel, ProductTypes, thumbailGetter } from "@/types/product.types";
+import { intro, Product } from "@/db/schema";
+import { ProductTypes } from "@/types/product.types";
 import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import { BreadcrumbItem, SiteBreadcrumbGenerator } from "@/components/ui-custom/breadcrumb";
 import AIIntro from "./ai.intro";
 import { Link } from "@/i18n/routing";
-import YCInfoBadge from "./yc/yc.info.badge";
 import { Badge } from "@/components/ui/badge";
 import SimilarProducts from "./similar.products";
 import Logo from "@/components/logo";
@@ -34,8 +33,8 @@ function stripMarkdown(text: string): string {
     .trim();
 }
 
-async function getBreadcrumbCategoryItems<T extends ProductTypes>(
-  product: ProductModel<T>,
+async function getBreadcrumbCategoryItems(
+  product: Product,
   currentLang: SupportedLangs,
   t: (key: string) => string
 ): Promise<BreadcrumbItem[]> {
@@ -60,14 +59,14 @@ async function getBreadcrumbCategoryItems<T extends ProductTypes>(
 
 export default async function ProductDetailPage<T extends ProductTypes>(props: {
   productType: T,
-  product: ProductModel<T>,
+  product: Product,
   lang?: SupportedLangs
 }) {
   const t = await getTranslations('Showcase');
   const locale = await getLocale() as SupportedLangs;
   const currentLang = props.lang || locale;
   const product = props.product;
-  const thumbnail = thumbailGetter(props.productType, props.product);
+  const thumbnail = product.thumb_url;
   const productIntro = await db.query.intro.findFirst({
     where: and(
       eq(intro.uuid, product.uuid!),
@@ -144,12 +143,6 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
               </div>
             </div>
-
-            {props.productType === "yc" && (
-              <div className="bg-white dark:bg-gray-800 border rounded-lg">
-                <YCInfoBadge yc={(product as YC)} />
-              </div>
-            )}
 
             <div className="md:hidden">
               <Link href={product.website || ""} target="_blank" className="w-full">

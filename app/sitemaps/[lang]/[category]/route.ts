@@ -1,8 +1,8 @@
 import { db } from '@/db/db';
-import { desc, eq } from 'drizzle-orm';
-import { allProducts } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 import { locales, SupportedLangs } from '@/i18n/types';
 import { ProductTypes, productTypes, urlMapper } from '@/types/product.types';
+import { visibleProducts } from '@/db/schema/views/visible.products';
 
 export async function GET(
   request: Request,
@@ -14,12 +14,10 @@ export async function GET(
   }
 
   const items = await db.select({
-    id: allProducts.id,
-    launch_date: allProducts.launch_date
+    id: visibleProducts.id,
+    launch_date: visibleProducts.launched_at
   })
-  .from(allProducts)
-  .where(eq(allProducts.item_type, category))
-  .orderBy(desc(allProducts.launch_date));
+  .from(visibleProducts).where(eq(visibleProducts.itemType, category));
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -27,7 +25,7 @@ export async function GET(
   ${items.map(item => `
     <url>
       <loc>https://huntscreens.com${urlMapper[category](item.id!, lang)}</loc>
-      <lastmod>${item.launch_date?.toISOString() || new Date().toISOString()}</lastmod>
+      <lastmod>${item.launch_date || new Date().toISOString()}</lastmod>
       ${locales.map(locale => `
         <xhtml:link 
            rel="alternate" 

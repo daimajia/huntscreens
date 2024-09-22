@@ -1,13 +1,10 @@
 import { client } from "@/trigger";
 import { cronTrigger, eventTrigger } from "@trigger.dev/sdk";
-import { db } from "@/db/db";
-import { and, desc, eq, gte } from "drizzle-orm";
-import { producthunt } from "@/db/schema/ph";
-import { subHours } from "date-fns";
 import DailyDigestEmail from "@/emails/daily.digest";
 import { z } from "zod";
-import { yc } from "@/db/schema";
+import { queryLatestPHTop10 } from "@/lib/emails/query.latest.top10";
 import { Resend } from "resend";
+import { triggerAsyncId } from "async_hooks";
 
 const resend = new Resend(process.env.RESEND_KEY!);
 
@@ -30,32 +27,15 @@ client.defineJob({
   }),
   concurrencyLimit: resendLimiter,
   run: async (payload, io, ctx) => {
-    const phs = await db.query.producthunt.findMany({
-      where: and(
-        eq(producthunt.webp, true),
-        gte(producthunt.added_at, subHours(new Date(), 24))
-      ),
-      limit: 10,
-      orderBy: [desc(producthunt.votesCount)]
-    })
+    const phs = await queryLatestPHTop10();
     if (phs.length < 10) {
       return "no enough phs";
     }
-    const yc_count = await db.query.yc.findMany({
-      where: and(
-        gte(yc.launched_at, subHours(new Date(), 24).toISOString())
-      )
-    })
-    let subject = 'HuntScreens Daily Digest';
-    if (yc_count.length > 0) {
-      subject = '🚀 YC Launched ' + yc_count.length + ' Companies Today!';
-    }
-
-    await resend.emails.send({
+    await io.triggerResend.emails.send(`send-digest-email-${payload.email}`, {
       to: payload.email,
-      subject: subject,
+      subject: 'HuntScreens Daily Digest',
       from: `HuntScreens Daily Digest <hello@huntscreens.com>`,
-      react: <DailyDigestEmail producthunts={phs} contactId={payload.contactId} yc_count={yc_count.length} />
+      react: <DailyDigestEmail producthunts={phs} contactId={payload.contactId} yc_count={0} />
     });
   }
 })

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { locales, SupportedLangs } from "@/i18n/types";
 import { getCategoryItemCount, getCategoryProducts } from "@/lib/api/query.category";
-import { JustLaunchedProduct } from "@/types/product.types";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
@@ -117,7 +116,7 @@ export default async function MainCategoryPage({ params, searchParams }: {
             </div>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 py-5">
               {products.map((product) => (
-                <MiniCard key={product.uuid} product={product as unknown as JustLaunchedProduct} locale={locale} />
+                <MiniCard key={product.uuid} product={product} locale={locale} />
               ))}
             </div>
             <div className="flex justify-center mt-8 gap-4">

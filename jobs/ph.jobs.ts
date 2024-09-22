@@ -1,15 +1,14 @@
-import { eventTrigger, intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
+import { intervalTrigger, invokeTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
 import { fetchPHPosts, fetchVoteCount } from "@/lib/producthunt";
-import { producthunt } from "@/db/schema/ph";
 import { db } from "@/db/db";
-import { v4 as uuidv4 } from 'uuid';
+import { z } from "zod";
 import { removeUrlParams } from "@/lib/utils/url";
-import { z } from 'zod';
-import { eq, gte } from "drizzle-orm";
+import { and, eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
-import { getScreenshotOneParams, getUsage, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
-import triggerCommonJobs from "./utils";
+import { products } from "@/db/schema";
+import { ProductHuntMetadata } from "@/db/schema/types";
+import slugify from "slugify";
 
 const producthuntConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ph-limit`,
@@ -28,9 +27,14 @@ const updateVoteData = client.defineJob({
   concurrencyLimit: producthuntConcurrencyLimit,
   run: async (payload, io, ctx) =>  {
     const data = await fetchVoteCount(payload.id);
-    await db.update(producthunt)
-          .set({votesCount: data.votesCount, commentCount: data.commentsCount})
-          .where(eq(producthunt.id, payload.id));
+    await db.update(products)
+          .set({
+            metadata: {
+              votesCount: data.votesCount,
+              commentCount: data.commentsCount,
+            } as unknown as ProductHuntMetadata
+          })
+          .where(and(eq(products.id, payload.id), eq(products.itemType, 'ph')));
     return {
       id: payload.id,
       data: data
@@ -46,12 +50,14 @@ client.defineJob({
     seconds: 7200,
   }),
   run: async () => {
-    const posts = await db.query.producthunt.findMany({
-      where: gte(producthunt.featuredAt, subDays(new Date(), 2).toUTCString()),
-      limit: 100
+    const posts = await db.query.products.findMany({
+      where: and(eq(products.itemType, 'ph'), gte(products.added_at, subDays(new Date(), 2)))
     })
+    
     for(const post of posts) {
-      await updateVoteData.invoke("update-vote-" + post.id, {
+      if(!post.id) continue;
+     
+      await updateVoteData.invoke("update-vote-" + post.id , {
         id: post.id
       })
     }
@@ -59,59 +65,9 @@ client.defineJob({
 })
 
 client.defineJob({
-  id: "take ph screenshot",
-  name: "take ph screenshot",
-  version: "0.0.3",
-  trigger: eventTrigger({
-    name: "take.screenshot",
-    schema: z.object({
-      url: z.string().url(),
-      uuid: z.string()
-    })
-  }),
-  concurrencyLimit: screenshotConcurrencyLimit,
-  run: async (payload, io, ctx) => {
-    const screenshotoneUsage = await getUsage();
-    await io.logger.info('Screenshotone Usage', {screenshotoneUsage});
-    if(screenshotoneUsage.available === 0) {
-      throw Error("no screenshotone quota");
-    }
-
-    const result = await io.waitForRequest<ScreenshotResponse>(
-      `call-screenshotone-${payload.uuid}`,
-      async (url) => {
-        await fetch(`https://api.screenshotone.com/take`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(getScreenshotOneParams(payload.url, payload.uuid, url)),
-        })
-      },
-      {
-        timeoutInSeconds: 300
-      }
-    );
-    if(result.store.location) {
-      await io.logger.info('Screenshot successfully:', { payload });
-      await db.update(producthunt).set({webp: true}).where(eq(producthunt.uuid, payload.uuid));
-      
-      await triggerCommonJobs(io, payload.uuid, "ph");
-
-    }else{
-      await io.logger.error('got screenshot error', result);
-    }
-    return {
-      payload: payload,
-      result: result.store
-    };
-  }
-});
-
-client.defineJob({
   id: "fetch-ph-newest",
   name: "fetch ph newest",
-  version: "0.0.4",
+  version: "0.0.5",
   trigger: intervalTrigger({
     seconds: 600
   }),
@@ -119,46 +75,49 @@ client.defineJob({
     await io.logger.info('start fetch ph newest');
     const edges = await fetchPHPosts();
     for(const element of edges){
-      const product = await db.query.producthunt.findFirst({
-        where: eq(producthunt.id, element.node.id)
+      const product = await db.query.products.findFirst({
+        where: eq(products.website, element.node.website!)
       })
       if(!product) {
         console.log(element.node.website);
-        element.node.uuid = uuidv4();
-        
-        if(element.node.website) {
-          try{
-            const resp = await fetch(element.node.website);
-            element.node.website = removeUrlParams(resp.url, 'ref');
-          }catch(e){
-            await io.logger.error('website has issues, can not fetch the real url, skipping', element.node);
-            continue;
-          }
+        if(!element.node.website || !element.node.name) {
+          continue;
+        }
+
+        try{
+          const resp = await fetch(element.node.website);
+          element.node.website = removeUrlParams(resp.url, 'ref');
+        }catch(e){
+          await io.logger.error('website has issues, can not fetch the real url, skipping', element.node);
+          continue;
         }
         
-        element.node.tags = element.node.topics?.nodes.flatMap(topic => topic.name) || [];
         element.node.thumb_url = element.node.thumbnail?.url || "";
 
-        const inserted = await db.insert(producthunt).values(element.node).onConflictDoNothing().returning();
-        
-        await io.sendEvent("add intro" + inserted[0].uuid, {
-          name: "run.ai.intro",
+        const inserted = await db.insert(products).values({
+          id: element.node.id,
+          name: element.node.name,
+          slug: element.node.slug || slugify(element.node.name!),
+          tagline: element.node.tagline || "",
+          description: element.node.description || "",
+          thumb_url: element.node.thumb_url,
+          itemType: 'ph',
+          launched_at: element.node.featuredAt ? new Date(element.node.featuredAt) : new Date(),
+          website: element.node.website,
+          metadata: {
+            votesCount: 0,
+            commentCount: 0,
+            featuredAt: element.node.featuredAt ? new Date(element.node.featuredAt) : new Date()
+          } as ProductHuntMetadata
+        }).onConflictDoNothing().returning();
+      
+        await io.sendEvent("screenshot-"  + element.node.uuid, {
+          name: "take.product.screenshot",
           payload: {
-            url: inserted[0].website,
-            uuid: inserted[0].uuid,
-            type: "ph"
+            url: element.node.website,
+            uuid: inserted[0].uuid
           }
         })
-
-        if(element.node.website){
-          await io.sendEvent("screenshot-"  + element.node.uuid, {
-            name: "take.screenshot",
-            payload: {
-              url: element.node.website,
-              uuid: element.node.uuid
-            }
-          })
-        }
       }
     }
   }

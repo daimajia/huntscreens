@@ -1,17 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import { Link } from "@/i18n/routing";
 import { SupportedLangs } from "@/i18n/types";
-import { JustLaunchedProduct, urlMapper } from "@/types/product.types";
+import { ProductTypes, urlMapper } from "@/types/product.types";
 import MiniScreenshotLoader, { MiniLogoLoader } from "../ui-custom/mini.image.loader";
+import { Product } from "@/db/schema";
 
-const MiniCard = ({ product, locale, isMainContent = true }: { product: JustLaunchedProduct, locale?: SupportedLangs, isMainContent?: boolean }) => {
-  const tagline = product.translations[locale ?? "en"]?.tagline ?? product.tagline;
+const MiniCard = ({ product, locale, isMainContent = true }: { product: Product, locale?: SupportedLangs, isMainContent?: boolean }) => {
+  const tagline =  product.translations?.[locale ?? 'en']?.tagline || product.tagline;
   
   const TitleTag = isMainContent ? 'h2' : 'h3';
   const SubtitleTag = isMainContent ? 'h3' : 'p';
 
   return (
-    <Link href={urlMapper[product.item_type](product.id)} className="block">
+    <Link href={urlMapper[product.itemType as ProductTypes](product.id || 0)} className="block">
       <div className="flex flex-col bg-white border border-gray-200 hover:border-gray-500/40 dark:hover:border-white/50 dark:border-gray-700 h-full dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="relative h-48">
           <MiniScreenshotLoader
@@ -24,19 +25,12 @@ const MiniCard = ({ product, locale, isMainContent = true }: { product: JustLaun
           <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
           <div className="flex border absolute bottom-3 left-3 w-10 h-10 rounded-full border-1 bg-white border-gray-200 shadow-md">
             <MiniLogoLoader
-              src={product.thumb_url}
+              src={product.thumb_url || ""}
               alt={`${product.name} logo`}
               size={40}
               className="rounded-full w-full h-full"
             />
-
           </div>
-          {/* <img
-            className="absolute bottom-3 left-3 w-10 h-10 rounded-full border-1 bg-white border-white shadow-md"
-            src={product.thumb_url}
-            alt={`${product.name} logo`}
-            loading="lazy"
-          /> */}
         </div>
         <div className="p-4 flex flex-col h-full">
           <TitleTag className="font-bold text-base dark:text-gray-100 truncate">{product.name}</TitleTag>

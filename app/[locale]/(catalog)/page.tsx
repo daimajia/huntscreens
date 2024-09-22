@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import Loading from "@/components/ui-custom/skeleton/list.loading";
-import { JustLaunchedProduct } from "@/types/product.types";
 import MiniCard from "@/components/category/mini.card";
 import Categorydata from "@/i18n/custom/categories.json";
 import { PredefinedCategory } from "@/lib/ai/types";
@@ -11,10 +10,11 @@ import { ChevronRightIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import Footer from "@/components/layout/footer";
 import { getBulkCategoryProducts } from "@/lib/api/query.landing";
+import { Product } from "@/db/schema";
 
 type CategorySectionProps = {
   predefinedCategory: PredefinedCategory | undefined;
-  products: JustLaunchedProduct[];
+  products: Product[];
   locale: SupportedLangs;
 }
 
@@ -61,7 +61,7 @@ export default async function IndexPage() {
     <div className='flex flex-col gap-10 w-full'>
       <Suspense fallback={<Loading />}>
         {datapack.map((ps) => (
-          <CategorySection locale={locale as SupportedLangs} key={ps.products[0].uuid} predefinedCategory={Categorydata.find(c => c.slug === ps.mainslug)} products={ps.products as unknown as JustLaunchedProduct[]} />
+          <CategorySection locale={locale as SupportedLangs} key={ps.products[0].uuid} predefinedCategory={Categorydata.find(c => c.slug === ps.mainslug)} products={ps.products} />
         ))}
       </Suspense>
       <Footer />

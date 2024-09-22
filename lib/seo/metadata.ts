@@ -1,22 +1,22 @@
 import { Metadata } from 'next';
 import { db } from "@/db/db";
-import { allProducts } from "@/db/schema/all";
 import { eq, and } from "drizzle-orm";
-import { getProductTable, ProductTypes, urlMapper } from "@/types/product.types";
+import { ProductTypes, urlMapper } from "@/types/product.types";
 import { locales, SupportedLangs } from "@/i18n/types";
 import { SEOContent } from '@/db/schema/types';
 import { generateSEOContent } from '../ai/gemini/seo.generator';
 import redis from '@/db/redis';
+import { products } from '@/db/schema';
 
 export async function generateUniversalMetadata(
   id: number,
   productType: ProductTypes,
   locale: SupportedLangs
 ): Promise<Metadata> {
-  const product = await db.select().from(allProducts).where(
+  const product = await db.select().from(products).where(
     and(
-      eq(allProducts.id, id),
-      eq(allProducts.item_type, productType)
+      eq(products.id, id),
+      eq(products.itemType, productType)
     )
   ).limit(1).then(rows => rows[0]);
 
@@ -72,9 +72,11 @@ export async function generateUniversalMetadata(
 }
 
 export async function getAISEOContent(id: number, productType: ProductTypes, locale: SupportedLangs): Promise<SEOContent> {
-  const table = getProductTable(productType);
-  const product = await db.select().from(table).where(
-    eq(table.id, id)
+  const product = await db.select().from(products).where(
+    and(
+      eq(products.id, id),
+      eq(products.itemType, productType)
+    )
   ).limit(1).then(rows => rows[0]);
 
   if (!product) {
@@ -108,12 +110,17 @@ export async function getAISEOContent(id: number, productType: ProductTypes, loc
   try {
     const seoContent = await generateSEOContent(product.name || '', tagline || '', description || '', locale);
     
-    await db.update(table).set({
+    await db.update(products).set({
       seo: {
         ...product.seo,
         [locale]: seoContent
       }
-    }).where(eq(table.id, id));
+    }).where(
+      and(
+        eq(products.id, id),
+        eq(products.itemType, productType)
+      )
+    );
 
     return seoContent;
   } catch (error) {

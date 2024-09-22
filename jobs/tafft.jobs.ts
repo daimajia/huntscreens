@@ -1,66 +1,17 @@
 import { db } from "@/db/db";
-import { taaft } from "@/db/schema";
-import { getScreenshotOneParams, getUsage, screenshotConcurrencyLimit, ScreenshotResponse } from "@/lib/screenshotone";
+import { products } from "@/db/schema";
+import { TaaftMetadata } from "@/db/schema/types";
 import { fetchTAAFTLatest, fetchTAAFTProductDetails } from "@/lib/theresanaiforthat";
+import { parseDate } from "@/lib/utils/time";
 import { client } from "@/trigger";
 import { eventTrigger, intervalTrigger } from "@trigger.dev/sdk";
 import { eq } from "drizzle-orm";
+import slugify from "slugify";
 import { z } from "zod";
-import triggerCommonJobs from "./utils";
 
 const chromeRunLimitation = client.defineConcurrencyLimit({
   id: `chrome-limit`,
   limit: 1,
-});
-
-
-client.defineJob({
-  id: "take taaft screenshot",
-  name: "take taaft screenshot",
-  version: "0.0.1",
-  trigger: eventTrigger({
-    name: "take.taaft.screenshot",
-    schema: z.object({
-      website: z.string(),
-      uuid: z.string()
-    })
-  }),
-  concurrencyLimit: screenshotConcurrencyLimit,
-  run: async (payload, io, ctx) => {
-    const screenshotoneUsage = await getUsage();
-    await io.logger.info('Screenshotone Usage', {screenshotoneUsage});
-    if(screenshotoneUsage.available === 0) {
-      throw Error("no screenshotone quota");
-    }
-    const result = await io.waitForRequest<ScreenshotResponse>(
-      "call-screenshotone-" + payload.uuid,
-      async (url) => {
-        await fetch(`https://api.screenshotone.com/take`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(getScreenshotOneParams(payload.website, payload.uuid, url)),
-        })
-      },
-      {
-        timeoutInSeconds: 300
-      }
-    )
-    if(result.store.location) {
-      await io.logger.info('Screenshot successfully:', { payload });
-      await db.update(taaft).set({webp: true}).where(eq(taaft.uuid, payload.uuid));
-
-      await triggerCommonJobs(io, payload.uuid, "taaft");
-
-    }else{
-      await io.logger.error('got screenshot error', result);
-    }
-    return {
-      payload: payload,
-      result: result.store
-    };
-  }
 });
 
 client.defineJob({
@@ -76,32 +27,36 @@ client.defineJob({
   concurrencyLimit:chromeRunLimitation,
   run: async (payload, io, ctx)=> {
     const product = await fetchTAAFTProductDetails(payload.taaft_url);
-    const exist = await db.query.taaft.findFirst({
-      where: eq(taaft.website, product.website)
-    })
+    const exist = await db.query.products.findFirst({
+      where: eq(products.website, product.website)
+    });
     if(exist) return "already exists";
-    const inserted = await db.insert(taaft).values(product).returning();
+    const inserted = await db.insert(products).values({
+      id: product.id,
+      name: product.name,
+      slug: slugify(product.name),
+      tagline: product.tagline,
+      description: product.description,
+      website: product.website,
+      itemType: "taaft",
+      thumb_url: product.thumb_url,
+      launched_at: product.added_at ? parseDate(product.added_at) : new Date(),
+      metadata: {
+        savesCount: product.savesCount,
+        commentsCount: product.commentsCount
+      } as TaaftMetadata
+    }).returning();
+
     const uuid = inserted[0].uuid;
 
-
-    await io.sendEvent("add intro" + inserted[0].uuid, {
-      name: "run.ai.intro",
-      payload: {
-        url: inserted[0].website,
-        uuid: inserted[0].uuid,
-        type: "taaft"
-      }
-    })
-
     await io.sendEvent(uuid, {
-      name: "take.taaft.screenshot",
+      name: "take.product.screenshot",
       payload: {
         website: product.website,
         uuid: uuid
       }
     });
 
-    await io.wait("avoid Cloudflare block", 60);
     return {
       uuid: uuid,
       website: product.website
@@ -120,8 +75,8 @@ client.defineJob({
     await io.runTask("fetch-taaft-task", async () => {
       const latest = await fetchTAAFTLatest();
       for(const product of latest){
-        const exist = await db.query.taaft.findFirst({
-          where: eq(taaft.website, product.product_link)
+        const exist = await db.query.products.findFirst({
+          where: eq(products.website, product.product_link)
         });
         if(!exist) {
           await io.sendEvent(product.taaft_link, {

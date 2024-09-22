@@ -10,3 +10,4 @@ export * from "./embedding.jobs";
 export * from "./translate.jobs";
 export * from "./category.jobs";
 export * from "./cron.updater.jobs";
+export * from "./screenshot.job";
