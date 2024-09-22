@@ -7,9 +7,10 @@ import { ProductTypes, urlMapper } from "@/types/product.types";
 import { getTranslations } from "next-intl/server";
 import { SupportedLangs } from "@/i18n/types";
 import { useLocale } from "next-intl";
-import { Product, products } from "@/db/schema";
 import { ProductHuntMetadata } from "@/db/schema/types";
 import redis from "@/db/redis";
+import { visibleProducts } from "@/db/schema/views/visible.products";
+import { Product } from "@/db/schema";
 
 const WeeklyTopCard = ({ product }: { product: Product }) => {
   const locale = useLocale() as SupportedLangs;
@@ -51,11 +52,11 @@ const getWeeklyTopProducts = async (limit: number = 10) => {
   }
   const weeklyTopProducts = await db
     .select()
-    .from(products)
+    .from(visibleProducts)
     .where(
-      sql`${products.itemType} = 'ph' AND ${products.added_at} >= NOW() - INTERVAL '7 days'`
+      sql`${visibleProducts.itemType} = 'ph' AND ${visibleProducts.added_at} >= NOW() - INTERVAL '7 days'`
     )
-    .orderBy(desc(sql`(${products.metadata}->>'votesCount')::INTEGER`))
+    .orderBy(desc(sql`(${visibleProducts.metadata}->>'votesCount')::INTEGER`))
     .limit(limit);
   await redis.setex(cacheKey, 36000, JSON.stringify(weeklyTopProducts));
   return weeklyTopProducts;

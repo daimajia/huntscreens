@@ -1,39 +1,34 @@
 import { db } from "@/db/db";
-import { producthunt, yc, indiehackers, taaft } from "@/db/schema";
-import { SearchResult } from "@/types/search.type";
+import { Product } from "@/db/schema";
+import { visibleProducts } from "@/db/schema/views/visible.products";
 import { sql } from "drizzle-orm";
 
-export async function search(query: string): Promise<SearchResult[]> {
+export async function search(query: string, page: number = 1, pageSize: number = 30): Promise<{ results: Product[], totalCount: number }> {
   const sanitizedQuery = sanitizeQuery(query);
-  
-  const searchResults: SearchResult[] = await db.execute(sql`
-    SELECT id, name, tagline, description, website, thumb_url, uuid, 'ph' as "itemType",
-           GREATEST(similarity(name, ${sanitizedQuery}), similarity(tagline, ${sanitizedQuery})) AS similarity
-    FROM ${producthunt}
-    WHERE (name % ${sanitizedQuery} OR tagline % ${sanitizedQuery} OR description % ${sanitizedQuery})
-      AND webp = true
-    UNION ALL
-    SELECT id, name, tagline, description, website, thumb_url, uuid, 'yc' as "itemType",
-           GREATEST(similarity(name, ${sanitizedQuery}), similarity(tagline, ${sanitizedQuery})) AS similarity
-    FROM ${yc}
-    WHERE (name % ${sanitizedQuery} OR tagline % ${sanitizedQuery} OR description % ${sanitizedQuery})
-      AND webp = true
-    UNION ALL
-    SELECT id, name, tagline, description, website, thumb_url, uuid, 'indiehackers' as "itemType",
-           GREATEST(similarity(name, ${sanitizedQuery}), similarity(tagline, ${sanitizedQuery})) AS similarity
-    FROM ${indiehackers}
-    WHERE (name % ${sanitizedQuery} OR tagline % ${sanitizedQuery} OR description % ${sanitizedQuery})
-      AND webp = true
-    UNION ALL
-    SELECT id, name, tagline, description, website, thumb_url, uuid, 'taaft' as "itemType",
-           GREATEST(similarity(name, ${sanitizedQuery}), similarity(tagline, ${sanitizedQuery})) AS similarity
-    FROM ${taaft}
-    WHERE (name % ${sanitizedQuery} OR tagline % ${sanitizedQuery} OR description % ${sanitizedQuery})
-      AND webp = true
-    ORDER BY similarity DESC
-    LIMIT 50
-  `);
-  return searchResults;
+  const offset = (page - 1) * pageSize;
+
+  const searchQuery = sql`(
+    coalesce(${visibleProducts.name}, '') || ' ' || 
+    coalesce(${visibleProducts.tagline}, '') || ' ' || 
+    coalesce(${visibleProducts.description}, '') || ' ' || 
+    coalesce(${visibleProducts.seo}::text, '') || ' ' || 
+    coalesce(${visibleProducts.categories}::text, '')
+  ) ILIKE ${`%${sanitizedQuery}%`}`;
+
+  const results = await db.select()
+    .from(visibleProducts)
+    .where(searchQuery)
+    .limit(pageSize)
+    .offset(offset);
+
+  const [{ count }] = await db.select({ count: sql<number>`count(*)` })
+    .from(visibleProducts)
+    .where(searchQuery);
+
+  return {
+    results,
+    totalCount: Number(count)
+  };
 }
 
 function sanitizeQuery(query: string): string {
