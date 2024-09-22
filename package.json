@@ -25,8 +25,7 @@
     "openai:alternatives": "tsx lib/ai/gemini/alternatives-openai.ts",
     "gemini:tag": "tsx lib/ai/gemini/tag.generator.ts",
     "db:migrate:tables": "tsx scripts/migrate.tables.ts",
-    "db:latest:top10": "tsx lib/emails/query.latest.top10.ts"
-    "db:categories": "tsx scripts/add.product.categories.ts",
+    "db:latest:top10": "tsx lib/emails/query.latest.top10.ts",
     "redis:migrate": "tsx scripts/migrate.redis.ts"
   },
   "dependencies": {

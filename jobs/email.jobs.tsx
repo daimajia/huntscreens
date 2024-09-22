@@ -4,7 +4,6 @@ import DailyDigestEmail from "@/emails/daily.digest";
 import { z } from "zod";
 import { queryLatestPHTop10 } from "@/lib/emails/query.latest.top10";
 import { Resend } from "resend";
-import { triggerAsyncId } from "async_hooks";
 
 const resend = new Resend(process.env.RESEND_KEY!);
 
@@ -31,7 +30,7 @@ client.defineJob({
     if (phs.length < 10) {
       return "no enough phs";
     }
-    await io.triggerResend.emails.send(`send-digest-email-${payload.email}`, {
+    await resend.emails.send({
       to: payload.email,
       subject: 'HuntScreens Daily Digest',
       from: `HuntScreens Daily Digest <hello@huntscreens.com>`,
