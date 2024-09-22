@@ -1,11 +1,10 @@
 import { intervalTrigger } from "@trigger.dev/sdk";
 import { client } from "../trigger";
 import { db } from "@/db/db";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { fethcYCLatestCompanies } from "@/lib/yc";
 import { products } from "@/db/schema";
 import slugify from "slugify";
-import assert from "assert";
 import { parseDate } from "@/lib/utils/time";
 import { YCMetadata } from "@/db/schema/types";
 
@@ -19,15 +18,32 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     const ycCompanies = await fethcYCLatestCompanies();
     for(const company of ycCompanies){
+      if(!company.id || !company.name || !company.website) {
+        await io.logger.error('company has no id, name or website, skipping', company);
+        continue;
+      }
+      
       const exist = await db.query.products.findFirst({
+        where: and(
+          eq(products.itemType, 'yc'),
+          eq(products.id, company.id)
+        )
+      });
+      if(exist) {
+        await io.logger.info('company already exists', company);
+        continue;
+      }
+
+      const websiteExist = await db.query.products.findFirst({
         where: eq(products.website, company.website)
       });
-      if(!exist) {
-        assert(company.id, "company id is required");
-        assert(company.name, "company name is required");
-        assert(company.website, "company url is required");
 
-        const inserted = await db.insert(products).values({
+      if(websiteExist) {
+        await io.logger.info('company website already exists', company);
+        continue;
+      }
+
+      const inserted = await db.insert(products).values({
           id: company.id,
           name: company.name,
           slug: company.slug || slugify(company.name),
@@ -56,4 +72,4 @@ client.defineJob({
       }
     }
   }
-});
+);
