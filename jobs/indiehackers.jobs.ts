@@ -55,8 +55,8 @@ client.defineJob({
         thumb_url: product.thumb_url || "",
         launched_at: product.added_at || new Date(),
         metadata: {
-          revenue: product.revenue,
-          followers: product.followers
+          revenue: (product.metadata as IndieHackersMetadata)?.revenue || 0,
+          followers: (product.metadata as IndieHackersMetadata)?.followers || 0
         } as IndieHackersMetadata
       }).returning();
 

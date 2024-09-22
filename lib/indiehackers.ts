@@ -1,5 +1,7 @@
-import { NewIndieHackers } from "@/db/schema/indiehackers";
+import { NewProduct } from "@/db/schema";
+import { IndieHackersMetadata } from "@/db/schema/types";
 import algoliasearch from "algoliasearch";
+import slugify from "slugify"; // Assuming slugify is imported from a library
 
 type RawIndieHackersJSON = {
   _tags: string[];
@@ -26,28 +28,28 @@ type RawIndieHackersJSON = {
   objectID: string;
 }
 
-function convertToIndieHackerModel(raw: RawIndieHackersJSON): NewIndieHackers {
+function convertToIndieHackerModel(raw: RawIndieHackersJSON): NewProduct {
+  console.log(raw);
   return {
     name: raw.name,
-    tags: raw._tags,
-    thumbnail: raw.avatarUrl,
-    website: raw.websiteUrl,
+    slug: slugify(raw.name, { lower: true, strict: true, trim: true }),
     tagline: raw.tagline,
     description: raw.description,
-    objectId: raw.objectID,
-    revenue: raw.revenue || 0,
-    followers: raw.numFollowers || 0,
-    twitterHandle: raw.twitterHandle || null,
-    userIds: raw.userIds || [],
-    startDate: raw.startDateStr,
-    region: raw.region || null,
-    added_at: new Date(raw.approvedTimestamp),
+    website: raw.websiteUrl,
     itemType: "indiehackers",
     thumb_url: raw.avatarUrl,
-  } as NewIndieHackers;
+    added_at: new Date(raw.approvedTimestamp),
+    launched_at: new Date(raw.approvedTimestamp),
+    webp: false,
+    aiintro: null,
+    metadata: {
+      revenue: raw.revenue || 0,
+      followers: raw.numFollowers || 0,
+    } as IndieHackersMetadata,
+  };
 }
 
-export async function getIndiehackersProducts(page=0): Promise<NewIndieHackers[]> {
+export async function getIndiehackersProducts(page=0): Promise<NewProduct[]> {
   const client = algoliasearch("N86T1R3OWZ", "5140dac5e87f47346abbda1a34ee70c3");
   const index = client.initIndex("products");
   const results = await index.search<RawIndieHackersJSON>("", {
