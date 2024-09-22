@@ -75,50 +75,69 @@ client.defineJob({
     await io.logger.info('start fetch ph newest');
     const edges = await fetchPHPosts();
     for(const element of edges){
-      const product = await db.query.products.findFirst({
-        where: eq(products.website, element.node.website!)
-      })
-      if(!product) {
-        console.log(element.node.website);
-        if(!element.node.website || !element.node.name) {
-          continue;
-        }
 
-        try{
-          const resp = await fetch(element.node.website);
-          element.node.website = removeUrlParams(resp.url, 'ref');
-        }catch(e){
-          await io.logger.error('website has issues, can not fetch the real url, skipping', element.node);
-          continue;
-        }
-        
-        element.node.thumb_url = element.node.thumbnail?.url || "";
 
-        const inserted = await db.insert(products).values({
-          id: element.node.id,
-          name: element.node.name,
-          slug: element.node.slug || slugify(element.node.name!),
-          tagline: element.node.tagline || "",
-          description: element.node.description || "",
-          thumb_url: element.node.thumb_url,
-          itemType: 'ph',
-          launched_at: element.node.featuredAt ? new Date(element.node.featuredAt) : new Date(),
-          website: element.node.website,
-          metadata: {
-            votesCount: 0,
-            commentCount: 0,
-            featuredAt: element.node.featuredAt ? new Date(element.node.featuredAt) : new Date()
-          } as ProductHuntMetadata
-        }).onConflictDoNothing().returning();
-      
-        await io.sendEvent("screenshot-"  + inserted[0].uuid, {
-          name: "take.product.screenshot",
-          payload: {
-            url: element.node.website,
-            uuid: inserted[0].uuid
-          }
-        })
+      if(!element.node.website || !element.node.name) {
+        await io.logger.error('product has no website or name, skipping', element.node);
+        continue;
       }
+
+      const product = await db.query.products.findFirst({
+        where: and(
+          eq(products.itemType, 'ph'), 
+          eq(products.id, element.node.id)
+        )
+      })
+      if(product) {
+        await io.logger.info('product already exists', product);
+        continue;
+      }
+
+      const websitedup = await db.query.products.findFirst({
+        where: eq(products.website, element.node.website)
+      })
+
+      if(websitedup) {
+        await io.logger.info('product with website already exists', websitedup);
+        continue;
+      }
+
+      await io.logger.info('product does not exist, inserting', element.node);
+
+      try{
+        const resp = await fetch(element.node.website);
+        element.node.website = removeUrlParams(resp.url, 'ref');
+      }catch(e){
+        await io.logger.error('website has issues, can not fetch the real url, skipping', element.node);
+        continue;
+      }
+      
+      element.node.thumb_url = element.node.thumbnail?.url || "";
+
+      const inserted = await db.insert(products).values({
+        id: element.node.id,
+        name: element.node.name,
+        slug: element.node.slug || slugify(element.node.name!),
+        tagline: element.node.tagline || "",
+        description: element.node.description || "",
+        thumb_url: element.node.thumb_url,
+        itemType: 'ph',
+        launched_at: element.node.featuredAt ? new Date(element.node.featuredAt) : new Date(),
+        website: element.node.website,
+        metadata: {
+          votesCount: 0,
+          commentCount: 0,
+          featuredAt: element.node.featuredAt ? new Date(element.node.featuredAt) : new Date()
+        } as ProductHuntMetadata
+      }).onConflictDoNothing().returning();
+    
+      await io.sendEvent("screenshot-"  + inserted[0].uuid, {
+        name: "take.product.screenshot",
+        payload: {
+          url: element.node.website,
+        uuid: inserted[0].uuid
+      }
+      })
     }
   }
 });
