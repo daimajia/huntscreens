@@ -111,7 +111,7 @@ client.defineJob({
           } as ProductHuntMetadata
         }).onConflictDoNothing().returning();
       
-        await io.sendEvent("screenshot-"  + element.node.uuid, {
+        await io.sendEvent("screenshot-"  + inserted[0].uuid, {
           name: "take.product.screenshot",
           payload: {
             url: element.node.website,

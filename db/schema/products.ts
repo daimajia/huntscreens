@@ -30,7 +30,8 @@ export const products = pgTable("products", {
 }, (table) => ({
   uuidIndex: index('product_uuid_index').on(table.uuid),
   addedAtIndex: index('product_added_at_index').on(table.added_at),
+  launcedAtIndex: index('product_launched_at_index').on(table.launched_at),
   itemTypeIndex: index('product_item_type_index').on(table.itemType),
-  webpIndex: index('product_webp_index').on(table.webp),
-  categoriesTopicIndex: index('product_categories_gin_index').using('gin', sql`categories->'topics'->'slug' jsonb_path_ops`),
+  idIndex: index('product_id_index').on(table.id),
+  webpIndex: index('product_webp_index').on(table.webp)
 }));
