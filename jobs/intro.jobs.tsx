@@ -64,7 +64,6 @@ export const addIntroJob = client.defineJob({
             uuid: payload.uuid
           }
         })
-        await redis.set(`AI:Success:${payload.uuid}`, `{aiintro: ${markdown}}`);
         return { aiintro: markdown };
       } catch (e) {
         await redis.set(`AI:Error:${payload.uuid}`, (e as Error).message);
