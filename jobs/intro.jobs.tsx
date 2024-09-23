@@ -1,8 +1,8 @@
 import { db } from "@/db/db";
 
 import redis from "@/db/redis";
-import { intro, products } from "@/db/schema";
-import { getURLAiIntro } from "@/lib/ai/intro";
+import { intro, visibleProducts } from "@/db/schema";
+import { getIntroFromScreenshot } from "@/lib/ai/intro";
 import { generateRandomString } from "@/lib/crypto/random";
 import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
@@ -39,18 +39,23 @@ export const addIntroJob = client.defineJob({
       return "Already Error:" + wasError;
     } else {
       try {
-        const allProducts = await db.select().from(products).where(eq(products.uuid, payload.uuid));
-        const product = allProducts[0];
+        const product = await db.select().from(visibleProducts).where(eq(visibleProducts.uuid, payload.uuid)).then(rows => rows[0]);
 
-        const { aiintro, prompt } = await getURLAiIntro(product.website);
-        const deleted = blackKeywords.some(keyword => aiintro.includes(keyword))
+        if(!product) {
+          return "Product not found";
+        }
+        if(product.webp === false) {
+          return "No screenshot found";
+        }
+
+        const markdown = await getIntroFromScreenshot(`${process.env.NEXT_PUBLIC_APP_URL}/${product.uuid}.webp`, product.name, product.website);
         await db.insert(intro).values({
           website: product.website,
           uuid: product.uuid,
-          description: aiintro,
+          description: markdown,
           type: product.itemType,
-          version: "0.0.2",
-          deleted: deleted
+          version: "0.0.3",
+          deleted: false
         });
         
         await io.sendEvent(payload.uuid + " run translate " + generateRandomString(5), {
@@ -59,8 +64,8 @@ export const addIntroJob = client.defineJob({
             uuid: payload.uuid
           }
         })
-        await redis.set(`AI:Success:${payload.uuid}`, `{aiintro: ${aiintro}, prompt: ${prompt}}`);
-        return { aiintro: aiintro, prompt: prompt };
+        await redis.set(`AI:Success:${payload.uuid}`, `{aiintro: ${markdown}}`);
+        return { aiintro: markdown };
       } catch (e) {
         await redis.set(`AI:Error:${payload.uuid}`, (e as Error).message);
         return `AI:Error:${payload.uuid} Error: ${(e as Error).message}`;
