@@ -7,3 +7,4 @@ export * from "./favorite";
 export * from "./intros";
 export * from "./embeddings";
 export * from "./products";
+export * from "./views/visible.products";
