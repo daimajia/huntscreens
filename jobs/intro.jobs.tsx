@@ -48,7 +48,7 @@ export const addIntroJob = client.defineJob({
           return "No screenshot found";
         }
 
-        const markdown = await getIntroFromScreenshot(`${process.env.NEXT_PUBLIC_APP_URL}/${product.uuid}.webp`, product.name, product.website);
+        const markdown = await getIntroFromScreenshot(`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product.uuid}.webp`, product.name, product.website);
         await db.insert(intro).values({
           website: product.website,
           uuid: product.uuid,
