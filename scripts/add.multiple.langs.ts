@@ -1,12 +1,12 @@
 import { db } from "@/db/db";
-import { producthunt, yc, indiehackers, taaft, intro } from "@/db/schema";
+import { intro, products } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { locales, SupportedLangs } from "@/i18n/types";
-import { ProductTypes } from "@/types/product.types";
 import { translateByGemini } from "@/lib/ai/gemini";
 import { TranslationContent } from "@/db/schema/types";
 import redis from "@/db/redis";
 import pLimit from 'p-limit';
+import { visibleProducts } from "@/db/schema/views/visible.products";
 
 const MAX_FAILURES = 15;
 const REDIS_KEY_PREFIX = "translation_failure:";
@@ -17,13 +17,13 @@ async function translateWithoutRetry(text: string, targetLanguages: SupportedLan
   return await translateByGemini({ json: contentToTranslate, targetLanguages });
 }
 
-async function translateAndUpdateProduct(table: any, itemType: ProductTypes) {
-  const items = (await db.select().from(table).where(eq(table.translations, {})));
+async function translateAndUpdateProduct() {
+  const items = (await db.select().from(visibleProducts).where(eq(visibleProducts.translations, {})));
   const limit = pLimit(10); 
   let consecutiveFailures = 0;
   
   const updateTasks = items.map(item => limit(async () => {
-    console.log(`Processing ${itemType} item: ${item.name}`);
+    console.log(`Processing item: ${item.name}`);
     
     const aiIntro = await db.query.intro.findFirst({
       where: eq(intro.uuid, item.uuid)
@@ -41,7 +41,7 @@ async function translateAndUpdateProduct(table: any, itemType: ProductTypes) {
     );
 
     if (missingLanguages.length === 0) {
-      console.log(`All translations exist for ${itemType} item: ${item.name}. Skipping.`);
+      console.log(`All translations exist for item: ${item.name}. Skipping.`);
       return;
     }
 
@@ -52,14 +52,14 @@ async function translateAndUpdateProduct(table: any, itemType: ProductTypes) {
 
     for (let i = 0; i < missingLanguages.length; i += maxLanguagesPerBatch) {
       const languageBatch = missingLanguages.slice(i, i + maxLanguagesPerBatch);
-      console.log(`Translating batch for ${itemType} item: ${item.name}`);
+      console.log(`Translating batch for item: ${item.name}`);
       try {
         const translatedContent = await translateWithoutRetry(JSON.stringify(contentToTranslate), languageBatch);
         Object.assign(newTranslations, translatedContent);
         consecutiveFailures = 0;
       } catch (error) {
-        console.error(`Failed to translate batch for ${itemType} item: ${item.name}. Skipping this batch.`);
-        await redis.set(`${REDIS_KEY_PREFIX}${itemType}:${item.uuid}`, JSON.stringify({
+        console.error(`Failed to translate batch for item: ${item.name}. Skipping this batch.`);
+        await redis.set(`${REDIS_KEY_PREFIX}${item.itemType}:${item.uuid}`, JSON.stringify({
           error: error instanceof Error ? error.message : String(error),
           contentToTranslate,
           languageBatch,
@@ -69,7 +69,7 @@ async function translateAndUpdateProduct(table: any, itemType: ProductTypes) {
         
         if (consecutiveFailures >= MAX_FAILURES) {
           console.error(`Reached ${MAX_FAILURES} consecutive failures. Stopping the process.`);
-          throw new Error(`Max consecutive failures reached for ${itemType}`);
+          throw new Error(`Max consecutive failures reached for ${item.itemType}`);
         }
         
         continue;
@@ -77,26 +77,26 @@ async function translateAndUpdateProduct(table: any, itemType: ProductTypes) {
     }
 
     if (Object.keys(newTranslations).length === 0) {
-      console.log(`No new translations for ${itemType} item: ${item.name}. Skipping update.`);
+      console.log(`No new translations for item: ${item.name}. Skipping update.`);
       return;
     }
   
     const updatedTranslations = { ...existingTranslations, ...newTranslations };
 
     try {
-      await db.update(table).set({
+      await db.update(products).set({
         translations: updatedTranslations
-      }).where(eq(table.uuid, item.uuid));
-      console.log(`Updated translations for ${itemType} item: ${item.name}`);
+      }).where(eq(products.uuid, item.uuid));
+      console.log(`Updated translations for item: ${item.name}`);
     } catch (error) {
-      console.error(`Failed to update translations for ${itemType} item: ${item.name}:`, error);
+      console.error(`Failed to update translations for item: ${item.name}:`, error);
     }
   }));
 
   try {
     await Promise.all(updateTasks);
   } catch (error) {
-    console.error(`Error in translateAndUpdateProduct for ${itemType}:`, error);
+    console.error(`Error in translateAndUpdateProduct`, error);
   }
 }
 
@@ -105,15 +105,9 @@ async function translateAllProducts() {
 
   const limit = pLimit(CONCURRENCY_LIMIT);
 
-  const tasks = [
-    limit(() => translateAndUpdateProduct(producthunt, "ph")),
-    limit(() => translateAndUpdateProduct(yc, "yc")),
-    limit(() => translateAndUpdateProduct(indiehackers, "indiehackers")),
-    limit(() => translateAndUpdateProduct(taaft, "taaft"))
-  ];
 
   try {
-    await Promise.all(tasks);
+    await translateAndUpdateProduct();
     console.log("Translation process completed!");
   } catch (error) {
     console.error("An error occurred during the translation process:", error);
