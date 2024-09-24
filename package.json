@@ -26,13 +26,17 @@
     "gemini:tag": "tsx lib/ai/gemini/tag.generator.ts",
     "db:migrate:tables": "tsx scripts/migrate.tables.ts",
     "db:latest:top10": "tsx lib/emails/query.latest.top10.ts",
-    "redis:migrate": "tsx scripts/migrate.redis.ts"
+    "redis:migrate": "tsx scripts/migrate.redis.ts",
+    "redis:aiintro": "tsx scripts/run.aiintro.ts",
+    "qdrant:test": "tsx __tests__/qdrant.test.ts",
+    "qdrant:index:products": "tsx scripts/index.products.vectors.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.60",
     "@anthropic-ai/sdk": "^0.27.3",
     "@google/generative-ai": "^0.17.1",
     "@logto/next": "^3.3.4",
+    "@qdrant/js-client-rest": "^1.11.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.1.0",
