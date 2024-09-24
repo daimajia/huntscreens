@@ -1,8 +1,9 @@
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
-import { visibleProducts } from '@/db/schema';
+import { Product, visibleProducts } from '@/db/schema';
 import assert from 'assert';
 import qdrantClient, { collectionName } from "@/db/qdrant/qdrant";
+import redis from "@/db/redis";
 
 export async function generateEmbedding(text: string): Promise<number[]> {
   assert(process.env.EMBEDDING_URL, "EMBEDDING_URL is not set");
@@ -18,7 +19,27 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   return data.embeddings[0];
 }
 
-export async function getProductEmbedding(uuid: string) {
+async function getEmbeddingByProduct(product: Product) {
+  const items = await qdrantClient.retrieve(collectionName, {
+    ids: [product.uuid],
+    with_vector: true,
+  });
+
+  if(items.length > 0) {
+    return items[0].vector as number[];
+  }
+
+  const name = product.name;
+  const title = product.seo?.en?.title;
+  const description = product.seo?.en?.description || product.description;
+  const tagline = product.tagline;
+  const keywords = product.seo?.en?.keywords || "";
+  const website = product.website;
+  const embedding = await generateEmbedding(`${name} ${title} ${description} ${tagline} ${keywords} ${website}`);
+  return embedding;
+}
+
+async function getEmbeddingByUUID(uuid: string) {
   const results = await db.select().from(visibleProducts).where(eq(visibleProducts.uuid, uuid)).limit(1);
 
   if(results.length === 0) {
@@ -28,23 +49,16 @@ export async function getProductEmbedding(uuid: string) {
     };
   }
   const product = results[0];
+  const embedding = await getEmbeddingByProduct(product);
 
-  const name = product.name;
-  const title = product.seo?.en?.title;
-  const description = product.seo?.en?.description || product.description;
-  const tagline = product.tagline;
-  const keywords = product.seo?.en?.keywords || "";
-  const website = product.website;
-
-  const embedding = await generateEmbedding(`${name} ${title} ${description} ${tagline} ${keywords} ${website}`);
   return {
     embedding,
     product,
   };
 }
 
-export async function saveProductEmbedding(uuid: string) {
-  const { embedding, product } = await getProductEmbedding(uuid);
+export async function saveEmbeddingByUUID(uuid: string) {
+  const { embedding, product } = await getEmbeddingByUUID(uuid);
   
   if(!embedding || !product) {
     console.error(`No embedding found for product ${uuid}`);
@@ -75,23 +89,42 @@ export async function findSimilarProductsByText(query: string, limit: number = 1
   return results;
 }
 
-export async function findSimilarProducts(uuid: string, limit: number = 30, page: number = 1) {
+export async function findSimilarProductsByProduct(product: Product, limit: number = 15, page: number = 1): Promise<Product[]> {
+
+  const cache = await redis.get(`altertvies:v2:${product.uuid}`);
+
+  if(cache) {
+    return JSON.parse(cache) as Product[];
+  }
 
   if(page < 1) {
     page = 1;
   }
 
-  const { embedding, product } = await getProductEmbedding(uuid);
-  if(!embedding || !product) {
-    console.error(`No embedding found for product ${uuid}`);
+  const embedding = await getEmbeddingByProduct(product);
+
+  if(!embedding) {
+    console.error(`No embedding found for product ${product.uuid}`);
     return [];
   }
 
   const results = await qdrantClient.search(collectionName, {
     vector: embedding,
+    filter: {
+      must_not: [
+        {
+          key: "uuid",
+          match: {value: product.uuid}
+        }
+      ]
+    },
     limit: limit,
     offset: (page - 1) * limit,
+    score_threshold: 0.55,
   });
 
-  return results;
+  const products = results.map((result) => result.payload as Product);
+  await redis.setex(`altertvies:v2:${product.uuid}`, 60 * 60 * 24 * 7, JSON.stringify(products));
+
+  return products;
 }

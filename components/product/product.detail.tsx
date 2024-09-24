@@ -169,7 +169,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
           </div>
 
           <div className="w-full md:w-[400px] gap-5 flex flex-col">
-            <SimilarProducts uuid={product.uuid!} description={product.description || ""} name={product.name || ""} />
+            <SimilarProducts product={product} />
             <WeeklyTop />
           </div>
         </div>

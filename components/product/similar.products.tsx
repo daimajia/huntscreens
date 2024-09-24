@@ -1,39 +1,33 @@
-import { findSimilarProducts } from "@/lib/ai/embeding";
+import { Product } from "@/db/schema";
+import { findSimilarProductsByProduct } from "@/lib/ai/embeding2";
 import SimilarProductCard from "./card/similar.product.card";
-import { ProductTypes } from "@/types/product.types";
 import { getTranslations } from "next-intl/server";
 
 type SimilarProductProps = {
-  name: string;
-  description: string;
-  uuid: string;
+  product: Product;
 }
 
-export default async function SimilarProducts({uuid, name, description }: SimilarProductProps) {
-  const similarProducts = await findSimilarProducts(uuid, description);
+export default async function SimilarProducts({ product }: SimilarProductProps) {
+  const results = await findSimilarProductsByProduct(product);
   const t = await getTranslations("Showcase");
   return (
     <div className="grid gap-4">
-      {similarProducts.length > 0 && (
+      {results.length > 0 && (
         <h2 className="text-2xl font-bold">
           {t("Alternatives", {
-            name: name
+            name: product.name
           })}
         </h2>
       )}
-      {similarProducts.map((product) => (
-        <SimilarProductCard
-          translations={product.translations}
-          tagline={product.tagline || ""}
-          key={product.itemId}
-          itemId={product.itemId.toString()}
-          itemType={product.itemType as ProductTypes}
-          name={product.name}
-          website={product.website}
-          description={product.description || ""}
-          thumb_url={product.thumb_url || ""}
-        />
-      ))}
+
+      {results.map((product) => {
+        return <>
+          <SimilarProductCard
+            product={product}
+          />
+        </>
+      }
+      )}
     </div>
   );
 }

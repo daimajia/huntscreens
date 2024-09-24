@@ -4,7 +4,7 @@ import { z } from "zod";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 import { visibleProducts } from "@/db/schema/views/visible.products";
-import { saveProductEmbedding } from "@/lib/ai/embeding2";
+import { saveEmbeddingByUUID } from "@/lib/ai/embeding2";
 
 const embeddingConcurrencyLimit = client.defineConcurrencyLimit({
   id: `embedding-limit`,
@@ -38,7 +38,7 @@ client.defineJob({
 
     try {
       
-      await saveProductEmbedding(uuid);
+      await saveEmbeddingByUUID(uuid);
 
       await io.logger.info(`Successfully created embedding for ${productType} item ${uuid}`);
       return { success: true, itemUUID: uuid, itemType: productType };
