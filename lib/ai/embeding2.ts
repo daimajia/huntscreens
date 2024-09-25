@@ -80,13 +80,14 @@ export async function saveEmbeddingByUUID(uuid: string) {
   });
 }
 
-export async function findSimilarProductsByText(query: string, limit: number = 10, page: number = 1) {
+export async function findSimilarProductsByText(query: string, limit: number = 10, page: number = 1, threshold: number = 0.1) {
   const embedding = await generateEmbedding(query);
 
   const results = await qdrantClient.search(collectionName, {
     vector: embedding,
     limit: limit,
     offset: (page - 1) * limit,
+    score_threshold: threshold,
   });
   return results;
 }
