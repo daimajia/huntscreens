@@ -6,15 +6,19 @@ import { ImageOff, Maximize, Minimize, ExternalLink } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 
+type ImageLoaderProps = {
+  src: string;
+  alt: string;
+  imgClassName?: string;
+  wrapperClassName?: string;
+}
+
 export default function ImageLoader({
   src,
   alt,
-  className,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) {
+  wrapperClassName,
+  imgClassName,
+}: ImageLoaderProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [expandView, setExpandView] = useState(false);
@@ -30,7 +34,7 @@ export default function ImageLoader({
   }, [src]);
 
   return (
-    <div className="relative h-[500px] w-full cursor-pointer" onClick={() => setExpandView(!expandView)}>
+    <div className={cn("relative h-[500px] w-full cursor-pointer", wrapperClassName)} onClick={() => setExpandView(!expandView)}>
       {loading && (
         <div className="border rounded-lg absolute inset-0 backdrop-blur-sm bg-white/30 dark:bg-gray-800/30 flex items-center justify-center z-10">
           <div className="w-10 h-10 border-4 border-gray-200 border-t-orange-400 rounded-full animate-spin"></div>
@@ -53,7 +57,7 @@ export default function ImageLoader({
               "w-full border rounded-lg transition-opacity duration-300",
               loading ? "opacity-50" : "opacity-100",
               expandView ? "h-auto" : "h-full",
-              className
+              imgClassName
             )}
           />
         </div>
