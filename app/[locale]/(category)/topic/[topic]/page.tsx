@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Metadata } from "next";
 import { getCachedSEOFromPath } from "@/db/redis/cache";
-import { queryTopicsItemCount } from "@/lib/api/query.topics";
+import { queryTopicsItemCount, queryTopicTranslation } from "@/lib/api/query.topics";
 
 export async function generateMetadata({ params, searchParams }: {
   params: { topic: string },
@@ -52,11 +52,11 @@ export async function generateMetadata({ params, searchParams }: {
 
 export default async function TopicPage({ params, searchParams }: { params: { topic: string }, searchParams: { page?: string } }) {
   const page = parseInt(searchParams.page || '1');
-  const { allProducts: products, totalCount, totalPages } = await getTopicProducts(params.topic, page, 30);
+  const topicDetail = await queryTopicTranslation(params.topic);
+  const { products, totalCount, totalPages, topic: topicName } = await getTopicProducts(topicDetail?.name || params.topic, page, 30);
   const t = await getTranslations("Categories");
   const locale = await getLocale() as SupportedLangs;
-  const topics = products.length > 0 ? products[0].categories?.topics : null;
-  const topic = topics?.find(topic => topic.slug === params.topic);
+  const topicLocal = topicDetail?.translations[locale] || topicDetail?.name || params.topic;
   const nextlink = `/topic/${params.topic}?page=${page + 1}`;
   const prevlink = `/topic/${params.topic}?page=${page - 1}`;
 
@@ -74,11 +74,8 @@ export default async function TopicPage({ params, searchParams }: { params: { to
             <div className="max-w-6xl mx-auto p-4">
               <div className="flex flex-col md:flex-row justify-between items-center mb-5 gap-2 md:gap-0">
                 <h1 className="text-2xl font-bold">
-                  {t('Topic.relatedProducts', { topic: topic?.translations?.[locale] || params.topic })}
+                  {t('Topic.relatedProducts', { topic: topicLocal })}
                 </h1>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  {t('TotalProducts', { count: totalCount })}，{t('PageInfo', { current: page, total: totalPages })}
-                </div>
               </div>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 py-5">
                 {
@@ -98,7 +95,7 @@ export default async function TopicPage({ params, searchParams }: { params: { to
                   </Link>
                 )}
 
-                {page < totalPages && totalPages > 1 && (
+                {page < totalPages && totalPages > 1 && products.length === 30 && (
                   <Link href={nextlink}>
                     <Button variant="outline" className="flex gap-2">
                       {t('NextPage')}

@@ -1,34 +1,22 @@
 import { db } from "@/db/db";
-import { products } from "@/db/schema";
-import { SupportedLangs } from "@/i18n/types";
+import { Product, products } from "@/db/schema";
 import { sql } from "drizzle-orm";
 import { IndexDataPack } from "./query.types";
 import { visibleProducts } from "@/db/schema/views/visible.products";
-
-interface SubCategory {
-  slug: string;
-  translations: Record<SupportedLangs, string>[];
-}
+import { findSimilarProductsByText } from "../ai/embeding2";
 
 export const revalidate = 3600;
 
 export const getTopicProducts = async (topic: string, page: number, pageSize: number) => {
-  let t = decodeURIComponent(topic);
-  const [allProducts, countResult] = await Promise.all([
-    db.select()
-      .from(visibleProducts)
-      .where(sql`categories->'topics' @> ${`[{"slug": "${topic}"}]`}`)
-      .limit(pageSize)
-      .offset((page - 1) * pageSize),
-    db.select({ count: sql`count(*)` })
-      .from(visibleProducts)
-      .where(sql`categories->'topics' @> ${`[{"slug": "${topic}"}]`}`)
-  ]);
-  const totalCount = Number(countResult[0].count);
+  const matches = await findSimilarProductsByText(topic.replace("-", " "), pageSize, page, 0.1);
+  const products = matches.map((match) => match.payload as Product);
+  
+  const totalCount = Number(300);
   return {
-    allProducts,
+    products,
     totalCount,
-    totalPages: Math.ceil(totalCount / pageSize)
+    totalPages: Math.ceil(totalCount / pageSize),
+    topic
   }
 }
 

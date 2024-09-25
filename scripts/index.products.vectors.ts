@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 import { desc, sql } from "drizzle-orm";
 import { visibleProducts } from "@/db/schema/views/visible.products";
-import { saveEmbeddingByUUID } from "@/lib/ai/embeding2";
+import { saveEmbeddingByProduct } from "@/lib/ai/embeding2";
 import pLimit from 'p-limit';
 
 const CONCURRENCY_LIMIT = 5;
@@ -30,7 +30,7 @@ async function saveAllProductEmbeddings() {
     const tasks = products.map(product => limit(async () => {
       try {
         console.log(`Processing product: ${product.name} (UUID: ${product.uuid})`);
-        await saveEmbeddingByUUID(product.uuid);
+        await saveEmbeddingByProduct(product, false);
         console.log(`Successfully saved embedding for product: ${product.name} (UUID: ${product.uuid})`);
       } catch (error) {
         console.error(`Error saving embedding for product: ${product.name} (UUID: ${product.uuid})`, error);

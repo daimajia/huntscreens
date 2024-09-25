@@ -73,8 +73,6 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
       eq(intro.deleted, false)
     )
   });
-  const topicCounts = await queryTopicsItemCount(product.categories?.topics?.map(t => t.slug) || []);
-  const counts = Object.fromEntries(topicCounts.results?.map(item => [item.topic, item.count]) || []);
 
   const translatedContent: TranslationContent | undefined = product.translations?.[currentLang];
   const breadcrumbItems = await getBreadcrumbCategoryItems(product, currentLang, t);
@@ -125,17 +123,14 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
               </div>
 
               <div className="flex w-full flex-row flex-wrap justify-end gap-3">
-                {product.categories?.topics?.filter(topic => (counts[topic.slug] || 0) > 1).map((topic) => (
-                  <Link key={topic.slug} href={`/topic/${topic.slug}`} title={`${topic.translations[currentLang]} (${counts[topic.slug] || 0})`}>
-                    <Badge 
+                {product.categories?.topics?.map((topic) => (
+                  <Link key={topic.slug} href={`/topic/${topic.slug}`} title={`${topic.translations[currentLang]}`}>
+                    <Badge
                       className="rounded-full texts py-1 px-3 text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer flex items-center gap-2"
                       variant="secondary"
                     >
                       <Tag className="w-4 h-4 mr-1" />
                       <span>{topic.translations[currentLang]}</span>
-                      <span className="bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded-full text-xs font-semibold">
-                        {counts[topic.slug] || 0}
-                      </span>
                     </Badge>
                   </Link>
                 ))}

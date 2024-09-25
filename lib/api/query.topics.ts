@@ -1,10 +1,16 @@
 import { db } from "@/db/db";
-import { products } from "@/db/schema";
+import { products, visibleProducts } from "@/db/schema";
 import { sql } from "drizzle-orm";
 
 type TopicCount = {
   topic: string;
   count: number;
+}
+
+export async function queryTopicTranslation(topicSlug: string){
+  const matches = await db.select().from(visibleProducts).where(sql`categories->'topics' @> ${`[{"slug": "${topicSlug}"}]`}`).limit(1);
+  const topic = matches.length > 0 ? matches[0].categories?.topics.find((t: any) => t.slug === topicSlug) : undefined;
+  return topic;
 }
 
 export async function queryTopicsItemCount(topics: string[]): Promise<{ error?: string, results?: TopicCount[] }> {

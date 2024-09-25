@@ -19,16 +19,17 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   return data.embeddings[0];
 }
 
-async function getEmbeddingByProduct(product: Product) {
-  const items = await qdrantClient.retrieve(collectionName, {
-    ids: [product.uuid],
-    with_vector: true,
-  });
+async function getEmbeddingByProduct(product: Product, useSaved: boolean = true) {
+  if(useSaved) {
+    const items = await qdrantClient.retrieve(collectionName, {
+      ids: [product.uuid],
+      with_vector: true,
+    });
 
-  if(items.length > 0) {
-    return items[0].vector as number[];
+    if(items.length > 0) {
+      return items[0].vector as number[];
+    }
   }
-
   const name = product.name;
   const title = product.seo?.en?.title || "";
   const description = product.seo?.en?.description || product.description || "";
@@ -57,6 +58,21 @@ async function getEmbeddingByUUID(uuid: string) {
     embedding,
     product,
   };
+}
+
+export async function saveEmbeddingByProduct(product: Product, useSavedEmbedding: boolean) {
+  const embedding = await getEmbeddingByProduct(product, useSavedEmbedding);
+  return await qdrantClient.upsert(collectionName, {
+    points: [
+      {
+        id: product.uuid,
+        vector: embedding,
+        payload: {
+          ...product, 
+        }
+      }
+    ]
+  });
 }
 
 export async function saveEmbeddingByUUID(uuid: string) {
