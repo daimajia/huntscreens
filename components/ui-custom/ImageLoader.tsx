@@ -30,7 +30,7 @@ export default function ImageLoader({
   }, [src]);
 
   return (
-    <div className="relative h-[500px] w-full">
+    <div className="relative h-[500px] w-full cursor-pointer" onClick={() => setExpandView(!expandView)}>
       {loading && (
         <div className="border rounded-lg absolute inset-0 backdrop-blur-sm bg-white/30 dark:bg-gray-800/30 flex items-center justify-center z-10">
           <div className="w-10 h-10 border-4 border-gray-200 border-t-orange-400 rounded-full animate-spin"></div>
