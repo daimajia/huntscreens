@@ -30,12 +30,14 @@ async function getEmbeddingByProduct(product: Product) {
   }
 
   const name = product.name;
-  const title = product.seo?.en?.title;
-  const description = product.seo?.en?.description || product.description;
-  const tagline = product.tagline;
+  const title = product.seo?.en?.title || "";
+  const description = product.seo?.en?.description || product.description || "";
+  const tagline = product.tagline || "";
   const keywords = product.seo?.en?.keywords || "";
+  const topics = product.categories?.topics.map((topic) => topic.name).join(", ") || "";
+  const categories = `${ product.categories?.maincategory?.name || ''} ${product.categories?.subcategory?.name || ''}`;
   const website = product.website;
-  const embedding = await generateEmbedding(`${name} ${title} ${description} ${tagline} ${keywords} ${website}`);
+  const embedding = await generateEmbedding(`${name} ${title} ${description} ${tagline} ${keywords} ${categories} ${topics} ${website}`);
   return embedding;
 }
 
