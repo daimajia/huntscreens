@@ -98,7 +98,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex flex-row items-center justify-between gap-4">
                       <h1 className="text-3xl md:text-5xl font-bold break-words flex flex-col gap-2">
-                        <Link href={product.website || ""} className="hover:underline" target="_blank">
+                        <Link href={product.website || ""} className="hover:underline" target="_blank"  rel="nofollow">
                           {product.name}
                         </Link>
                         <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">
@@ -106,7 +106,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                         </span>
                       </h1>
 
-                      <Link href={product.website || ""} target="_blank">
+                      <Link href={product.website || ""} target="_blank" rel="nofollow">
                         <Button variant={"outline"} className="hidden md:flex bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
                           {t('VisitWebsite')}
                           <ExternalLink className="w-4 h-4 ml-2" />
