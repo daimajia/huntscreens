@@ -118,7 +118,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
               <div>
                 <p className="text-gray-600 dark:text-gray-400">
-                  {stripMarkdown(translatedContent?.description || product.description || '')}
+                  { product.seo?.[locale]?.description || stripMarkdown(translatedContent?.description || product.description || '')}
                 </p>
               </div>
 
