@@ -26,6 +26,7 @@ export const products = pgTable("products", {
   translations: jsonb('translations').$type<Partial<Record<SupportedLangs, TranslationContent>>>().default(sql`'{}'::jsonb`),
   seo: jsonb('seo').$type<Partial<Record<SupportedLangs, SEOContent>>>().default(sql`'{}'::jsonb`),
   categories: jsonb('categories').$type<Category>().default(sql`'{}'::jsonb`),
+  intros: jsonb('intros').$type<Partial<Record<SupportedLangs, string>>>().default(sql`'{}'::jsonb`),
   isai: boolean('isai').default(false)
 }, (table) => ({
   uuidIndex: index('product_uuid_index').on(table.uuid),

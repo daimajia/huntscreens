@@ -1,21 +1,12 @@
 import { db } from "@/db/db";
 
 import redis from "@/db/redis";
-import { intro, visibleProducts } from "@/db/schema";
-import { getIntroFromScreenshot } from "@/lib/ai/intro";
-import { generateRandomString } from "@/lib/crypto/random";
+import { products, visibleProducts } from "@/db/schema";
+import { getIntroFromProduct } from "@/lib/ai/intro";
 import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-
-const blackKeywords = [
-  'SEO-friendly',
-  'I apologize',
-  '[Product Name]',
-  'Unfortunately',
-  'Page Not Found'
-];
 
 const aiConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ai-limit`,
@@ -44,27 +35,14 @@ export const addIntroJob = client.defineJob({
         if(!product) {
           return "Product not found";
         }
-        if(product.webp === false) {
-          return "No screenshot found";
-        }
 
-        const markdown = await getIntroFromScreenshot(`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product.uuid}.webp`, product.name, product.website);
-        await db.insert(intro).values({
-          website: product.website,
-          uuid: product.uuid,
-          description: markdown,
-          type: product.itemType,
-          version: "0.0.3",
-          deleted: false
-        });
+        const markdowns = await getIntroFromProduct(product);
+
+        await db.update(products).set({
+          intros: markdowns
+        }).where(eq(products.uuid, product.uuid));
         
-        await io.sendEvent(payload.uuid + " run translate " + generateRandomString(5), {
-          name: "translate.new.entry",
-          payload: {
-            uuid: payload.uuid
-          }
-        })
-        return { aiintro: markdown };
+        return { aiintro: markdowns };
       } catch (e) {
         await redis.set(`AI:Error:${payload.uuid}`, (e as Error).message);
         return `AI:Error:${payload.uuid} Error: ${(e as Error).message}`;

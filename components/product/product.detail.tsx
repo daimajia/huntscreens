@@ -1,10 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import { intro, Product } from "@/db/schema";
+import { Product } from "@/db/schema";
 import { ProductTypes } from "@/types/product.types";
-import { db } from "@/db/db";
-import { and, eq } from "drizzle-orm";
 import { BreadcrumbItem, SiteBreadcrumbGenerator } from "@/components/ui-custom/breadcrumb";
 import AIIntro from "./ai.intro";
 import { Link } from "@/i18n/routing";
@@ -16,7 +14,6 @@ import ImageLoader from "@/components/ui-custom/ImageLoader";
 import { SupportedLangs } from "@/i18n/types";
 import { TranslationContent } from "@/db/schema/types";
 import { getLocale, getTranslations } from "next-intl/server";
-import { queryTopicsItemCount } from "@/lib/api/query.topics";
 import { Tag } from "lucide-react";
 
 function stripMarkdown(text: string): string {
@@ -67,12 +64,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   const currentLang = props.lang || locale;
   const product = props.product;
   const thumbnail = product.thumb_url;
-  const productIntro = await db.query.intro.findFirst({
-    where: and(
-      eq(intro.uuid, product.uuid!),
-      eq(intro.deleted, false)
-    )
-  });
+  const intro = product.intros?.[locale];
 
   const translatedContent: TranslationContent | undefined = product.translations?.[currentLang];
   const breadcrumbItems = await getBreadcrumbCategoryItems(product, currentLang, t);
@@ -152,12 +144,9 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
               <ImageLoader imgClassName="w-full object-cover object-top border rounded-lg" alt={`${product.name} screenshot`} src={`${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/${product?.uuid}.webp`} />
             </div>
 
-            {productIntro && (
+            {intro && (
               <div className="bg-white dark:bg-gray-800 border rounded-lg p-5 w-full">
-                <div className="text-2xl mb-5 font-bold">
-                  {t('MoreAbout', { name: product.name })}
-                </div>
-                <AIIntro uuid={product.uuid!} overwrite={translatedContent?.aiintro} />
+                <AIIntro markdown={intro} />
               </div>
             )}
 
