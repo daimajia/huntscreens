@@ -41,15 +41,11 @@ async function translateByGemini({ json: text, targetLanguages }: TranslationOpt
 
   Instructions:
   - Ensure the translation is natural and fluent.
-  - Maintain the original structure of the JSON.
-  - Preserve all Markdown formatting in the translated text. Do not modify any Markdown syntax.
   - If a value is empty, return an empty string.
-  - After translation, verify that all Markdown syntax and structure remain intact.
 
   Before returning the result, please double-check:
   1. All translations are complete and accurate.
-  2. Markdown formatting is preserved in all translations.
-  3. Empty values remain empty.
+  2. Empty values remain empty.
 
   Here is the JSON text to translate:
   

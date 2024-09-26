@@ -2,7 +2,7 @@ import { client } from "@/trigger";
 import { eventTrigger } from "@trigger.dev/sdk";
 import { z } from "zod";
 import { db } from "@/db/db";
-import { intro, products } from "@/db/schema";
+import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { translateByGemini } from "@/lib/ai/gemini";
 import { SupportedLangs, locales } from "@/i18n/types";
@@ -30,20 +30,14 @@ client.defineJob({
     const item = await db.select().from(products).where(eq(products.uuid, uuid)).limit(1);
 
     if (!item || item.length === 0) {
-      await io.logger.error(`Item not found with UUID ${uuid}`);
       return { success: false, error: "Item not found" };
     }
 
     const entry = item[0];
 
-    const aiIntro = await db.query.intro.findFirst({
-      where: eq(intro.uuid, entry.uuid)
-    });
-
     const contentToTranslate: TranslationContent = {
       tagline: entry.tagline || "",
       description: entry.description || "",
-      aiintro: aiIntro?.description || "",
     };
 
     const existingTranslations = entry.translations || {};
@@ -52,8 +46,7 @@ client.defineJob({
     ) as SupportedLangs[];
 
     if (missingLanguages.length === 0) {
-      await io.logger.info(`All translations already exist for item ${uuid}. Skipping.`);
-      return { success: true, uuid, skipped: true };
+      return { success: true, uuid, skipped: true, reason: "All translations already exist" };
     }
 
     const newTranslations: Partial<Record<SupportedLangs, TranslationContent>> = {};
@@ -75,12 +68,9 @@ client.defineJob({
       await db.update(products).set({
         translations: updatedTranslations
       }).where(eq(products.uuid, uuid));
-
-      await io.logger.info(`Successfully translated item ${uuid} to ${Object.keys(newTranslations).join(', ')}`);
-      return { success: true, uuid, translatedLanguages: Object.keys(newTranslations) };
+      return { success: true, uuid, translatedLanguages: Object.keys(newTranslations), reason: "Translated" };
     } catch (error) {
-      await io.logger.error(`Error translating item ${uuid}: ${error}`);
-      return { success: false, error: String(error) };
+      return { success: false, error: String(error), reason: "Error translating" };
     }
   }
 });

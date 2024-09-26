@@ -1,7 +1,9 @@
-import { localeNames, SupportedLangs } from "@/i18n/types";
+import { localeNames, locales, SupportedLangs } from "@/i18n/types";
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { defaultSafetySettings } from "./config";
 import { PathSegment, SEOContent } from "@/db/schema/types";
+import { Product } from "@/db/schema";
+import fetch from 'node-fetch';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY';
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -14,9 +16,10 @@ async function generateSEOContent(name: string, tagline: string, description: st
       properties: {
         title: { type: SchemaType.STRING },
         description: { type: SchemaType.STRING },
+        tagline: { type: SchemaType.STRING },
         keywords: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
       },
-      required: ["title", "description", "keywords"]
+      required: ["title", "description", "keywords", "tagline"]
     }
   },
   safetySettings: defaultSafetySettings
@@ -29,9 +32,15 @@ async function generateSEOContent(name: string, tagline: string, description: st
 
   Please provide:
   1. A concise and engaging title (max 60 characters)
-  2. A compelling meta description (max 160 characters)
+  2. A compelling meta description (max 160 characters, description text length is very important)
   3. A list of relevant keywords (max 20 keywords, total no more than 100 characters)
-  4. Output the the Content in ${localeNames[locale]}(${locale}).
+  4. Output the Content in ${localeNames[locale]}(${locale}).
+  5. A concise and engaging tagline (max 20 words)
+     The tagline should:
+     - Be a direct, impactful statement without mentioning the product name
+     - Highlight a key benefit or unique selling point
+     - Be relevant to the product's main function or value proposition
+     Example of a good tagline: "用 AI 提升团队协作效率" instead of "ProductName：用 AI 提升团队协作效率"
 
   Ensure the content is optimized for search engines while accurately representing the product.`;
 

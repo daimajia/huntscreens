@@ -6,7 +6,7 @@ export * from "./email.jobs";
 export * from "./tafft.jobs";
 export * from "./intro.jobs";
 export * from "./embedding.jobs";
-export * from "./translate.jobs";
 export * from "./category.jobs";
 export * from "./cron.updater.jobs";
 export * from "./screenshot.job";
+export * from "./seo.job";

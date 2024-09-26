@@ -7,6 +7,14 @@ export default async function triggerCommonJobs(io: IO, uuid:string) {
       uuid: uuid,
     }
   });
+
+  await io.sendEvent(`generate seo for ${uuid}`, {
+    name: "generate.seo.for.product",
+    payload: {
+      uuid: uuid
+    }
+  });
+
   await io.sendEvent(`create category for ${uuid}`, {
     name: "generate.category.for.product",
     payload: {

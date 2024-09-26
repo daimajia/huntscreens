@@ -12,9 +12,9 @@ import Logo from "@/components/logo";
 import WeeklyTop from "./common/weekly.top";
 import ImageLoader from "@/components/ui-custom/ImageLoader";
 import { SupportedLangs } from "@/i18n/types";
-import { TranslationContent } from "@/db/schema/types";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Tag } from "lucide-react";
+import { TranslationContent } from "@/db/schema/types";
 
 function stripMarkdown(text: string): string {
   return text
@@ -68,6 +68,8 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
   const translatedContent: TranslationContent | undefined = product.translations?.[currentLang];
   const breadcrumbItems = await getBreadcrumbCategoryItems(product, currentLang, t);
+  const seo = product.seo?.[currentLang];
+  const tagline = seo?.tagline || translatedContent?.tagline || product.tagline || "";
 
   return (
     <div className="bg-gray-100 dark:bg-black">
@@ -92,7 +94,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                           {product.name}
                         </Link>
                         <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                          {translatedContent?.tagline || product.tagline}
+                          {tagline}
                         </span>
                       </h1>
 
@@ -110,7 +112,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
               <div>
                 <p className="text-gray-600 dark:text-gray-400">
-                  { product.seo?.[locale]?.description || stripMarkdown(translatedContent?.description || product.description || '')}
+                  { product.seo?.[locale]?.description || product.description || ""}
                 </p>
               </div>
 
