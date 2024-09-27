@@ -9,8 +9,8 @@ import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Metadata } from "next";
-import { getCachedSEOFromPath } from "@/db/redis/cache";
 import { queryTopicsItemCount, queryTopicTranslation } from "@/lib/api/query.topics";
+import { getCachedSEOFromPath } from "@/lib/seo/cache";
 
 export async function generateMetadata({ params, searchParams }: {
   params: { topic: string },

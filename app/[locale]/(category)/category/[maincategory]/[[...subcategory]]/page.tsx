@@ -9,8 +9,8 @@ import { getCategoryItemCount, getCategoryProducts } from "@/lib/api/query.categ
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import { getCachedSEOFromPath } from "@/db/redis/cache";
 import { Metadata } from "next";
+import { getCachedSEOFromPath } from "@/lib/seo/cache";
 
 export async function generateMetadata({ params, searchParams }: {
   params: { maincategory: string, subcategory: string[] },

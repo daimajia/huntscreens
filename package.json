@@ -30,7 +30,8 @@
     "redis:aiintro": "tsx scripts/run.aiintro.ts",
     "qdrant:test": "tsx __tests__/qdrant.test.ts",
     "qdrant:index:products": "tsx scripts/index.products.vectors.ts",
-    "db:intros": "tsx scripts/add.intros.ts"
+    "db:intros": "tsx scripts/add.intros.ts",
+    "db:migrate:seo": "tsx scripts/migrate.redis.to.db.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.60",
