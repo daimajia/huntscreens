@@ -36,16 +36,20 @@ client.defineJob({
     const product = results[0];
 
     try {
-      for(const locale of locales) {
-        if(product.seo && product.seo[locale]) {
-          continue;
+      let updatedSeo = { ...product.seo } || {};
+      let hasChanges = false;
+
+      for (const locale of locales) {
+        if (!updatedSeo[locale]) {
+          const seoContent = await generateSEOContent(product.name, product.tagline || "", product.description || "", locale);
+          updatedSeo[locale] = seoContent;
+          hasChanges = true;
         }
-        const seoContent = await generateSEOContent(product.name, product.tagline || "", product.description || "", locale);
+      }
+
+      if (hasChanges) {
         await db.update(products).set({
-          seo: {
-            ...product.seo,
-            [locale]: seoContent
-          }
+          seo: updatedSeo
         }).where(eq(products.uuid, uuid));
       }
 
