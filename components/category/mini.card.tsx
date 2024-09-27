@@ -6,7 +6,7 @@ import MiniScreenshotLoader, { MiniLogoLoader } from "../ui-custom/mini.image.lo
 import { Product } from "@/db/schema";
 
 const MiniCard = ({ product, locale, isMainContent = true }: { product: Product, locale?: SupportedLangs, isMainContent?: boolean }) => {
-  const tagline =  product.translations?.[locale ?? 'en']?.tagline || product.tagline;
+  const tagline = product.seo?.[locale ?? 'en']?.tagline || product.translations?.[locale ?? 'en']?.tagline || product.tagline;
   
   const TitleTag = isMainContent ? 'h2' : 'h3';
   const SubtitleTag = isMainContent ? 'h3' : 'p';
