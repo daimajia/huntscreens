@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   experimental: {
     serverComponentsExternalPackages: ['sharp', 'onnxruntime-node'],
   },
