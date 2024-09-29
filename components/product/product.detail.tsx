@@ -15,7 +15,6 @@ import { SupportedLangs } from "@/i18n/types";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Tag } from "lucide-react";
 import { TranslationContent } from "@/db/schema/types";
-import { generateAlternatives } from "@/lib/ai/gemini/alternatives";
 
 function stripMarkdown(text: string): string {
   return text
