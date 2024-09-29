@@ -12,7 +12,7 @@ const MiniCard = ({ product, locale, isMainContent = true }: { product: Product,
   const SubtitleTag = isMainContent ? 'h3' : 'p';
 
   return (
-    <Link href={urlMapper[product.itemType as ProductTypes](product.id || 0)} className="block">
+    <Link href={urlMapper[product.itemType as ProductTypes](product.id || 0)} className="block" target="_blank">
       <div className="flex flex-col bg-white border border-gray-200 hover:border-gray-500/40 dark:hover:border-white/50 dark:border-gray-700 h-full dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="relative h-48">
           <MiniScreenshotLoader
