@@ -15,6 +15,7 @@ import { SupportedLangs } from "@/i18n/types";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Tag } from "lucide-react";
 import { TranslationContent } from "@/db/schema/types";
+import { generateAlternatives } from "@/lib/ai/gemini/alternatives";
 
 function stripMarkdown(text: string): string {
   return text
@@ -64,7 +65,10 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   const currentLang = props.lang || locale;
   const product = props.product;
   const thumbnail = product.thumb_url;
-  const intro = product.intros?.[locale];
+  let intro = product.intros?.[locale];
+  if(product.intros?.en?.includes('Brief description')) {
+    intro = undefined;
+  }
 
   const translatedContent: TranslationContent | undefined = product.translations?.[currentLang];
   const breadcrumbItems = await getBreadcrumbCategoryItems(product, currentLang, t);
