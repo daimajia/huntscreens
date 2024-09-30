@@ -15,6 +15,8 @@ import { SupportedLangs } from "@/i18n/types";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Tag } from "lucide-react";
 import { TranslationContent } from "@/db/schema/types";
+import AddFavoriteBtn from "./add.favorite.btn";
+import { is_favorite } from "@/lib/api/favorites";
 
 function stripMarkdown(text: string): string {
   return text
@@ -64,8 +66,10 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
   const currentLang = props.lang || locale;
   const product = props.product;
   const thumbnail = product.thumb_url;
+  const isFavorite = await is_favorite(product.uuid);
   let intro = product.intros?.[locale];
-  if(product.intros?.en?.includes('Brief description')) {
+  
+  if (product.intros?.en?.includes('Brief description')) {
     intro = undefined;
   }
 
@@ -93,20 +97,22 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex flex-row items-center justify-between gap-4">
                       <h1 className="text-3xl md:text-5xl font-bold break-words flex flex-col gap-2">
-                        <Link href={product.website || ""} className="hover:underline" target="_blank"  rel="nofollow">
+                        <Link href={product.website || ""} className="hover:underline" target="_blank" rel="nofollow">
                           {product.name}
                         </Link>
                         <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">
                           {tagline}
                         </span>
                       </h1>
-
-                      <Link href={product.website || ""} target="_blank" rel="nofollow">
-                        <Button variant={"outline"} className="hidden md:flex bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
-                          {t('VisitWebsite')}
-                          <ExternalLink className="w-4 h-4 ml-2" />
-                        </Button>
-                      </Link>
+                      <div className="flex flex-row gap-2">
+                        <AddFavoriteBtn initIsFavorite={isFavorite} itemId={product.uuid} itemType={product.itemType} />
+                        <Link href={product.website || ""} target="_blank" rel="nofollow">
+                          <Button variant={"outline"} className="hidden md:flex bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
+                            {t('VisitWebsite')}
+                            <ExternalLink className="w-4 h-4 ml-2" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
 
                   </div>
@@ -115,7 +121,7 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
 
               <div>
                 <p className="text-gray-600 dark:text-gray-400">
-                  { product.seo?.[locale]?.description || product.description || ""}
+                  {product.seo?.[locale]?.description || product.description || ""}
                 </p>
               </div>
 
@@ -137,12 +143,15 @@ export default async function ProductDetailPage<T extends ProductTypes>(props: {
             </div>
 
             <div className="md:hidden">
-              <Link href={product.website || ""} target="_blank" className="w-full">
-                <Button variant={"outline"} className="w-full flex md:hidden bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
-                  {t('VisitWebsite')}
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
+              <div className="flex flex-row gap-2">
+                <AddFavoriteBtn initIsFavorite={isFavorite} itemId={product.uuid} itemType={product.itemType} />
+                <Link href={product.website || ""} target="_blank" className="w-full" prefetch={false} rel="nofollow">
+                  <Button variant={"outline"} className="w-full flex md:hidden bg-[#f05f22] hover:bg-[#ff5e00] text-white hover:text-white">
+                    {t('VisitWebsite')}
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <div>

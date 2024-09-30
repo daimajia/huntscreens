@@ -1,45 +1,65 @@
+"use server";
+
 import { db } from "@/db/db";
 import { getCurrentUser } from "../user";
 import { favorites } from "@/db/schema";
 import { and, desc, eq, sql } from "drizzle-orm";
-import { NextResponse } from "next/server";
 import { ProductTypes } from "@/types/product.types";
 import assert from "assert";
+import { signIn } from "@logto/next/server-actions";
+import { logtoConfig } from "@/lib/auth/logto";
 
-export async function add_favorite(itemId: string, itemType: ProductTypes) {
+export async function remove_favorite_action(itemId: string, itemType: ProductTypes) {
   const user = await getCurrentUser();
-  if(!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const exist = await db.query.favorites.findFirst({
-    where: and(eq(favorites.itemId, itemId), eq(favorites.userId, user.uuid))
-  })
-  if(!exist) {
-    const result = await db.insert(favorites).values({
-      userId: user.uuid,
-      itemId: itemId,
-      itemType: itemType
-    }).returning();
-    return NextResponse.json({message: "Added Successfully!", addedId: result[0].itemId});
-  }else {
-    return NextResponse.json({message: "Already added"});
+  if(!user) {
+    'use server';
+    return await signIn(logtoConfig);
   }
-}
-
-export async function delete_favorite(itemId: string){
-  const user = await getCurrentUser();
-  if(!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const result = await db.delete(favorites).where(and(
     eq(favorites.userId, user.uuid),
     eq(favorites.itemId, itemId)
-  )).returning({ deletedId: favorites.itemId });
+  )).returning();
   if (result.length === 0) {
-    return NextResponse.json({ error: "Favorite not found" }, { status: 404 });
+    return { error: true, message: "😭 Favorite not found" };
   }
-  return NextResponse.json({ message: "Deleted successfully", deletedId: result[0].deletedId });
+  return { error: false, message: "👌 Deleted successfully"};
+}
+
+export async function add_favorite_action(itemId: string, itemType: ProductTypes) {
+  const user = await getCurrentUser();
+  if(!user) {
+    'use server';
+    return await signIn(logtoConfig);
+  }
+  try{
+  const exist = await db.query.favorites.findFirst({
+    where: and(eq(favorites.itemId, itemId), eq(favorites.userId, user.uuid))
+  })
+  if(exist) return { error: true, message: "Already added" };
+  await db.insert(favorites).values({
+    userId: user.uuid,
+    itemId: itemId,
+    itemType: itemType
+  }).returning();
+    return {error: false, message: "👍 Added Successfully!"};
+  } catch (error) {
+    console.log(error);
+    return { error: true, message: "😭 Failed to add" };
+  }
 }
 
 type QueryFavoriteProps = {
   page: number,
   pageSize: number
+}
+
+export async function is_favorite(itemId: string) {
+  const user = await getCurrentUser();
+  if(!user) return false;
+  const exist = await db.query.favorites.findFirst({
+    where: and(eq(favorites.itemId, itemId), eq(favorites.userId, user.uuid))
+  })
+  return exist ? true : false;
 }
 
 export default async function query_favorites({page, pageSize} : QueryFavoriteProps) {

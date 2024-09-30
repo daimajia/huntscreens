@@ -7,7 +7,7 @@ import SearchBox from "@/components/search/search.box";
 import { logtoConfig } from "@/lib/auth/logto";
 import LanguageDropdown from "../ui-custom/language.dropdown";
 import { Link } from "@/i18n/routing";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "../ui/navigation-menu";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import CategorySheet from "./category.sheet";
 import { cn } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
