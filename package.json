@@ -130,5 +130,9 @@
   },
   "trigger.dev": {
     "endpointId": "huntscreens-a5nE"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   }
 }
