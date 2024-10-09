@@ -50,23 +50,23 @@ For each language, provide the following structure:
 [2-3 sentences describing the product's main value proposition]
 
 ### Product Highlights
-- **[Feature 1]**: [Brief description]
-- **[Feature 2]**: [Brief description]
-- **[Feature 3]**: [Brief description]
+- **[Specific Feature]**: [Brief description of a key feature]
+- **[Specific Feature]**: [Brief description of another key feature]
+- **[Specific Feature]**: [Brief description of a third key feature]
 
 ### Use Cases
-- **[Use case 1]**: [Brief explanation]
-- **[Use case 2]**: [Brief explanation]
-- **[Use case 3]**: [Brief explanation]
+- **[Specific Use Case]**: [Brief explanation of a real-world application]
+- **[Specific Use Case]**: [Brief explanation of another real-world application]
+- **[Specific Use Case]**: [Brief explanation of a third real-world application]
 
 ### Target Audience
 [1-2 sentences describing the main user segments]
 
-Ensure each language version is culturally appropriate and follows SEO best practices. Keep the content factual and based on the provided information.
+Ensure each language version is culturally appropriate and follows SEO best practices. Keep the content factual and based on the provided information. Use specific, realistic features and use cases based on the product's actual capabilities.
 
 Important: Make sure to place the colon (:) outside the bold (**) markdown syntax. For example:
-**Feature**: Description
-**Use case**: Explanation
+**Fast Cleaning**: Clean your inbox in seconds, no matter how big it is.
+**Personal Organization**: Declutter your inbox and save time managing your email.
 
 ${websiteMarkdown ? `Website Content Markdown:
 ${websiteMarkdown}` : ""}
