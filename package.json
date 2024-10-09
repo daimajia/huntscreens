@@ -32,7 +32,8 @@
     "qdrant:index:products": "tsx scripts/index.products.vectors.ts",
     "db:intros": "tsx scripts/add.intros.ts",
     "db:migrate:seo": "tsx scripts/migrate.redis.to.db.ts",
-    "db:unify:url": "tsx scripts/unify.url.ts"
+    "db:unify:url": "tsx scripts/unify.url.ts",
+    "db:redirect:ph": "tsx scripts/redirect.ph.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.60",

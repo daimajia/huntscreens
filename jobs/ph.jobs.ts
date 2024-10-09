@@ -80,9 +80,15 @@ client.defineJob({
         await io.logger.error(`product has no website or name, skipping ${element.node.id}`);
         continue;
       }
-      
-      element.node.website = unifyUrl(element.node.website);
 
+      try{
+        const resp = await fetch(element.node.website);
+        element.node.website = unifyUrl(resp.url);
+      }catch(e){
+        await io.logger.error(`website has issues, can not fetch the real url, skipping ${element.node.id}`, element.node);
+        continue;
+      }
+      
       const product = await db.query.products.findFirst({
         where: and(
           eq(products.itemType, 'ph'), 
