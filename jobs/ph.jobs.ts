@@ -3,7 +3,7 @@ import { client } from "../trigger";
 import { fetchPHPosts, fetchVoteCount } from "@/lib/producthunt";
 import { db } from "@/db/db";
 import { z } from "zod";
-import { removeUrlParams } from "@/lib/utils/url";
+import { unifyUrl } from "@/lib/utils/url";
 import { and, eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
 import { products } from "@/db/schema";
@@ -75,11 +75,13 @@ client.defineJob({
     await io.logger.info('start fetch ph newest');
     const edges = await fetchPHPosts();
     for(const element of edges){
-
+      
       if(!element.node.website || !element.node.name) {
         await io.logger.error(`product has no website or name, skipping ${element.node.id}`);
         continue;
       }
+      
+      element.node.website = unifyUrl(element.node.website);
 
       const product = await db.query.products.findFirst({
         where: and(
@@ -101,14 +103,6 @@ client.defineJob({
       }
 
       await io.logger.info(`product does not exist, inserting ${element.node.id}`);
-
-      try{
-        const resp = await fetch(element.node.website);
-        element.node.website = removeUrlParams(resp.url, 'ref');
-      }catch(e){
-        await io.logger.error(`website has issues, can not fetch the real url, skipping ${element.node.id}`, element.node);
-        continue;
-      }
       
       element.node.thumb_url = element.node.thumbnail?.url || "";
 

@@ -4,6 +4,7 @@ import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import { fethcYCLatestCompanies } from "@/lib/yc";
 import { products } from "@/db/schema";
+import { unifyUrl } from "@/lib/utils/url";
 
 client.defineJob({
   id: "Schedule YC Latest Portfolio",
@@ -20,6 +21,8 @@ client.defineJob({
         continue;
       }
       
+      company.website = unifyUrl(company.website);
+
       const exist = await db.query.products.findFirst({
         where: and(
           eq(products.itemType, 'yc'),

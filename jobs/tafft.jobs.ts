@@ -3,6 +3,7 @@ import { products } from "@/db/schema";
 import { TaaftMetadata } from "@/db/schema/types";
 import { fetchTAAFTLatest, fetchTAAFTProductDetails } from "@/lib/theresanaiforthat";
 import { parseDate } from "@/lib/utils/time";
+import { unifyUrl } from "@/lib/utils/url";
 import { client } from "@/trigger";
 import { eventTrigger, intervalTrigger } from "@trigger.dev/sdk";
 import { eq } from "drizzle-orm";
@@ -27,6 +28,8 @@ client.defineJob({
   concurrencyLimit:chromeRunLimitation,
   run: async (payload, io, ctx)=> {
     const product = await fetchTAAFTProductDetails(payload.taaft_url);
+    
+    product.website = unifyUrl(product.website);
     const exist = await db.query.products.findFirst({
       where: eq(products.website, product.website)
     });
