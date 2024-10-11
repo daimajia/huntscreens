@@ -44,7 +44,7 @@ const WeeklyTopCard = ({ product }: { product: Product }) => {
 }
 
 const getWeeklyTopProducts = async (limit: number = 10) => {
-  const cacheKey = 'weekly_top_v2';
+  const cacheKey = 'weekly_top_v3';
   const cachedData = await redis.get(cacheKey);
   if (cachedData) {
     return JSON.parse(cachedData as string) as Product[];
