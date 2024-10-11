@@ -23,6 +23,7 @@
     "spider:startupstash": "tsx lib/spiders/startupstash.ts",
     "gemini:alternatives": "tsx lib/ai/gemini/alternatives.ts",
     "openai:alternatives": "tsx lib/ai/gemini/alternatives-openai.ts",
+    "gemini:slug": "tsx lib/ai/gemini/slug.generator.ts",
     "gemini:tag": "tsx lib/ai/gemini/tag.generator.ts",
     "db:migrate:tables": "tsx scripts/migrate.tables.ts",
     "db:latest:top10": "tsx lib/emails/query.latest.top10.ts",
@@ -33,7 +34,8 @@
     "db:intros": "tsx scripts/add.intros.ts",
     "db:migrate:seo": "tsx scripts/migrate.redis.to.db.ts",
     "db:unify:url": "tsx scripts/unify.url.ts",
-    "db:redirect:ph": "tsx scripts/redirect.ph.ts"
+    "db:redirect:ph": "tsx scripts/redirect.ph.ts",
+    "db:slugs": "tsx scripts/add.slugs.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.60",
@@ -80,6 +82,7 @@
     "ioredis": "^5.4.1",
     "jotai": "^2.8.3",
     "lucide-react": "^0.397.0",
+    "nanoid": "^5.0.7",
     "next": "14.2.5",
     "next-intl": "^3.19.0",
     "next-themes": "^0.3.0",

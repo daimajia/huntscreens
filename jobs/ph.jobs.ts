@@ -8,7 +8,7 @@ import { and, eq, gte } from "drizzle-orm";
 import { subDays } from "date-fns";
 import { products } from "@/db/schema";
 import { ProductHuntMetadata } from "@/db/schema/types";
-import slugify from "slugify";
+import { getAvailableSlug } from "@/lib/utils/slug";
 
 const producthuntConcurrencyLimit = client.defineConcurrencyLimit({
   id: `ph-limit`,
@@ -76,7 +76,7 @@ client.defineJob({
     const edges = await fetchPHPosts();
     for(const element of edges){
       
-      if(!element.node.website || !element.node.name) {
+      if(!element.node.website || !element.node.name || element.node.name.length === 0) {
         await io.logger.error(`product has no website or name, skipping ${element.node.id}`);
         continue;
       }
@@ -115,7 +115,7 @@ client.defineJob({
       const inserted = await db.insert(products).values({
         id: element.node.id,
         name: element.node.name,
-        slug: element.node.slug || slugify(element.node.name!),
+        slug: await getAvailableSlug(element.node.name) || "",
         tagline: element.node.tagline || "",
         description: element.node.description || "",
         thumb_url: element.node.thumb_url,

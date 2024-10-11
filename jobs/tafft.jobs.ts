@@ -2,12 +2,12 @@ import { db } from "@/db/db";
 import { products } from "@/db/schema";
 import { TaaftMetadata } from "@/db/schema/types";
 import { fetchTAAFTLatest, fetchTAAFTProductDetails } from "@/lib/theresanaiforthat";
+import { getAvailableSlug } from "@/lib/utils/slug";
 import { parseDate } from "@/lib/utils/time";
 import { unifyUrl } from "@/lib/utils/url";
 import { client } from "@/trigger";
 import { eventTrigger, intervalTrigger } from "@trigger.dev/sdk";
 import { eq } from "drizzle-orm";
-import slugify from "slugify";
 import { z } from "zod";
 
 const chromeRunLimitation = client.defineConcurrencyLimit({
@@ -28,7 +28,7 @@ client.defineJob({
   concurrencyLimit:chromeRunLimitation,
   run: async (payload, io, ctx)=> {
     const product = await fetchTAAFTProductDetails(payload.taaft_url);
-    
+
     product.website = unifyUrl(product.website);
     const exist = await db.query.products.findFirst({
       where: eq(products.website, product.website)
@@ -37,12 +37,12 @@ client.defineJob({
     const inserted = await db.insert(products).values({
       id: product.id,
       name: product.name,
-      slug: slugify(product.name),
+      slug: await getAvailableSlug(product.name) || "",
       tagline: product.tagline,
       description: product.description,
       website: product.website,
       itemType: "taaft",
-      thumb_url: product.thumb_url,
+      thumb_url: product.thumb_url || "",
       launched_at: product.added_at ? parseDate(product.added_at) : new Date(),
       metadata: {
         savesCount: product.savesCount,

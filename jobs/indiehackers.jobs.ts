@@ -5,7 +5,8 @@ import { and, eq } from "drizzle-orm";
 import { getIndiehackersProducts } from "@/lib/indiehackers";
 import { products } from "@/db/schema";
 import { IndieHackersMetadata } from "@/db/schema/types";
-import slugify from "slugify";
+import { unifyUrl } from "@/lib/utils/url";
+import { getAvailableSlug } from "@/lib/utils/slug";
 
 client.defineJob({
   id: "Schedule Indiehackers Latest products",
@@ -35,6 +36,8 @@ client.defineJob({
         continue;
       }
 
+      product.website = unifyUrl(product.website);
+
       const websiteExist = await db.query.products.findFirst({
         where: eq(products.website, product.website)
       });
@@ -45,15 +48,8 @@ client.defineJob({
       }
 
       const inserted = await db.insert(products).values({
-        id: product.id,
-        name: product.name,
-        tagline: product.tagline || "",
-        slug: slugify(product.name),
-        description: product.description || "",
-        website: product.website,
-        itemType: "indiehackers",
-        thumb_url: product.thumb_url || "",
-        launched_at: product.added_at || new Date(),
+        ...product,
+        slug: await getAvailableSlug(product.name) || "",
         metadata: {
           revenue: (product.metadata as IndieHackersMetadata)?.revenue || 0,
           followers: (product.metadata as IndieHackersMetadata)?.followers || 0

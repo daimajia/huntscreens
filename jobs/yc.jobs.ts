@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { fethcYCLatestCompanies } from "@/lib/yc";
 import { products } from "@/db/schema";
 import { unifyUrl } from "@/lib/utils/url";
+import { getAvailableSlug } from "@/lib/utils/slug";
 
 client.defineJob({
   id: "Schedule YC Latest Portfolio",
@@ -16,11 +17,11 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     const ycCompanies = await fethcYCLatestCompanies();
     for(const company of ycCompanies){
-      if(!company.id || !company.name || !company.website) {
+      if(!company.id || !company.name || !company.website || company.name.length === 0) {
         await io.logger.info(`company has no id, name or website, skipping ${new Date().toISOString()}`);
         continue;
       }
-      
+
       company.website = unifyUrl(company.website);
 
       const exist = await db.query.products.findFirst({
@@ -43,7 +44,10 @@ client.defineJob({
         continue;
       }
 
-      const inserted = await db.insert(products).values(company).returning();
+      const inserted = await db.insert(products).values({
+        ...company,
+        slug: await getAvailableSlug(company.name) || ""
+      }).returning();
 
         await io.sendEvent(`take ${company.website} screenshot`, {
           name: "take.product.screenshot",
