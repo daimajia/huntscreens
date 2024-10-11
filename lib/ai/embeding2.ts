@@ -111,7 +111,7 @@ export async function findSimilarProductsByText(query: string, limit: number = 1
 export async function findSimilarProductsByProduct(product: Product, usecache: boolean = true, limit: number = 15, page: number = 1): Promise<Product[]> {
 
   if(usecache) {
-    const cache = await redis.get(`altertvies:v2:${product.uuid}`);
+    const cache = await redis.get(`alternatives:v3:${product.uuid}`);
     if(cache) {
       return JSON.parse(cache) as Product[];
     }
@@ -150,7 +150,7 @@ export async function findSimilarProductsByProduct(product: Product, usecache: b
   const products = results.map((result) => result.payload as Product);
 
   if(usecache) {
-    await redis.setex(`altertvies:v2:${product.uuid}`, 60 * 60 * 24 * 7, JSON.stringify(products));
+    await redis.setex(`alternatives:v3:${product.uuid}`, 60 * 60 * 24 * 15, JSON.stringify(products));
   }
 
   return products;
