@@ -1,59 +1,46 @@
 import { Metadata } from 'next';
 import { db } from "@/db/db";
-import { eq, and } from "drizzle-orm";
-import { ProductTypes, urlMapper } from "@/types/product.types";
+import { eq } from "drizzle-orm";
 import { locales, SupportedLangs } from "@/i18n/types";
 import { SEOContent } from '@/db/schema/types';
 import { generateSEOContent } from '../ai/gemini/seo.generator';
 import redis from '@/db/redis';
-import { products } from '@/db/schema';
+import { Product, products } from '@/db/schema';
+import { queryShowcaseBySlug } from '../api/query.showcase';
 
-export async function generateUniversalMetadata(
-  id: number,
-  productType: ProductTypes,
-  locale: SupportedLangs
-): Promise<Metadata> {
-  const product = await db.select().from(products).where(
-    and(
-      eq(products.id, id),
-      eq(products.itemType, productType)
-    )
-  ).limit(1).then(rows => rows[0]);
-
-  if (!product) {
+export async function generateShowcaseMetadataBySlug(slug: string, locale: SupportedLangs): Promise<Metadata> {
+  const product = await queryShowcaseBySlug(slug);
+  if(!product){
     return {};
   }
-
-  const productUrl = urlMapper[productType](product.id!, locale);
-  const translations = product.translations?.[locale];
-  const description = translations?.description || product.description;
-  const tagline = translations?.tagline || product.tagline;
+  
+  const productUrl = `https://huntscreens.com/${locale}/products/${slug}`;
 
   const alternateLanguages: Record<string, string> = {};
   locales.forEach(lang => {
-    alternateLanguages[lang] = `${urlMapper[productType](product.id!, lang)}`;
+    alternateLanguages[lang] = `https://huntscreens.com/${lang}/products/${slug}`;
   });
 
   const resizedImageUrl = `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2}/cdn-cgi/image/width=1200,height=630,fit=crop,gravity=0x0,format=webp/${product.uuid}.webp`;
-  const seoContent = await getAISEOContent(product.id!, productType, locale);
+  const seoContent = await getAISEOContent(product, locale);
   return {
     metadataBase: new URL("https://huntscreens.com"),
-    title: `${seoContent.title}`,
-    description: `${seoContent.description}`,
+    title: seoContent.title || product.name,
+    description: seoContent.description || product.description,
     keywords: seoContent.keywords,
     publisher: "huntscreens.com",
     authors: [{ name: 'HuntScreens' }],
     robots: 'index, follow',
     openGraph: {
-      title: `${product.name}`,
-      description: `${description}`,
+      title: seoContent.title || product.name,
+      description: seoContent.description || product.description || "",
       images: resizedImageUrl,
-      url: `https://huntscreens.com${productUrl}`,
+      url: productUrl,
       type: 'website'
     },
     twitter: {
-      title: `${product.name} - from huntscreens.com`,
-      description: `${tagline}`,
+      title: seoContent.title || product.name,
+      description: seoContent.description || product.description || "",
       images: {
         url: resizedImageUrl,
         alt: `${product.name} screenshot`
@@ -71,23 +58,17 @@ export async function generateUniversalMetadata(
   };
 }
 
-export async function getAISEOContent(id: number, productType: ProductTypes, locale: SupportedLangs): Promise<SEOContent> {
-  const product = await db.select().from(products).where(
-    and(
-      eq(products.id, id),
-      eq(products.itemType, productType)
-    )
-  ).limit(1).then(rows => rows[0]);
+export async function getAISEOContent(product: Product, locale: SupportedLangs): Promise<SEOContent> {
 
   if (!product) {
-    throw new Error(`Product not found: ${productType} with id ${id}`);
+    throw new Error(`Product not found`);
   }
 
   if (product.seo && product.seo[locale]) {
     return product.seo[locale] as SEOContent;
   }
 
-  const redisKey = `seo:generate:${productType}:${id}:${locale}`;
+  const redisKey = `seo:generate_v2:${product.uuid}`;
   const generateCount = await redis.get(redisKey);
 
   const translations = product.translations?.[locale];
@@ -101,9 +82,9 @@ export async function getAISEOContent(id: number, productType: ProductTypes, loc
   };
 
   if (generateCount && parseInt(generateCount) >= 3) {
-    console.warn(`Max SEO generation attempts reached for ${productType} with id ${id} in ${locale}. Using default SEO content.`);
-    const failedGenerationKey = `seo:failed_generation:${locale}`;
-    await redis.sadd(failedGenerationKey, `${productType}:${id}`);
+    console.warn(`Max SEO generation attempts reached for ${product.itemType} with id ${product.id} in ${locale}. Using default SEO content.`);
+    const failedGenerationKey = `seo:failed_generation_v2:${locale}`;
+    await redis.sadd(failedGenerationKey, `${product.itemType}:${product.id}`);
     return defaultSEOContent;
   }
 
@@ -116,10 +97,7 @@ export async function getAISEOContent(id: number, productType: ProductTypes, loc
         [locale]: seoContent
       }
     }).where(
-      and(
-        eq(products.id, id),
-        eq(products.itemType, productType)
-      )
+      eq(products.uuid, product.uuid)
     );
 
     return seoContent;

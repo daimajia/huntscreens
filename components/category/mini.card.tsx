@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Link } from "@/i18n/routing";
 import { SupportedLangs } from "@/i18n/types";
-import { ProductTypes, urlMapper } from "@/types/product.types";
 import MiniScreenshotLoader, { MiniLogoLoader } from "../ui-custom/mini.image.loader";
 import { Product } from "@/db/schema";
 
@@ -12,7 +11,7 @@ const MiniCard = ({ product, locale, isMainContent = true }: { product: Product,
   const SubtitleTag = isMainContent ? 'h3' : 'p';
 
   return (
-    <Link href={urlMapper[product.itemType as ProductTypes](product.id || 0)} className="block" target="_blank" prefetch={false}>
+    <Link href={`/products/${product.slug}`} className="block" target="_blank" prefetch={false}>
       <div className="flex flex-col bg-white border border-gray-200 hover:border-gray-500/40 dark:hover:border-white/50 dark:border-gray-700 h-full dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="relative h-48">
           <MiniScreenshotLoader

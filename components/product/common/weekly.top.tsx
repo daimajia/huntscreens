@@ -3,7 +3,6 @@ import { desc, sql } from "drizzle-orm";
 import Logo from "@/components/logo";
 import { Link } from "@/i18n/routing";
 import { ThumbsUpIcon } from "lucide-react";
-import { ProductTypes, urlMapper } from "@/types/product.types";
 import { getTranslations } from "next-intl/server";
 import { SupportedLangs } from "@/i18n/types";
 import { useLocale } from "next-intl";
@@ -16,7 +15,7 @@ const WeeklyTopCard = ({ product }: { product: Product }) => {
   const locale = useLocale() as SupportedLangs;
   const metadata = product.metadata as ProductHuntMetadata;
   return <>
-    <Link href={urlMapper[product.itemType as ProductTypes](product.id || 0)}>
+    <Link href={`/products/${product.slug}`}>
       <div className="flex flex-col gap-5 bg-white dark:bg-gray-800 p-5 rounded-lg border hover:shadow-md transition-shadow">
         <div className="flex flex-row gap-5 items-center w-full">
           <div className="w-10 h-10 ">
