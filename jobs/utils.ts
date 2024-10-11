@@ -1,13 +1,6 @@
 import { IO } from "@trigger.dev/sdk";
 
 export default async function triggerCommonJobs(io: IO, uuid:string) {
-  await io.sendEvent(`create embedding for ${uuid}`, {
-    name: "create.embedding.by.type",
-    payload: {
-      uuid: uuid,
-    }
-  });
-
   await io.sendEvent(`generate seo for ${uuid}`, {
     name: "generate.seo.for.product",
     payload: {
@@ -28,4 +21,11 @@ export default async function triggerCommonJobs(io: IO, uuid:string) {
       uuid: uuid
     }
   })
+
+  await io.sendEvent(`create embedding for ${uuid}`, {
+    name: "create.embedding.by.type",
+    payload: {
+      uuid: uuid,
+    }
+  });
 }

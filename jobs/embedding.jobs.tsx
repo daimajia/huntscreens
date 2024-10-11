@@ -8,7 +8,8 @@ import { saveEmbeddingByUUID } from "@/lib/ai/embeding2";
 
 const embeddingConcurrencyLimit = client.defineConcurrencyLimit({
   id: `embedding-limit`,
-  limit: 5,
+  // limit to 1 job because needs to wait for other jobs to finish
+  limit: 1,
 });
 
 client.defineJob({
@@ -23,6 +24,8 @@ client.defineJob({
   }),
   concurrencyLimit: embeddingConcurrencyLimit,
   run: async (payload, io, ctx) => {
+    // wait for 120 seconds, wait other jobs to finish
+    await io.wait("wait-for-120-seconds", 120);
     const { uuid } = payload;
     
     let product;
